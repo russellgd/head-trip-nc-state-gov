@@ -1,1 +1,1203 @@
-
+[
+  {
+    "id": 1,
+    "title": "Round 1: Foundations of State Governance",
+    "theme": "Why State Government Matters",
+    "heads": [
+      {
+        "name": "The Civic Skeptic",
+        "description": "A citizen who believes only federal politics matters and thinks state government is a waste of time."
+      },
+      {
+        "name": "The State Agency Director",
+        "description": "A career public servant navigating bureaucratic constraints and political cultures."
+      },
+      {
+        "name": "The County Manager",
+        "description": "A local administrator caught between state mandates, local demands, and fiscal limitations."
+      }
+    ],
+    "questions": [
+      {
+        "title": "Political Culture & Governance",
+        "scenario": "A newly appointed state agency director in North Carolina discovers that her agency's efficiency-focused reorganization plan is being blocked — not because it's a bad plan, but because \"that's not how we do things here.\" A veteran staffer says, \"You're in a traditionalistic state. The goal isn't innovation; it's maintaining the existing order.\" What do you do?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Push the plan forward anyway. Good management shouldn't be hostage to political culture."
+          },
+          {
+            "letter": "B",
+            "text": "Slow down and study who the real power brokers are. In a traditionalistic culture, change requires elite buy-in first."
+          },
+          {
+            "letter": "C",
+            "text": "Reframe the plan as preserving what works while updating what doesn't — make it feel like continuity, not disruption."
+          },
+          {
+            "letter": "D",
+            "text": "Shelve it. If the political culture doesn't support it, the plan will fail regardless of its merits."
+          }
+        ],
+        "bestPairedWith": "The State Agency Director, The County Manager",
+        "debrief": "Elazar's political culture typology is not just academic. NC's traditionalistic culture means change often requires framing as preservation. The best public administrators learn to read political culture and work within it while pushing boundaries.",
+        "correctAnswer": "B",
+        "pairedHeadIndices": [
+          1,
+          2
+        ]
+      },
+      {
+        "title": "Why State Government Matters",
+        "scenario": "Your MPA classmate says: \"Honestly, state government is boring. All the real power is in Washington.\" How do you respond?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "You're right that federal politics gets more attention, but state governments control education, criminal law, zoning, licensing, and most of what citizens actually experience daily."
+          },
+          {
+            "letter": "B",
+            "text": "State power is everyday power — law enforcement, property rights, professional licensing. The federal government doesn't run your local school or issue your driver's license."
+          },
+          {
+            "letter": "C",
+            "text": "Actually, the states are where policy innovation happens. Marriage equality, cannabis legalization, and minimum wage increases all started at the state level."
+          },
+          {
+            "letter": "D",
+            "text": "The real issue isn't which level matters more — it's that civic knowledge gaps at the state level mean less accountability and more interest group influence."
+          }
+        ],
+        "bestPairedWith": "The Civic Skeptic, The State Agency Director",
+        "debrief": "As the course materials emphasize, \"state power is everyday power.\" Civic knowledge gaps are not abstract — they shape turnout, accountability, and who actually influences government. This is the foundational argument of the course.",
+        "correctAnswer": "D",
+        "pairedHeadIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "title": "The Role of Government",
+        "scenario": "A constituent at a town hall argues: \"The best government is the least government. Get out of the way and let the market work.\" As a public administrator, how do you think about this?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Markets fail. Public goods, externalities, information asymmetries, and distributional inequity all require government intervention."
+          },
+          {
+            "letter": "B",
+            "text": "There's truth to both sides. Government should set the floor — basic services and protections — but not try to do everything."
+          },
+          {
+            "letter": "C",
+            "text": "The question isn't whether government should act, but how. Incentives, regulation, and direct services are all tools with different trade-offs."
+          },
+          {
+            "letter": "D",
+            "text": "Government exists to manage risk and define values. Without it, there's no baseline of services and no protection for vulnerable populations."
+          }
+        ],
+        "bestPairedWith": "The Civic Skeptic, The State Agency Director",
+        "debrief": "From the course materials — government exists because of public goods (non-excludable, non-rival), externalities (Pigou), information asymmetries (Akerlof), and distributional inequity (Sen). The debate isn't whether government should exist, but what role it should play.",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "title": "NC Government Evolution",
+        "scenario": "The state legislature is debating whether to give counties more autonomy to set their own policies. A legislator argues: \"Counties are creatures of the state. They should do what we tell them.\" What's the strongest counter-argument?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Counties administer most statewide programs — schools, health, social services. Micromanaging them from Raleigh is inefficient."
+          },
+          {
+            "letter": "B",
+            "text": "NC's fiscal revolution of 1931-33 shifted financing to the state, but counties retained administrative responsibility. The current system is already a partnership, not a hierarchy."
+          },
+          {
+            "letter": "C",
+            "text": "Dillon's Rule means counties legally have only the powers the state grants. But effective governance requires flexibility to address local conditions."
+          },
+          {
+            "letter": "D",
+            "text": "The 1868 Constitution tried to give counties more democratic autonomy. The legislature clawed it back. This is the same old tension replaying."
+          }
+        ],
+        "bestPairedWith": "The County Manager, The State Agency Director",
+        "debrief": "NC counties are the backbone of service delivery but operate under Dillon's Rule. The 1931-33 fiscal revolution shifted financing to the state while leaving administration local. This tension — state control vs. local flexibility — is the defining structural question of NC governance.",
+        "correctAnswer": "B",
+        "pairedHeadIndices": [
+          2,
+          1
+        ]
+      },
+      {
+        "title": "Civics & Accountability",
+        "scenario": "A nonprofit releases a \"Civics Knowledge\" study showing that only 26% of NC adults can name their state representative, and fewer than 15% know the governor's position on any major issue. A legislator dismisses it: \"People don't need to know civics. They just need to vote.\" Do you agree?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Yes. Democracy is about voting outcomes, not whether voters are informed about arcane details."
+          },
+          {
+            "letter": "B",
+            "text": "Partially. Knowing your representative's position matters more than knowing their name, but both help."
+          },
+          {
+            "letter": "C",
+            "text": "No. Civic knowledge predicts engagement, turnout, and ability to hold government accountable. Knowledge gaps mean less accountability."
+          },
+          {
+            "letter": "D",
+            "text": "It's more nuanced. Civics knowledge matters for different issues differently — education and tax policy vs. regulatory details."
+          }
+        ],
+        "bestPairedWith": "The Civic Skeptic, The State Agency Director",
+        "debrief": "The course begins with the argument that civics knowledge gaps are not abstract. They shape participation and accountability. State government's anonymity is both a feature (insulates it from populism) and a bug (reduces electoral accountability).",
+        "correctAnswer": "C",
+        "pairedHeadIndices": [
+          0,
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Round 2: Federalism & Intergovernmental Relations",
+    "theme": "Who's In Charge?",
+    "heads": [
+      {
+        "name": "James Madison",
+        "description": "An idealistic Federalist who believed the Tenth Amendment would preserve state power and feared federal consolidation."
+      },
+      {
+        "name": "A Federal Program Officer",
+        "description": "A bureaucrat in Washington who controls the grant money and compliance requirements states must meet."
+      },
+      {
+        "name": "The NC County Health Director",
+        "description": "Caught between state rules and federal guidance, implementing programs with limited resources and unclear authority."
+      },
+      {
+        "name": "Martha Derthick",
+        "description": "A scholar of federalism skeptical that states retain meaningful autonomy; argues federal power has hollowed out state independence."
+      }
+    ],
+    "questions": [
+      {
+        "title": "Madison's Promise vs. Derthick's Reality",
+        "scenario": "A state official argues in testimony: \"The Tenth Amendment reserves these powers to the states. The federal government has no business here.\" A federal official responds: \"The Supreme Court called the Tenth Amendment a 'truism' in U.S. v. Darby. Your argument has no legal teeth.\" Who's right?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "The federal official. The Tenth Amendment has been effectively hollowed out by Commerce Clause jurisprudence and the spending power."
+          },
+          {
+            "letter": "B",
+            "text": "The state official. Reserved powers are real — the federal government can't commandeer state legislatures or force them to implement federal programs."
+          },
+          {
+            "letter": "C",
+            "text": "Both are partially right. The Tenth Amendment isn't a blank check, but it's also not meaningless — the Supreme Court in U.S. v. Lopez showed federal power has limits."
+          },
+          {
+            "letter": "D",
+            "text": "Neither. The real fight isn't about the Tenth Amendment — it's about money. The spending clause is the hidden engine of federal power."
+          }
+        ],
+        "bestPairedWith": "James Madison, A Federal Program Officer, Martha Derthick",
+        "debrief": "Madison promised state powers would be \"numerous and indefinite.\" Derthick concluded states are \"the weaker ducks.\" The course argues the building doesn't match the blueprint — and the spending clause, not the Tenth Amendment, is where the real power lies.",
+        "correctAnswer": "D",
+        "pairedHeadIndices": [
+          0,
+          1,
+          3
+        ]
+      },
+      {
+        "title": "Wright's IGR in Practice",
+        "scenario": "You're a state environmental regulator. New federal guidance contradicts existing state regulations. Your two largest counties are interpreting the old rules differently. A legislative caucus threatens to preempt both. A nonprofit has filed a Section 1983 lawsuit. What's your first move?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Call your federal program officer — the person you've been working with for three years on routine compliance. Continuous contacts built over time are more useful in a crisis than formal legal authority."
+          },
+          {
+            "letter": "B",
+            "text": "Call your attorney. When multiple legal mandates conflict, you need to know what you're legally required to do before making any operational decisions."
+          },
+          {
+            "letter": "C",
+            "text": "Send a formal memo to all counties directing them to follow the existing state regulations until further notice. You need to stop the inconsistency immediately."
+          },
+          {
+            "letter": "D",
+            "text": "Schedule a meeting with the legislative caucus. If they preempt your authority, nothing else matters."
+          }
+        ],
+        "bestPairedWith": "The NC County Health Director, A Federal Program Officer",
+        "debrief": "Wright's key insight: \"There are no intergovernmental relations, only relations among officials in different governing units.\" The course argues your first move should be relational, not legal. The person you've built trust with over years of routine compliance is your best asset in a crisis.",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          2,
+          1
+        ]
+      },
+      {
+        "title": "HB2 and Federalism",
+        "scenario": "Charlotte passes a local nondiscrimination ordinance. The NC General Assembly overrides it in a special session within 12 hours. The federal government threatens to withhold $4.7 billion in education funding. From a federalism perspective, what's really happening here?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Dillon's Rule in action. Charlotte has no independent authority — the state can preempt any local ordinance it wants. That's the legal reality."
+          },
+          {
+            "letter": "B",
+            "text": "Three levels of government are claiming authority simultaneously: local democratic legitimacy, state constitutional authority, and federal fiscal leverage. This is Wright's \"all units\" feature of IGR."
+          },
+          {
+            "letter": "C",
+            "text": "The federal spending clause is doing the heavy lifting. The $4.7 billion threat is the most powerful tool in the conflict. Follow the money."
+          },
+          {
+            "letter": "D",
+            "text": "Charlotte had democratic legitimacy but no legal supremacy. The GA had legal authority but bypassed every normal deliberative process. The feds had fiscal leverage but risked being called coercive. Everyone was wrong and right simultaneously."
+          }
+        ],
+        "bestPairedWith": "Martha Derthick, A Federal Program Officer, The NC County Health Director",
+        "debrief": "HB2 is the course's signature case study for federalism. It illustrates every IGR concept: all units involved, fiscal focus, administrators caught in the middle, and the gap between democratic legitimacy and legal authority under Dillon's Rule.",
+        "correctAnswer": "B",
+        "pairedHeadIndices": [
+          3,
+          1,
+          2
+        ]
+      },
+      {
+        "title": "Laboratories of Democracy",
+        "scenario": "Colorado legalizes recreational marijuana despite federal Schedule I prohibition. A conservative state senator says: \"This proves federalism works — states can experiment.\" A progressive colleague responds: \"Unless you're talking about states experimenting with voter suppression.\" How do you reconcile these views?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Both are right. Federalism enables both progressive and regressive experimentation. That's the feature, not the bug."
+          },
+          {
+            "letter": "B",
+            "text": "The Ginsberg reading settles this: \"The federal government has done more to protect citizens from oppressive state actions than the states have done to check the federal government.\" State experimentation only works when it expands, not contracts, individual rights."
+          },
+          {
+            "letter": "C",
+            "text": "It depends on the policy area. States as laboratories works for things like cannabis policy, minimum wage, and healthcare. It fails when states use autonomy to restrict fundamental rights."
+          },
+          {
+            "letter": "D",
+            "text": "The real question is who benefits from decentralization. State autonomy empowers whichever coalition controls the state legislature — sometimes that's progressive, sometimes it's not."
+          }
+        ],
+        "bestPairedWith": "James Madison, Martha Derthick",
+        "debrief": "The course argues \"both things are true\" — the federal government has been the primary engine of rights expansion, while states have been the primary engine of policy experimentation. Students' careers will be spent \"inside that contradiction.\"",
+        "correctAnswer": "B",
+        "pairedHeadIndices": [
+          0,
+          3
+        ]
+      },
+      {
+        "title": "Conditional Federal Aid",
+        "scenario": "Congress passes a bill funding infrastructure improvement but conditions the grants on states adopting a specific environmental standard that some states find technically infeasible. A state attorney general challenges it: \"This is coercive federalism — we're effectively forced to comply or lose the money.\" Is this constitutional?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Yes. Congress can attach conditions to spending. States can always refuse the money if the terms are unacceptable. The Supreme Court has repeatedly upheld this."
+          },
+          {
+            "letter": "B",
+            "text": "Partially. Congress can attach conditions, but if the amount is so large that refusing the money is politically impossible, the condition becomes coercive. South Dakota v. Dole (1987) set the limit."
+          },
+          {
+            "letter": "C",
+            "text": "No. The Tenth Amendment prevents the federal government from effectively forcing state compliance through fiscal pressure. That's the whole point of reserved powers."
+          },
+          {
+            "letter": "D",
+            "text": "It's a matter of degree. If the condition is unrelated to the spending program (coercive) and the amount is substantial (making refusal impossible), courts may strike it down as in the Affordable Care Act's Medicaid expansion."
+          }
+        ],
+        "bestPairedWith": "A Federal Program Officer, Martha Derthick",
+        "debrief": "Conditional federal aid is the core mechanism of federal-state relations. Derthick argues states have little choice but to comply when federal money funds major programs. The spending clause is federalism's hidden engine of centralization.",
+        "correctAnswer": "D",
+        "pairedHeadIndices": [
+          1,
+          3
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Round 3: The NC Constitution",
+    "theme": "Blueprint or Relic?",
+    "heads": [
+      {
+        "name": "A Reconstruction-Era Delegate",
+        "description": "Wrote the 1868 Constitution, believed in legislative supremacy but also in localism and democratic participation."
+      },
+      {
+        "name": "A Modern NC Legislator",
+        "description": "Operates under the current constitution with its constraints and ambiguities, balancing institutional power with governance needs."
+      },
+      {
+        "name": "The NC Governor",
+        "description": "Constrained by constitutional design that gives the General Assembly most power; fights for executive authority case by case."
+      },
+      {
+        "name": "A Constitutional Reform Advocate",
+        "description": "Believes NC's constitution is outdated and prevents effective governance; pushes for modernization and amendment."
+      }
+    ],
+    "questions": [
+      {
+        "title": "Constitutional Design",
+        "scenario": "NC was the last state in the nation to grant its governor veto power (1996). A political science student asks: \"Why would a state design its government to have such a weak executive?\" What's the best explanation?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "NC's 1776 Constitution was born from distrust of executive power — the governor was chosen by the legislature with no veto. That DNA persisted for over 200 years."
+          },
+          {
+            "letter": "B",
+            "text": "The General Assembly liked it that way. A weak governor means legislative supremacy, and the legislature wasn't about to give up power voluntarily."
+          },
+          {
+            "letter": "C",
+            "text": "It's a path dependency problem. The 1868 Constitution created a plural executive with independently elected officers. The 1971 modernization cleaned up language but didn't fundamentally restructure power."
+          },
+          {
+            "letter": "D",
+            "text": "Cooper v. Berger shows the tension is still unresolved. The NC Supreme Court said the governor must have \"enough control\" to faithfully execute laws — but \"enough\" is deliberately vague."
+          }
+        ],
+        "bestPairedWith": "The NC Governor, A Modern NC Legislator",
+        "debrief": "NC's constitutional history is defined by legislative dominance vs. gradual growth of executive power. The 1776 constitution made the legislature supreme. The 1868 constitution added elected executive officers. The 1971 constitution modernized but didn't revolutionize. The governor didn't get veto power until 1996.",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          2,
+          1
+        ]
+      },
+      {
+        "title": "Dual Constitutionalism",
+        "scenario": "A public administrator learns that NC's Declaration of Rights (Article I) predates the U.S. Bill of Rights and includes affirmative rights to \"safety, happiness, and remedy\" not found in the federal document. A colleague says: \"That's nice symbolism, but the federal constitution is what actually matters.\" Are they right?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Mostly. Federal constitutional rights set the floor. State constitutions can go higher, but federal courts set the real boundaries through the 14th Amendment."
+          },
+          {
+            "letter": "B",
+            "text": "Not at all. State constitutions govern more of daily life than the federal document. Most citizens interact with state law far more frequently — from zoning to education to criminal law."
+          },
+          {
+            "letter": "C",
+            "text": "It's complicated. The \"New Judicial Federalism\" movement showed state courts actively interpreting their own constitutions to provide broader rights protections as federal courts grew more conservative."
+          },
+          {
+            "letter": "D",
+            "text": "The real power of state constitutions is in what they constrain: debt limits, tax prohibitions, balanced budget requirements, TELs. These fiscal provisions shape governance more than rights provisions."
+          }
+        ],
+        "bestPairedWith": "A Constitutional Reform Advocate, A Modern NC Legislator",
+        "debrief": "State constitutions remain \"the dark side of the moon\" in political science — neglected despite governing more of daily life. NC's constitution includes a robust Declaration of Rights AND constraining fiscal provisions. Understanding both faces is essential.",
+        "correctAnswer": "C",
+        "pairedHeadIndices": [
+          3,
+          1
+        ]
+      },
+      {
+        "title": "Cooper v. Berger",
+        "scenario": "The NC legislature creates a bipartisan elections board where the governor must appoint from opposition party lists and can only remove members \"for cause.\" The governor sues, arguing this violates the Take Care Clause. You're a public administration student — what framework do you apply?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Separation of powers, pure and simple. The legislature structured the board to leave the governor with \"little control over views and priorities.\" That's unconstitutional under Article III, §5(4)."
+          },
+          {
+            "letter": "B",
+            "text": "It's more nuanced than separation of powers. The majority and dissent in Cooper v. Berger reveal a deeper question: is the test for constitutional power functional or textual?"
+          },
+          {
+            "letter": "C",
+            "text": "Think like Christensen — \"running a constitution\" means understanding the statute as a political settlement. The legislature was trying to depoliticize elections oversight. Whether that's constitutional is separate from whether it's wise."
+          },
+          {
+            "letter": "D",
+            "text": "This is really about NC's strong legislative tradition. For 200+ years, the GA has been the dominant institution. The veto only came in 1996. The governor is still catching up."
+          }
+        ],
+        "bestPairedWith": "The NC Governor, A Modern NC Legislator, A Constitutional Reform Advocate",
+        "debrief": "Cooper v. Berger's holding — the governor must have \"enough control\" (a functional, not formulaic test) — is the keystone case for understanding NC's separation of powers. The course asks: is this a design choice, a process constraint, or a rights guarantee?",
+        "correctAnswer": "B",
+        "pairedHeadIndices": [
+          2,
+          1,
+          3
+        ]
+      },
+      {
+        "title": "Constitutionalizing Policy",
+        "scenario": "Alabama's constitution has 946 amendments, 70% applying to a single county, including kerosene flash points and livestock confinement standards. NC's constitution has remained relatively concise. A colleague argues: \"We should put a tax limitation amendment in the NC constitution to permanently cap spending growth.\" What's the risk?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "The Ginsberg/Lowi critique: when policy is embedded in constitutions, it becomes nearly impossible for future democratic majorities to reverse. Special interests use amendments to lock in victories."
+          },
+          {
+            "letter": "B",
+            "text": "TABOR and TELs create a ratchet effect — during recessions, spending falls and can't recover, causing permanent service cuts even when the economy rebounds."
+          },
+          {
+            "letter": "C",
+            "text": "NC doesn't have citizen-initiated amendments. Everything goes through the General Assembly. So the risk isn't populist overreach — it's legislative logrolling dressed up as constitutional principle."
+          },
+          {
+            "letter": "D",
+            "text": "The real risk is rigidity. State constitutions need to be living documents. Policy-heavy constitutions like Alabama's become governance nightmares."
+          }
+        ],
+        "bestPairedWith": "A Constitutional Reform Advocate, A Modern NC Legislator",
+        "debrief": "The course covers Prop 13, TABOR, and the critique that constitutionalizing policy creates a ratchet effect favoring the status quo. NC's amendment process (GA only, no citizen initiative) shapes this debate differently than in states like California.",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          3,
+          1
+        ]
+      },
+      {
+        "title": "The Living Document Problem",
+        "scenario": "The NC Supreme Court rules that the Declaration of Rights (Article I) implicitly guarantees a right to environmental protection, requiring the state to defend against climate change. A conservative justice dissents: \"The constitution doesn't say that. We're just making up new rights.\" Who has the stronger interpretive position?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "The majority. States can use their own constitutions to recognize rights not explicitly named. This is the New Judicial Federalism."
+          },
+          {
+            "letter": "B",
+            "text": "The dissent. Once courts start reading new rights into vague constitutional language, there's no limiting principle. The separation of powers breaks down."
+          },
+          {
+            "letter": "C",
+            "text": "It depends on the methodology. The majority's position works if courts apply consistent interpretive principles. If courts just create rights ad hoc, the dissent is right about the lack of limits."
+          },
+          {
+            "letter": "D",
+            "text": "The real issue isn't the principle — it's precedent. If the dissent can point to historical understanding that would exclude this right, the majority's reading fails."
+          }
+        ],
+        "bestPairedWith": "A Constitutional Reform Advocate, A Reconstruction-Era Delegate",
+        "debrief": "State constitutional interpretation is contested. Some courts embrace an expansive \"living document\" approach; others insist on originalism or historical practice. NC's courts have shown willingness to read the Declaration of Rights expansively.",
+        "correctAnswer": "C",
+        "pairedHeadIndices": [
+          3,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Round 4: The General Assembly",
+    "theme": "Power, Process, and Professionalism",
+    "heads": [
+      {
+        "name": "The Speaker of the House",
+        "description": "Controls the legislative agenda, committee appointments, and referrals; the most powerful person in the legislature outside the voting chamber."
+      },
+      {
+        "name": "A Citizen Legislator",
+        "description": "Part-time, underpaid, juggling a job and legislative responsibilities; closer to constituents but lacking legislative expertise."
+      },
+      {
+        "name": "A Lobbyist",
+        "description": "Trying to kill or pass a bill; builds relationships with legislators and their staff; knows how to navigate the legislative process."
+      },
+      {
+        "name": "A Policy Entrepreneur",
+        "description": "Waiting for a policy window to open; has a solution ready but needs political conditions and a champion to push it through."
+      },
+      {
+        "name": "A Legislative Staff Member",
+        "description": "Writes bills, analyzes policy, briefs members; often the actual expert in technical policy areas and real continuity in the institution."
+      }
+    ],
+    "questions": [
+      {
+        "title": "Legislative Professionalism",
+        "scenario": "NC legislators are paid roughly $14,000/year for what is effectively a full-time job during session. A reform group argues this creates a legislature dominated by retirees, lawyers, and the independently wealthy. An opponent says: \"Citizen legislators stay closer to the people than professional politicians.\" Who's right?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "The reform group. Low pay and part-time status mean only certain types of people can afford to serve. This limits diversity and weakens institutional capacity."
+          },
+          {
+            "letter": "B",
+            "text": "The opponent has a point. Professionalized legislatures (like California's) aren't demonstrably more responsive to constituents — they're just more insulated."
+          },
+          {
+            "letter": "C",
+            "text": "Rocca et al.'s review shows the evidence is mixed. Professionalism increases legislative capacity and productivity but may also increase polarization and insulate members from constituents."
+          },
+          {
+            "letter": "D",
+            "text": "The real issue isn't pay — it's staff. NC legislators have smaller staffs than professionalized states, which means they're more dependent on lobbyists for policy expertise."
+          }
+        ],
+        "bestPairedWith": "A Citizen Legislator, The Speaker of the House",
+        "debrief": "The Rocca et al. reading is central here. Legislative professionalism shapes who runs, who wins, and how they govern. NC's citizen legislature creates both democratic accessibility and institutional capacity problems.",
+        "correctAnswer": "C",
+        "pairedHeadIndices": [
+          1,
+          0
+        ]
+      },
+      {
+        "title": "Kingdon's Multiple Streams",
+        "scenario": "The NC opioid crisis is worsening (problem stream). A policy team has a harm-reduction proposal ready (policy stream). A new governor was just elected on a public health platform (politics stream). A policy entrepreneur sees the opening. What should they do?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Act now. All three streams have converged — this is a policy window. Push the proposal through the legislative process before attention shifts to the next crisis."
+          },
+          {
+            "letter": "B",
+            "text": "Wait for a focusing event. Even with three streams converging, harm reduction is politically toxic. You need a crisis dramatic enough to overcome the opposition."
+          },
+          {
+            "letter": "C",
+            "text": "Frame it carefully. Kingdon says problems are socially constructed — if you frame this as \"enabling drug use\" vs. \"saving lives,\" the framing determines the outcome."
+          },
+          {
+            "letter": "D",
+            "text": "Build an advocacy coalition first (Sabatier's ACF). Deep core beliefs about drug policy are resistant to change. You need allies across the political spectrum before the window opens."
+          }
+        ],
+        "bestPairedWith": "A Policy Entrepreneur, A Lobbyist",
+        "debrief": "Kingdon's multiple streams approach is a core framework from the course. Policy windows open briefly. Policy entrepreneurs must have solutions ready, frame problems strategically, and act before attention shifts. The ACF adds that deep core beliefs constrain what's possible.",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          3,
+          2
+        ]
+      },
+      {
+        "title": "The Legislative Process",
+        "scenario": "You're a state agency director who needs legislative authority for a new program. A veteran lobbyist advises: \"Don't focus on passing your bill. Focus on not getting your bill killed. Most bills die in committee without ever getting a hearing.\" What does this tell you about the NC legislative process?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Committee chairs are gatekeepers. In NC, the Speaker and President Pro Tem appoint committee members and control the agenda. If leadership doesn't want your bill heard, it won't be."
+          },
+          {
+            "letter": "B",
+            "text": "The real work happens informally. The lobbyist is telling you to build relationships with the members who control referrals and scheduling — not to write a better bill."
+          },
+          {
+            "letter": "C",
+            "text": "This is how the legislature acts as referee among competing interests. If no side is clearly right, the bill dies. The default setting is inaction."
+          },
+          {
+            "letter": "D",
+            "text": "It reveals the power asymmetry. Lobbyists devote enormous energy to killing bills — not just passing them. Blocking change is easier than creating it in any legislative system."
+          }
+        ],
+        "bestPairedWith": "A Lobbyist, The Speaker of the House, A Citizen Legislator",
+        "debrief": "From the course slides: \"All bills are referred to a committee but few get a committee hearing. Bills rarely fail a committee vote\" — because the ones that would fail never get heard. Leadership's agenda-setting power is the most consequential feature.",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          2,
+          0,
+          1
+        ]
+      },
+      {
+        "title": "Redistricting & Gerrymandering",
+        "scenario": "The NC congressional map used in 2024 was redrawn for 2026 after legal challenges. A student asks: \"If gerrymandering is so bad for democracy, why does it keep happening?\" What's the most accurate answer?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Because the party that controls the legislature controls redistricting, and both parties gerrymander when they have the chance. It's a structural incentive problem, not a moral failing of one party."
+          },
+          {
+            "letter": "B",
+            "text": "Because the Supreme Court ruled in Rucho v. Common Cause (2019) that partisan gerrymandering is a political question beyond the reach of federal courts. Without judicial review, there's no external check."
+          },
+          {
+            "letter": "C",
+            "text": "Because polarization makes it worse. When voters are geographically sorted by ideology, even \"neutral\" maps produce lopsided results. Gerrymandering amplifies what geography already suggests."
+          },
+          {
+            "letter": "D",
+            "text": "Because it works. Gerrymandered districts reduce competitive elections, insulate incumbents, and push legislators toward their base rather than toward compromise."
+          }
+        ],
+        "bestPairedWith": "The Speaker of the House, A Citizen Legislator",
+        "debrief": "Gerrymandering connects to course themes of polarization, legislative capacity, and democratic accountability. NC has been at the center of redistricting litigation nationally. The key insight: gerrymandering is both a cause and consequence of polarization.",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "title": "Representation & Responsiveness",
+        "scenario": "A legislator receives 400 emails from constituents opposed to a bill and 20 in favor, but the bill's lobbyists (representing economic interests) are heavy donors. The legislator votes yes anyway. A colleague asks: \"How do you represent your district when the incentives point elsewhere?\" What's the fundamental tension here?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Pitkin's distinction between descriptive representation (looking like your district) and substantive representation (acting for your district's interests). They come apart when donors have different interests."
+          },
+          {
+            "letter": "B",
+            "text": "The problem of \"responsible party\" government. Legislators must balance constituents' immediate preferences against party discipline and long-term policy goals."
+          },
+          {
+            "letter": "C",
+            "text": "Money in politics. Campaign finance shapes who legislators respond to. Without public financing or spending limits, donors have disproportionate influence."
+          },
+          {
+            "letter": "D",
+            "text": "Schattschneider's \"semisovereign people\" problem. The electorate's latent opinions constrain politicians, but organized interests dominate day-to-day legislative decision-making."
+          }
+        ],
+        "bestPairedWith": "A Lobbyist, A Citizen Legislator, The Speaker of the House",
+        "debrief": "This question goes to the heart of representation. Pitkin showed representation is contested — is it about mirroring districts, responding to preferences, or exercising judgment? The course argues legislators operate in a world where constituents are diffuse but organized interests are concentrated.",
+        "correctAnswer": "D",
+        "pairedHeadIndices": [
+          2,
+          1,
+          0
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Round 5: The Executive Branch",
+    "theme": "The Weak Governor and the Plural Executive",
+    "heads": [
+      {
+        "name": "The NC Governor",
+        "description": "Weak by constitutional design; battles with the General Assembly and independently elected executive officers; relies on appointment power and public persuasion."
+      },
+      {
+        "name": "The Attorney General",
+        "description": "Independently elected, may oppose the governor on major issues; has independent enforcement authority and political ambitions."
+      },
+      {
+        "name": "A State Agency Director",
+        "description": "Navigating between political appointees (who change with administrations) and career staff (who persist); implementing policy with limited resources."
+      },
+      {
+        "name": "The County Manager",
+        "description": "Implementing state executive orders locally; buffer between state mandates and local conditions; faces scrutiny from multiple layers of state oversight."
+      }
+    ],
+    "questions": [
+      {
+        "title": "The Weak NC Governor",
+        "scenario": "Cooper's reading argues NC's governor is among the weakest in the nation. The plural executive means the Attorney General, Treasurer, and other Council of State members are independently elected and may oppose the governor. A reform commission asks: \"Should NC move to a strong-governor model?\" What's the best argument for and against?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "For: Unified executive accountability. Citizens can hold one person responsible. Against: The plural executive provides checks on gubernatorial power and ensures multiple perspectives in executive governance."
+          },
+          {
+            "letter": "B",
+            "text": "For: Administrative efficiency and coherent policy direction. Against: NC's strong legislative tradition already provides the check on executive power — you don't need internal executive fragmentation too."
+          },
+          {
+            "letter": "C",
+            "text": "For: Cooper v. Berger shows the current system creates constitutional confusion about who controls what. Against: Independently elected executives have their own democratic mandates. Consolidation is anti-democratic."
+          },
+          {
+            "letter": "D",
+            "text": "For: Modern governance requires executive coordination that a fragmented executive can't deliver. Against: The real power in NC has always been in the General Assembly. Strengthening the governor shifts the balance in ways the constitutional design intentionally prevents."
+          }
+        ],
+        "bestPairedWith": "The NC Governor, The Attorney General",
+        "debrief": "Cooper's reading on the \"weak NC governor\" connects directly to constitutional design discussions. The plural executive is both a democratic feature (multiple elected voices) and an administrative obstacle (coordination problems).",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "title": "Executive Authority & Conflict",
+        "scenario": "Governor Cooper expands Medicaid through executive authority. The Republican-controlled legislature vows to block it legislatively or sue. A legal scholar observes: \"The governor has the power to expand, but not the power to defend that expansion from the legislature.\" What does this reveal?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "The governor's power is ultimately dependent on legislative acquiescence. Without it, executive actions can be reversed, defunded, or litigated away."
+          },
+          {
+            "letter": "B",
+            "text": "The plural executive is working exactly as designed — when branches disagree fundamentally, the legislature (the stronger institution) prevails."
+          },
+          {
+            "letter": "C",
+            "text": "This is why executive orders are weak. Real policy change requires legislation. The governor can manage the margins but can't rewrite the fundamental law."
+          },
+          {
+            "letter": "D",
+            "text": "The separation of powers creates a stalemate. The governor can act, the legislature can block, and nothing changes. This gridlock is the real problem."
+          }
+        ],
+        "bestPairedWith": "The NC Governor, The Attorney General",
+        "debrief": "Executive authority in NC is real but contingent. The governor can act, but the legislature can counter, and the courts can intervene. The power balance is what the constitutionalist calls \"competitive federalism.\"",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "title": "State Bureaucracy & Control",
+        "scenario": "The governor appoints a new agency director to implement a policy initiative. Three months later, the career staff is quietly resisting the initiative. The director learns that a Republican legislator (of the opposite party) has built relationships with key deputies over years. The legislator hints that the deputies' jobs depend on keeping implementation \"moderate.\" What's happening?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "The legislature is using patronage to constrain the governor. By building loyalty with career staff, the legislature creates incentives for implementation to match legislative preferences."
+          },
+          {
+            "letter": "B",
+            "text": "This is the institutional politics reading in action. Agencies develop institutional cultures and interests independent of both the governor and legislature. Career staff are an institutional check on political change."
+          },
+          {
+            "letter": "C",
+            "text": "The director has failed to establish political control. A strong director builds loyalty, shows that the governor's agenda is non-negotiable, and replaces resisters."
+          },
+          {
+            "letter": "D",
+            "text": "The plural executive is malfunctioning. When career staff can play the legislature against the governor, nobody has clear authority. This is why NC needs institutional reform."
+          }
+        ],
+        "bestPairedWith": "A State Agency Director, The NC Governor",
+        "debrief": "The State Bureaucracy reading addresses this directly: agencies have institutional interests and career staff create continuity and resistance to change. The legislature uses appropriations and relationships to influence implementation.",
+        "correctAnswer": "B",
+        "pairedHeadIndices": [
+          2,
+          0
+        ]
+      },
+      {
+        "title": "Administrative Rulemaking",
+        "scenario": "A statute directs the Department of Health to \"protect public health by establishing standards that are reasonable and cost-effective.\" The department writes aggressive pollution standards. A regulated industry sues, arguing the statute is unconstitutional delegation. The department's lawyer argues: \"The statute gave us discretion because the legislature couldn't know what 'reasonable' would mean in five years.\" Who's right?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "The industry. If the legislature delegates with almost no limits, it's an unconstitutional abdication of legislative power. There must be \"intelligible principles\" to constrain agency discretion."
+          },
+          {
+            "letter": "B",
+            "text": "The department. Modern government requires agencies to fill statutory gaps. The legislature can't possibly anticipate every situation. Delegation doctrine is dead."
+          },
+          {
+            "letter": "C",
+            "text": "Neither. The question is whether the statute provided enough guidance. \"Reasonable and cost-effective\" is vague, but the department's rules must be reasonable in light of statutory purpose."
+          },
+          {
+            "letter": "D",
+            "text": "The department's lawyer is being truthful about legislative intent, but that doesn't matter. Agencies can't delegate responsibility for answering fundamental policy questions. That's the legislature's job."
+          }
+        ],
+        "bestPairedWith": "A State Agency Director, The NC Governor",
+        "debrief": "From the State Bureaucracy reading: delegation is inevitable, but the question is whether agencies stay within the statute's purpose and use proper process. Courts review for reasonableness, but NC's courts are generally deferential.",
+        "correctAnswer": "C",
+        "pairedHeadIndices": [
+          2,
+          0
+        ]
+      },
+      {
+        "title": "Appointment Power & Accountability",
+        "scenario": "The governor appoints the state ethics director. The legislature dislikes her investigations into legislative corruption and passes a law requiring all ethics director appointments to be \"subject to Senate confirmation by majority vote.\" The governor challenges this as an unconstitutional constraint on appointment power. Who wins?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "The governor. The Constitution makes the governor chief executive. The legislature can't constrain appointment power because that would undermine executive unity."
+          },
+          {
+            "letter": "B",
+            "text": "The legislature. Confirmation requirements are constitutional checks on executive power. Many states require confirmation for significant offices."
+          },
+          {
+            "letter": "C",
+            "text": "It depends on whether ethics director is a principal officer (requires minimal constraint) or an inferior officer (legislature can regulate). This is what the appointment clause debate is about."
+          },
+          {
+            "letter": "D",
+            "text": "This is exactly the kind of case where Cooper v. Berger's \"enough control\" test applies. The governor needs enough power to run the government, but the legislature can impose reasonable checks."
+          }
+        ],
+        "bestPairedWith": "The NC Governor, The Attorney General, The County Manager",
+        "debrief": "Appointment power is a key executive tool, but legislatures often try to constrain it. NC's courts would likely say the governor needs sufficient control, but confirmation requirements are permissible.",
+        "correctAnswer": "D",
+        "pairedHeadIndices": [
+          0,
+          1,
+          3
+        ]
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Round 6: The Judicial Branch",
+    "theme": "Courts, Power, and the Hollow Hope",
+    "heads": [
+      {
+        "name": "A State Trial Court Judge",
+        "description": "Elected, faces voters every few years; must balance judicial independence against electoral accountability; implements appellate decisions locally."
+      },
+      {
+        "name": "The NC Supreme Court Justice",
+        "description": "Interpreting the state constitution; appellate authority makes decisions binding on trial courts; political environment shapes constitutional interpretation."
+      },
+      {
+        "name": "A Public Interest Lawyer",
+        "description": "Using courts to force policy change; sues agencies, challenges statutes, brings class actions; believes law can catalyze social change."
+      },
+      {
+        "name": "Gerald Rosenberg",
+        "description": "A scholar skeptical of courts' ability to produce social change (\"The Hollow Hope\"); argues courts are constrained by lack of implementation power."
+      }
+    ],
+    "questions": [
+      {
+        "title": "Electing Judges",
+        "scenario": "NC elects its judges, including Supreme Court justices. A reform advocate argues: \"Judicial elections undermine independence. Judges shouldn't have to fundraise or worry about voter backlash for unpopular rulings.\" A defender responds: \"Election is the most democratic form of judicial selection.\" Who has the stronger case?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "The reform advocate. The Cooper reading on electing judges shows that campaign contributions create at least the appearance of bias, and voters rarely have enough information to evaluate judicial candidates."
+          },
+          {
+            "letter": "B",
+            "text": "The defender. In a democracy, all government power should derive from the people. Appointed judges are accountable to the politicians who appointed them, not to citizens."
+          },
+          {
+            "letter": "C",
+            "text": "It depends on the type of court. Trial court elections might make sense for local accountability. Appellate court elections are problematic because those judges decide constitutional questions."
+          },
+          {
+            "letter": "D",
+            "text": "Neither. The real question is whether judicial elections produce different outcomes than appointment systems. The State Courts reading shows elected judges tend to be more punitive in criminal cases as elections approach."
+          }
+        ],
+        "bestPairedWith": "A State Trial Court Judge, The NC Supreme Court Justice",
+        "debrief": "The Cooper reading on electing judges and the State Courts reading are directly relevant. NC's judicial election system creates accountability but also vulnerability to political pressure — especially in partisan election years.",
+        "correctAnswer": "D",
+        "pairedHeadIndices": [
+          0,
+          1
+        ]
+      },
+      {
+        "title": "The Hollow Hope",
+        "scenario": "A public interest group wins a landmark state court ruling requiring the legislature to fund K-12 education adequately (as in the Leandro case in NC). Five years later, the legislature still hasn't complied. A student says: \"See? Courts can't actually produce social change.\" Is that what Rosenberg argues?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Yes, essentially. Rosenberg argues courts are constrained by lack of implementation power, dependence on political support, and absence of enforcement mechanisms. Courts can declare rights but can't make legislatures appropriate money."
+          },
+          {
+            "letter": "B",
+            "text": "Partially. Rosenberg argues courts are most effective when there's already political support for change. Without it, court rulings become symbolic — ambitious on paper, hollow in practice."
+          },
+          {
+            "letter": "C",
+            "text": "It's more nuanced. Rosenberg acknowledges courts can produce change when implementation doesn't require legislative cooperation, or when the ruling provides cover for officials who already wanted to act."
+          },
+          {
+            "letter": "D",
+            "text": "Rosenberg's framework is about federal courts. State courts may operate differently because they're interpreting their own constitutions and have more direct relationships with state legislatures."
+          }
+        ],
+        "bestPairedWith": "Gerald Rosenberg, A Public Interest Lawyer, The NC Supreme Court Justice",
+        "debrief": "Rosenberg's \"Hollow Hope\" is assigned reading in Week 6. The Leandro case (NC school funding) is the perfect real-world test of his thesis. Courts ordered funding; the legislature resisted for decades. But the court's ruling kept the issue on the agenda.",
+        "correctAnswer": "B",
+        "pairedHeadIndices": [
+          3,
+          2,
+          1
+        ]
+      },
+      {
+        "title": "Courts and Public Administration",
+        "scenario": "A state agency's regulation is challenged in court. The judge rules the agency exceeded its statutory authority. The agency director says: \"The legislature gave us vague instructions and we did our best. Now the court is second-guessing our expertise.\" How should public administrators think about judicial review?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "It's a necessary check. Courts ensure agencies stay within delegated authority. Without judicial review, bureaucratic discretion would be unchecked."
+          },
+          {
+            "letter": "B",
+            "text": "It's frustrating but manageable. The key is building a strong administrative record — document your reasoning, follow proper procedures, and show your interpretation is reasonable."
+          },
+          {
+            "letter": "C",
+            "text": "Courts interpreting state constitutions are actively reshaping budgets and policy — not just interpreting words. Public administrators need to understand their state's judicial temperament."
+          },
+          {
+            "letter": "D",
+            "text": "The real lesson is that vague statutes create legal vulnerability. The best protection is working with the legislature to get clearer statutory language in the first place."
+          }
+        ],
+        "bestPairedWith": "A State Trial Court Judge, A Public Interest Lawyer",
+        "debrief": "From the course: \"You cannot succeed as a public administrator without knowing your state's fundamental law.\" Courts are not just interpreters — they are active participants in governance.",
+        "correctAnswer": "B",
+        "pairedHeadIndices": [
+          0,
+          2
+        ]
+      },
+      {
+        "title": "Judicial Federalism",
+        "scenario": "After the U.S. Supreme Court grew more conservative, state courts began interpreting their own constitutions to provide broader rights protections. NC's Declaration of Rights includes rights not found in the federal Bill of Rights. A state AG argues: \"We should use our state constitution more aggressively.\" What are the implications?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "It's the New Judicial Federalism in action. States can set higher rights standards than the U.S. Constitution. This is exactly how the system is supposed to work."
+          },
+          {
+            "letter": "B",
+            "text": "It's a double-edged sword. State constitutional activism can expand rights but also embed controversial policies that are harder to reverse."
+          },
+          {
+            "letter": "C",
+            "text": "It raises legitimacy questions. If elected state judges start reading new rights into vague constitutional language, they're making policy — not interpreting law."
+          },
+          {
+            "letter": "D",
+            "text": "The practical implication is that public administrators now operate under two constitutional frameworks simultaneously. A policy that's constitutional under federal law might violate the state constitution."
+          }
+        ],
+        "bestPairedWith": "The NC Supreme Court Justice, A Public Interest Lawyer, Gerald Rosenberg",
+        "debrief": "The New Judicial Federalism is covered in the constitutions lecture. Multiple states have used their own constitutions to provide broader protections. NC's dual constitutionalism means administrators must know both frameworks.",
+        "correctAnswer": "D",
+        "pairedHeadIndices": [
+          1,
+          2,
+          3
+        ]
+      },
+      {
+        "title": "Standing & Access to Courts",
+        "scenario": "A nonprofit wants to sue the state over a regulation affecting its members. The state argues the nonprofit lacks standing because \"it hasn't suffered a particularized injury.\" The nonprofit says: \"Our members face real harm from this rule; we represent them.\" Who has the legal advantage?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "The state. Standing doctrine requires a plaintiff to show injury-in-fact, causation, and redressability. Generalized grievances (harm to citizens generally) don't count."
+          },
+          {
+            "letter": "B",
+            "text": "The nonprofit. In state court, standing is more relaxed than federal court. NC courts have been generous in allowing public interest litigation."
+          },
+          {
+            "letter": "C",
+            "text": "The outcome depends on whether the nonprofit can show its members have specific, concrete interests at stake — not just that they care about the issue generally."
+          },
+          {
+            "letter": "D",
+            "text": "The nonprofit likely loses. Standing doctrine is designed to exclude public interest cases, keep courts out of political questions, and maintain the case/controversy requirement."
+          }
+        ],
+        "bestPairedWith": "A Public Interest Lawyer, The NC Supreme Court Justice",
+        "debrief": "Standing doctrine is where courts control access to litigation. More generous standing rules = more opportunity for public interest litigation. More restrictive rules = less opportunity for challenges to government action.",
+        "correctAnswer": "C",
+        "pairedHeadIndices": [
+          2,
+          1
+        ]
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Round 7: Budgets, Politics, and State Capacity",
+    "theme": "When Government Can't Deliver",
+    "heads": [
+      {
+        "name": "The State Budget Director",
+        "description": "Making hard choices between competing demands; constrained by revenues, appropriations, and constitutional debt limits; balancing short-term politics and long-term sustainability."
+      },
+      {
+        "name": "A Rural County Manager",
+        "description": "Understaffed and underfunded; implementing state and federal programs locally; stretched thin between demands and resources."
+      },
+      {
+        "name": "The Finance Officer",
+        "description": "Guardian of the fund balance and fiscal prudence; warns about sustainability, debt limits, and the ratchet effects of tax promises."
+      },
+      {
+        "name": "A Medicaid Administrator",
+        "description": "Navigating the state's biggest budget item; manages federal-state relationships, eligibility, provider networks; caught between rising costs and political constraints."
+      }
+    ],
+    "questions": [
+      {
+        "title": "The Budget as a Political Document",
+        "scenario": "Governor Stein proposes a budget that includes significant Medicaid spending but faces Republican opposition. A budget analyst says: \"The budget isn't a financial document — it's a political document with numbers.\" What does this mean for public administrators?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Every line item represents a political choice. What gets funded reflects who has power, which coalitions won, and which problems are deemed worthy."
+          },
+          {
+            "letter": "B",
+            "text": "Budget season is when the abstract becomes concrete. Policy goals, campaign promises, and constitutional mandates all compete for limited dollars. The budget reveals true priorities."
+          },
+          {
+            "letter": "C",
+            "text": "For public administrators, the budget is both a constraint and a tool. Understanding the political dynamics behind appropriations is as important as understanding the numbers."
+          },
+          {
+            "letter": "D",
+            "text": "The Medicaid mess illustrates this perfectly. It's simultaneously healthcare policy, federal-state relations, partisan battleground, and administrative challenge. The budget captures all of these."
+          }
+        ],
+        "bestPairedWith": "The State Budget Director, A Medicaid Administrator",
+        "debrief": "The Public Budgeting reading and Stein's budget proposal are core materials. The budget is where all course themes converge: federalism (federal matching funds), constitutional constraints, legislative power (appropriations), and executive authority (implementation).",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          0,
+          3
+        ]
+      },
+      {
+        "title": "Rural Capacity Crisis",
+        "scenario": "A rural NC county with 15,000 residents has lost its only hospital, its school system is struggling, and its two-person planning department can't process the paperwork for a solar farm that would bring jobs. The county manager says: \"We don't have a policy problem. We have a capacity problem.\" What should the state do?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Provide direct technical assistance through shared service agreements, regional partnerships, or state agency support teams deployed to high-need counties."
+          },
+          {
+            "letter": "B",
+            "text": "Increase state financial support — revenue sharing, equalization grants, or targeted capacity-building funds. Rural counties can't compete for talent without competitive salaries."
+          },
+          {
+            "letter": "C",
+            "text": "Rethink the service delivery model. Not every county needs its own planning department. Regional cooperation, consolidated services, and state-administered programs may be more efficient."
+          },
+          {
+            "letter": "D",
+            "text": "Address the revenue limitation problem first. The Helpap reading shows rural governments are most frustrated by state-imposed revenue limitations that prevent them from helping themselves."
+          }
+        ],
+        "bestPairedWith": "A Rural County Manager, The Finance Officer",
+        "debrief": "The Helpap reading on rural local government challenges is directly relevant. Rural capacity isn't just about money — it's about staffing, expertise, and structural limitations of administering complex programs with minimal resources.",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          1,
+          2
+        ]
+      },
+      {
+        "title": "Medicaid and Federalism",
+        "scenario": "NC finally expands Medicaid, but implementation is messy. The federal government pays 90% but attaches complex reporting requirements. The state Medicaid agency is understaffed. Rural hospitals struggle to navigate the new system. Whose problem is this?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Everyone's. This is Wright's IGR in action — all units involved, fiscal questions at the core, and administrators trying to make it work."
+          },
+          {
+            "letter": "B",
+            "text": "Primarily the state's. The state chose to expand. The state must build administrative infrastructure. Blaming the feds is the \"language of supplicants, not governments.\""
+          },
+          {
+            "letter": "C",
+            "text": "Primarily the federal government's. If you mandate complex reporting while funding 90% of costs, you're creating an unfunded mandate. The 10% state share plus administrative burden is enormous."
+          },
+          {
+            "letter": "D",
+            "text": "It's a state capacity problem disguised as federalism. States with better institutional capacity implement federal programs competently. States that can't lose both money and credibility."
+          }
+        ],
+        "bestPairedWith": "A Medicaid Administrator, A Rural County Manager, The State Budget Director",
+        "debrief": "This synthesizes the entire course: federalism, state capacity, budgets, and IGR. Derthick's advice — use the language of governments. The State Bureaucracy reading's focus on comparative institutional capacity is directly relevant.",
+        "correctAnswer": "B",
+        "pairedHeadIndices": [
+          3,
+          1,
+          0
+        ]
+      },
+      {
+        "title": "Fund Balance and Fiscal Prudence",
+        "scenario": "Three commissioners want to use the county's fund balance surplus to build a community recreation center voters have requested. The finance officer warns the fund balance is below the 15% recommended threshold. Bonds could cost more in interest. What do you do?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Side with the finance officer. Fund balance is emergency savings, not a slush fund. NC's Local Government Commission monitors these levels."
+          },
+          {
+            "letter": "B",
+            "text": "Propose bonding the project instead. Spread the cost over 20 years, preserve the reserve, and let future beneficiaries share the cost."
+          },
+          {
+            "letter": "C",
+            "text": "Commission a phased plan: design now using a portion of surplus, then budget construction over multiple fiscal years."
+          },
+          {
+            "letter": "D",
+            "text": "The real question is whether this is a capital need or a political want. Run it through the CIP evaluation process and let staff rank it by need, cost, and community impact."
+          }
+        ],
+        "bestPairedWith": "The Finance Officer, The State Budget Director, A Rural County Manager",
+        "debrief": "This connects to the Public Budgeting reading and fund balance policy. The difference between one-time money and recurring obligations, the role of the Local Government Commission, and capital budgeting principles (CIP, life-cycle costing) are all in play.",
+        "correctAnswer": "A",
+        "pairedHeadIndices": [
+          2,
+          0,
+          1
+        ]
+      },
+      {
+        "title": "State Capacity and the Future",
+        "scenario": "A graduating MPA student asks: \"After everything we've studied — federalism, constitutional constraints, weak governors, citizen legislatures, underfunded rural counties, and partisan budgets — is state government actually capable of meeting the challenges ahead?\" How do you answer?",
+        "choices": [
+          {
+            "letter": "A",
+            "text": "Yes, but only if we invest in institutional capacity. Modern governance is harder because problems are technical, expectations are higher, demographics are shifting. The capacity crisis is real but addressable."
+          },
+          {
+            "letter": "B",
+            "text": "The question isn't whether state government is capable — it's whether we choose to make it capable. Capacity is a political choice, not an inherent limitation."
+          },
+          {
+            "letter": "C",
+            "text": "The course has shown that talent is abundant but support is unequally distributed. State government can meet the challenges if it attracts, develops, and retains people."
+          },
+          {
+            "letter": "D",
+            "text": "Institutional legitimacy and resilience are the real sustainability question. Can governments stay trusted and effective under stress? That's the question this entire course has been building toward."
+          }
+        ],
+        "bestPairedWith": "The State Budget Director, A Rural County Manager, The Finance Officer",
+        "debrief": "This is the capstone question. The course's opening slide declares: \"My experiences led me to believe that talent is abundant, but support is unequally distributed.\" The closing message: \"Institutional legitimacy and resilience are the real sustainability question.\"",
+        "correctAnswer": "D",
+        "pairedHeadIndices": [
+          0,
+          1,
+          2
+        ]
+      }
+    ]
+  }
+]

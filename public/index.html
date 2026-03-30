@@ -1,1 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Head Trip: NC State Government</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy: #1B365D; --navy-dark: #122440; --gold: #C4A439; --gold-light: #D4B84A;
+            --light-bg: #F5F5F5; --white: #FFFFFF; --text-dark: #333333; --text-light: #666666;
+            --success: #2D7F3E; --warning: #C65D1B; --error: #A01C1C;
+            --divider: #DDDDDD; --shadow: 0 2px 8px rgba(0,0,0,0.1); --shadow-lg: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        html, body { height: 100%; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", sans-serif; background: var(--light-bg); color: var(--text-dark); }
+        body { display: flex; align-items: flex-start; justify-content: center; padding: 16px; min-height: 100vh; }
+        .container { width: 100%; max-width: 860px; background: var(--white); border-radius: 12px; box-shadow: var(--shadow-lg); overflow: hidden; margin-top: 8px; }
+        .header { background: var(--navy); color: var(--white); padding: 16px 20px; text-align: center; position: relative; }
+        .header h1 { font-size: 22px; margin-bottom: 1px; }
+        .header .subtitle { color: var(--gold); font-size: 12px; font-weight: 500; }
+        .me-badge { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: var(--gold); color: var(--navy); padding: 3px 10px; border-radius: 14px; font-size: 11px; font-weight: 700; }
 
+        /* Chip bar */
+        .chip-bar { background: var(--navy-dark); color: var(--white); padding: 8px 16px; display: flex; align-items: center; gap: 14px; overflow-x: auto; font-size: 12px; flex-wrap: wrap; }
+        .chip-bar .cb-player { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+        .chip-bar .cb-player.is-me { color: var(--gold); font-weight: 700; }
+        .chip-bar .cb-player.is-tripper { text-decoration: underline; text-underline-offset: 3px; }
+        .chip-bar .cb-player.disconnected { opacity: 0.4; }
+        .cb-chips { display: inline-flex; gap: 2px; }
+        .cb-chip { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+        .cb-chip.full { background: var(--gold); }
+        .cb-chip.empty { background: rgba(255,255,255,0.15); }
+        .cb-sep { color: rgba(255,255,255,0.15); }
+
+        .content { padding: 22px; }
+
+        /* Forms */
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-weight: 600; color: var(--navy); margin-bottom: 5px; font-size: 14px; }
+        .form-group input { width: 100%; padding: 10px 12px; border: 2px solid var(--divider); border-radius: 6px; font-size: 15px; }
+        .form-group input:focus { outline: none; border-color: var(--gold); }
+        .form-group .hint { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+        .input-row { display: flex; gap: 10px; }
+        .input-row input { flex: 1; }
+
+        /* Buttons */
+        .btn { padding: 11px 22px; border: none; border-radius: 6px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.12s; }
+        .btn-primary { background: var(--navy); color: var(--white); }
+        .btn-primary:hover { background: var(--navy-dark); }
+        .btn-gold { background: var(--gold); color: var(--navy); }
+        .btn-gold:hover { background: var(--gold-light); }
+        .btn-outline { background: transparent; border: 2px solid var(--navy); color: var(--navy); }
+        .btn-outline:hover { background: var(--navy); color: var(--white); }
+        .btn-sm { padding: 7px 14px; font-size: 13px; }
+        .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-row { display: flex; gap: 10px; justify-content: center; margin-top: 20px; flex-wrap: wrap; }
+
+        /* Room code display */
+        .room-code-display { text-align: center; margin: 16px 0; }
+        .room-code-display .code { font-size: 48px; font-weight: 700; color: var(--navy); letter-spacing: 8px; font-family: monospace; }
+        .room-code-display .label { font-size: 13px; color: var(--text-light); margin-bottom: 4px; }
+
+        /* Player list */
+        .player-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+        .player-tag { padding: 6px 14px; border-radius: 20px; font-size: 14px; font-weight: 600; background: var(--light-bg); color: var(--navy); border: 2px solid var(--divider); }
+        .player-tag.host { border-color: var(--gold); background: #fffdf5; }
+        .player-tag.me { border-color: var(--navy); background: #f0f4f9; }
+
+        /* Round cards */
+        .round-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .round-card { border: 2px solid var(--divider); border-radius: 8px; padding: 12px; cursor: pointer; transition: all 0.12s; text-align: left; background: var(--white); }
+        .round-card:hover { border-color: var(--gold); }
+        .round-card.selected { border-color: var(--navy); background: #f0f4f9; }
+        .round-card.disabled { pointer-events: none; opacity: 0.6; }
+        .round-card h3 { color: var(--navy); font-size: 13px; margin-bottom: 2px; }
+        .round-card .theme { color: var(--text-light); font-size: 11px; }
+        .round-card .heads-preview { margin-top: 4px; font-size: 10px; color: var(--gold); }
+
+        /* Timer setting */
+        .timer-setting { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+        .timer-setting input[type="range"] { flex: 1; accent-color: var(--gold); }
+        .timer-value { font-weight: 700; color: var(--navy); min-width: 44px; font-size: 14px; }
+
+        /* Phase banner */
+        .phase-banner { background: var(--navy); color: var(--white); padding: 14px 16px; border-radius: 10px; margin-bottom: 16px; text-align: center; }
+        .phase-banner h2 { font-size: 18px; margin-bottom: 2px; }
+        .phase-banner .phase-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 3px; font-weight: 600; }
+        .phase-banner .round-info { font-size: 12px; opacity: 0.8; }
+
+        /* Head card */
+        .head-card { background: linear-gradient(135deg, #f8f4e8, #fff9e6); border: 2px solid var(--gold); border-radius: 12px; padding: 14px; margin-bottom: 14px; text-align: center; }
+        .head-card .head-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--gold); margin-bottom: 2px; font-weight: 600; }
+        .head-card .head-name { font-size: 19px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+        .head-card .head-desc { font-size: 13px; color: var(--text-light); line-height: 1.4; }
+
+        /* Question */
+        .question-card { margin-bottom: 14px; }
+        .question-card .q-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); margin-bottom: 4px; font-weight: 600; }
+        .question-card .scenario { font-size: 14px; line-height: 1.6; background: var(--light-bg); padding: 12px; border-radius: 8px; border-left: 4px solid var(--navy); }
+
+        /* Choices */
+        .choices { display: flex; flex-direction: column; gap: 7px; margin-top: 10px; }
+        .choice-btn { display: flex; align-items: flex-start; gap: 9px; padding: 10px 12px; border: 2px solid var(--divider); border-radius: 8px; background: var(--white); cursor: pointer; text-align: left; font-size: 13px; line-height: 1.5; transition: all 0.1s; }
+        .choice-btn:hover { border-color: var(--gold); background: #fffdf5; }
+        .choice-btn.selected { border-color: var(--navy); background: #f0f4f9; }
+        .choice-btn.correct { border-color: var(--success); background: #eef7f0; }
+        .choice-btn.incorrect { border-color: var(--error); background: #fef2f2; }
+        .choice-btn.disabled { pointer-events: none; opacity: 0.7; }
+        .choice-btn .letter { background: var(--navy); color: var(--white); width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; flex-shrink: 0; }
+        .choice-btn.selected .letter { background: var(--gold); color: var(--navy); }
+        .choice-btn.correct .letter { background: var(--success); }
+        .choice-btn.incorrect .letter { background: var(--error); }
+
+        /* Timer */
+        .timer-container { text-align: center; margin: 14px 0; }
+        .timer-display { font-size: 48px; font-weight: 700; color: var(--navy); font-variant-numeric: tabular-nums; }
+        .timer-display.warning { color: var(--warning); }
+        .timer-display.critical { color: var(--error); animation: pulse 1s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+        .timer-bar { width: 100%; height: 5px; background: var(--divider); border-radius: 3px; overflow: hidden; margin-top: 6px; }
+        .timer-fill { height: 100%; border-radius: 3px; transition: width 1s linear; }
+        .timer-fill.ok { background: var(--navy); }
+        .timer-fill.warning { background: var(--warning); }
+        .timer-fill.critical { background: var(--error); }
+
+        /* Waiting */
+        .waiting-box { text-align: center; padding: 24px; border: 2px dashed var(--divider); border-radius: 12px; margin: 14px 0; }
+        .waiting-box .waiting-icon { font-size: 32px; margin-bottom: 6px; }
+        .waiting-box .waiting-text { font-size: 16px; font-weight: 600; color: var(--navy); }
+        .waiting-box .waiting-sub { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+        .dots::after { content:''; animation: dots 1.5s infinite; }
+        @keyframes dots { 0%{content:''} 25%{content:'.'} 50%{content:'..'} 75%{content:'...'} }
+
+        /* Vote tracker */
+        .vote-tracker { text-align: center; margin: 12px 0; padding: 10px; background: var(--light-bg); border-radius: 8px; }
+        .vote-tracker .vt-count { font-size: 24px; font-weight: 700; color: var(--navy); }
+        .vote-tracker .vt-label { font-size: 12px; color: var(--text-light); }
+
+        /* Wager */
+        .wager-notice { text-align: center; margin: 10px 0; padding: 8px; background: #fffdf5; border-radius: 8px; border: 1px solid var(--gold); font-size: 13px; color: var(--navy); font-weight: 600; }
+
+        /* Callout */
+        .callout { padding: 10px 12px; border-radius: 8px; font-size: 13px; line-height: 1.5; margin: 10px 0; }
+        .callout-info { background: #f0f4f9; border-left: 4px solid var(--navy); }
+        .callout-gold { background: #fffdf5; border-left: 4px solid var(--gold); }
+        .callout-success { background: #eef7f0; border-left: 4px solid var(--success); }
+        .callout-error { background: #fef2f2; border-left: 4px solid var(--error); }
+
+        /* Result */
+        .result-card { border-radius: 12px; padding: 20px; margin-bottom: 16px; text-align: center; }
+        .result-card.match { background: linear-gradient(135deg,#eef7f0,#d4edda); border: 2px solid var(--success); }
+        .result-card.no-match { background: linear-gradient(135deg,#fef2f2,#f8d7da); border: 2px solid var(--error); }
+        .result-card.neutral { background: var(--light-bg); border: 2px solid var(--divider); }
+        .result-icon { font-size: 36px; margin-bottom: 4px; }
+        .result-text { font-size: 18px; font-weight: 700; }
+        .result-card.match .result-text { color: var(--success); }
+        .result-card.no-match .result-text { color: var(--error); }
+
+        /* Vote breakdown */
+        .vote-breakdown { margin: 14px 0; }
+        .vote-breakdown h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); margin-bottom: 8px; }
+        .vb-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; border-radius: 6px; margin-bottom: 3px; font-size: 13px; }
+        .vb-row.tripper { background: #fffdf5; border: 1px solid var(--gold); }
+        .vb-row .vb-name { font-weight: 600; }
+        .vb-row .vb-answer { font-weight: 700; }
+        .vb-row .vb-answer.right { color: var(--success); }
+        .vb-row .vb-answer.wrong { color: var(--error); }
+        .vb-row .chip-delta { font-weight: 700; margin-left: 8px; }
+        .vb-row .chip-delta.gain { color: var(--success); }
+        .vb-row .chip-delta.lose { color: var(--error); }
+
+        /* Debrief */
+        .debrief-box { background: var(--light-bg); border-radius: 8px; padding: 12px; margin-top: 12px; border-left: 4px solid var(--gold); }
+        .debrief-box h4 { color: var(--navy); margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+        .debrief-box p { font-size: 13px; line-height: 1.5; }
+
+        /* Progress */
+        .progress-bar { display: flex; gap: 3px; margin-bottom: 12px; align-items: center; }
+        .pdot { width: 24px; height: 4px; border-radius: 2px; background: var(--divider); flex-shrink: 1; }
+        .pdot.done { background: var(--success); }
+        .pdot.now { background: var(--gold); }
+        .plabel { font-size: 11px; color: var(--text-light); margin-left: 5px; white-space: nowrap; }
+
+        /* Scoreboard */
+        .scoreboard { background: var(--light-bg); border-radius: 8px; padding: 12px; margin-top: 14px; }
+        .scoreboard h3 { color: var(--navy); font-size: 12px; margin-bottom: 6px; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+        .score-table { width: 100%; border-collapse: collapse; }
+        .score-table th,.score-table td { padding: 5px 6px; text-align: center; font-size: 12px; }
+        .score-table th { color: var(--text-light); font-size: 10px; text-transform: uppercase; border-bottom: 2px solid var(--divider); }
+        .score-table td { border-bottom: 1px solid var(--divider); }
+        .score-table .nc { text-align: left; font-weight: 600; color: var(--navy); }
+        .score-table .me-row { background: #fffdf5; }
+
+        /* Final */
+        .final-score { text-align: center; padding: 20px; }
+        .final-chips { display: flex; justify-content: center; gap: 5px; margin: 10px 0; }
+        .fc { width: 20px; height: 20px; border-radius: 50%; }
+        .fc.full { background: var(--gold); box-shadow: 0 2px 6px rgba(196,164,57,0.4); }
+        .fc.empty { background: var(--divider); }
+        .final-count { font-size: 26px; font-weight: 700; color: var(--navy); }
+        .final-verdict { font-size: 16px; font-weight: 600; color: var(--navy); margin-top: 10px; line-height: 1.4; }
+
+        /* Error */
+        .error-msg { background: #fef2f2; border: 1px solid var(--error); color: var(--error); padding: 8px 12px; border-radius: 6px; font-size: 13px; margin: 8px 0; text-align: center; }
+
+        /* Help */
+        .help-toggle { position: fixed; bottom: 12px; right: 12px; background: var(--navy); color: var(--white); width: 32px; height: 32px; border-radius: 50%; border: none; font-size: 14px; cursor: pointer; box-shadow: var(--shadow); z-index: 50; }
+        .help-panel { display: none; position: fixed; bottom: 52px; right: 12px; width: 280px; background: var(--white); border-radius: 8px; box-shadow: var(--shadow-lg); padding: 14px; z-index: 50; max-height: 340px; overflow-y: auto; }
+        .help-panel.open { display: block; }
+        .help-panel h3 { color: var(--navy); margin-bottom: 6px; font-size: 14px; }
+        .help-panel p { font-size: 11px; line-height: 1.5; margin-bottom: 6px; }
+
+        @media(max-width:700px) {
+            .round-grid { grid-template-columns: 1fr; }
+            .content { padding: 14px; }
+            .header h1 { font-size: 19px; }
+            .timer-display { font-size: 40px; }
+            .room-code-display .code { font-size: 36px; letter-spacing: 6px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Head Trip</h1>
+            <div class="subtitle">NC State Government Edition</div>
+            <div class="me-badge" id="meBadge" style="display:none"></div>
+        </div>
+        <div id="chipBar" class="chip-bar" style="display:none"></div>
+        <div class="content" id="app">
+            <div style="text-align:center;padding:40px;color:var(--text-light)">Connecting to server<span class="dots"></span></div>
+        </div>
+    </div>
+
+    <button class="help-toggle" onclick="document.getElementById('helpPanel').classList.toggle('open')">?</button>
+    <div class="help-panel" id="helpPanel">
+        <h3>How to Play</h3>
+        <p><strong>Head Trip</strong> is a cooperative perspective-taking game. One player creates a room and shares the code. Everyone joins on their own device.</p>
+        <p><strong>Each question:</strong> The Tripper sees a Head Card (a role) and picks the answer that person would choose. Everyone else debates, then votes on what they think the Tripper picked.</p>
+        <p><strong>Chips:</strong> Everyone starts with 3. Voting costs 1 chip. Get it right = keep your chip. Wrong = lose it. If everyone's right, the Tripper earns +1. If everyone's wrong, the Tripper loses 1.</p>
+        <p><strong>Out of chips?</strong> You still debate but can't vote until a Tripper bonus round.</p>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+    const socket = io();
+    const app = document.getElementById('app');
+    const chipBar = document.getElementById('chipBar');
+    const meBadge = document.getElementById('meBadge');
+
+    let S = null;        // Server state
+    let localAnswer = null;  // Local UI state for selection before submit
+    let errorMsg = '';
+
+    function fmtTime(s) { return Math.floor(s/60)+':'+(s%60<10?'0':'')+(s%60); }
+    function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+
+    socket.on('connected', () => { if (!S) renderJoin(); });
+    socket.on('error-msg', (d) => { errorMsg = d.message; renderJoin(); });
+    socket.on('state', (state) => {
+        S = state;
+        localAnswer = null;
+        errorMsg = '';
+        render();
+    });
+
+    function render() {
+        if (!S) return;
+
+        // Me badge
+        if (S.me) { meBadge.style.display = 'block'; meBadge.textContent = S.me; }
+        else { meBadge.style.display = 'none'; }
+
+        // Chip bar
+        if (S.phase !== 'lobby' && S.players) {
+            chipBar.style.display = 'flex';
+            chipBar.innerHTML = S.players.map((p, i) => {
+                let cls = 'cb-player';
+                if (p.name === S.me) cls += ' is-me';
+                if (p.name === S.tripper) cls += ' is-tripper';
+                if (!p.connected) cls += ' disconnected';
+                let dots = '';
+                for (let j = 0; j < Math.max(p.chips, 3); j++) dots += '<span class="cb-chip '+(j < p.chips ? 'full' : 'empty')+'"></span>';
+                return '<span class="'+cls+'">'+esc(p.name)+(p.name===S.tripper?' &#127919;':'')+' <span class="cb-chips">'+dots+'</span> '+p.chips+'</span>' +
+                    (i < S.players.length-1 ? '<span class="cb-sep">|</span>' : '');
+            }).join('');
+        } else {
+            chipBar.style.display = 'none';
+        }
+
+        switch(S.phase) {
+            case 'lobby': renderLobby(); break;
+            case 'tripper-lockin': renderTripperLockin(); break;
+            case 'debate': renderDebate(); break;
+            case 'voting': renderVoting(); break;
+            case 'reveal': renderReveal(); break;
+            case 'final': renderFinal(); break;
+        }
+        window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function renderJoin() {
+        const savedName = sessionStorage.getItem('ht-name') || '';
+        app.innerHTML =
+            '<div style="max-width:400px;margin:0 auto;">' +
+                '<h2 style="color:var(--navy);text-align:center;margin-bottom:16px;">Join or Create a Room</h2>' +
+                (errorMsg ? '<div class="error-msg">'+esc(errorMsg)+'</div>' : '') +
+                '<div class="form-group">' +
+                    '<label>Your Name</label>' +
+                    '<input type="text" id="nameInput" placeholder="Enter your name" value="'+esc(savedName)+'" maxlength="20">' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<label>Room Code</label>' +
+                    '<input type="text" id="codeInput" placeholder="e.g. PUBA" maxlength="4" style="text-transform:uppercase;letter-spacing:4px;font-weight:700;font-size:20px;text-align:center;">' +
+                    '<div class="hint">Enter a code to join, or leave blank to create a new room</div>' +
+                '</div>' +
+                '<div class="btn-row">' +
+                    '<button class="btn btn-primary" onclick="joinOrCreate()">Join Room</button>' +
+                    '<button class="btn btn-gold" onclick="joinOrCreate(true)">Create New Room</button>' +
+                '</div>' +
+            '</div>';
+    }
+
+    function joinOrCreate(forceCreate) {
+        const name = document.getElementById('nameInput').value.trim();
+        if (!name) { errorMsg = 'Please enter your name.'; renderJoin(); return; }
+        sessionStorage.setItem('ht-name', name);
+        const code = document.getElementById('codeInput').value.trim().toUpperCase();
+
+        if (forceCreate || !code) {
+            socket.emit('create-room', { name, debateTime: 90 });
+        } else {
+            socket.emit('join-room', { name, code });
+        }
+    }
+
+    function renderLobby() {
+        const isHost = S.isHost;
+        const selectedRounds = S.selectedRounds || [];
+        const canStart = S.players.length >= 3 && selectedRounds.length > 0;
+
+        app.innerHTML =
+            '<div class="room-code-display">' +
+                '<div class="label">Room Code — Share this with your group</div>' +
+                '<div class="code">' + S.roomCode + '</div>' +
+            '</div>' +
+            '<div class="form-group">' +
+                '<label>Players (' + S.players.length + '/7)</label>' +
+                '<div class="player-list">' +
+                    S.players.map(p =>
+                        '<span class="player-tag'+(p.isHost?' host':'')+(p.name===S.me?' me':'')+'">'+esc(p.name)+(p.isHost?' (host)':'')+(p.name===S.me?' (you)':'')+'</span>'
+                    ).join('') +
+                '</div>' +
+                (S.players.length < 3 ? '<div class="hint">Need at least 3 players to start</div>' : '') +
+            '</div>' +
+            (isHost ? (
+                '<div class="form-group">' +
+                    '<label>Debate Timer</label>' +
+                    '<div class="timer-setting">' +
+                        '<span style="font-size:12px;color:var(--text-light)">30s</span>' +
+                        '<input type="range" min="30" max="180" step="15" value="'+(S.debateTime||90)+'" oninput="updateSettings({debateTime:+this.value});document.getElementById(\'tv\').textContent=fmtTime(+this.value)">' +
+                        '<span style="font-size:12px;color:var(--text-light)">3m</span>' +
+                        '<span class="timer-value" id="tv">'+fmtTime(S.debateTime||90)+'</span>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="form-group">' +
+                    '<label>Select Rounds</label>' +
+                    '<div class="round-grid">' +
+                        S.availableRounds.map(r =>
+                            '<div class="round-card '+(selectedRounds.includes(r.id)?'selected':'')+'" onclick="toggleRound('+r.id+')">' +
+                                '<h3>'+esc(r.title)+'</h3>' +
+                                '<div class="theme">'+esc(r.theme)+'</div>' +
+                                '<div class="heads-preview">'+r.heads.map(h=>esc(h)).join(' &bull; ')+'</div>' +
+                            '</div>'
+                        ).join('') +
+                    '</div>' +
+                '</div>' +
+                '<div class="btn-row"><button class="btn btn-gold" onclick="socket.emit(\'start-game\')" '+(canStart?'':'disabled')+'>Start Game ('+selectedRounds.length+' round'+(selectedRounds.length!==1?'s':'')+') &rarr;</button></div>'
+            ) : (
+                '<div class="waiting-box">' +
+                    '<div class="waiting-icon">&#9203;</div>' +
+                    '<div class="waiting-text">Waiting for host to start the game<span class="dots"></span></div>' +
+                    (selectedRounds.length > 0 ? '<div class="waiting-sub">'+selectedRounds.length+' round'+(selectedRounds.length!==1?'s':'')+' selected</div>' : '') +
+                '</div>'
+            ));
+    }
+
+    function progressHTML() {
+        if (!S) return '';
+        return '<div class="progress-bar">' +
+            Array.from({length:S.totalQs},(_,i) => '<div class="pdot '+(i<S.currentQNum-1?'done':i===S.currentQNum-1?'now':'')+'"></div>').join('') +
+            '<span class="plabel">Q'+S.currentQNum+' of '+S.totalQs+'</span></div>';
+    }
+
+    function renderTripperLockin() {
+        let html = progressHTML();
+
+        if (S.isTripper) {
+            html +=
+                '<div class="phase-banner"><div class="phase-label">You Are the Tripper</div><h2>'+esc(S.round.title)+'</h2><div class="round-info">Get inside this Head and pick their answer</div></div>' +
+                '<div class="head-card"><div class="head-label">Your Head Card</div><div class="head-name">'+esc(S.head.name)+'</div><div class="head-desc">'+esc(S.head.description)+'</div></div>' +
+                '<div class="question-card"><div class="q-title">'+esc(S.question.title)+'</div><div class="scenario">'+esc(S.question.scenario)+'</div></div>';
+
+            if (!S.tripperLocked) {
+                html += '<div class="choices">' +
+                    S.question.choices.map(c =>
+                        '<div class="choice-btn '+(localAnswer===c.letter?'selected':'')+'" onclick="localAnswer=\''+c.letter+'\';render()"><span class="letter">'+c.letter+'</span><span>'+esc(c.text)+'</span></div>'
+                    ).join('') + '</div>' +
+                    '<div class="btn-row"><button class="btn btn-gold" onclick="socket.emit(\'lock-in\',{answer:localAnswer})" '+(localAnswer?'':'disabled')+'>Lock In Answer</button></div>';
+            } else {
+                html += '<div class="callout callout-gold"><strong>Locked in: '+S.myTripperAnswer+'</strong> — Waiting for debate and voting.</div>';
+            }
+        } else {
+            html +=
+                '<div class="phase-banner"><div class="phase-label">Tripper Lock-In</div><h2>'+esc(S.round.title)+'</h2><div class="round-info">'+esc(S.tripper)+' is the Tripper</div></div>' +
+                '<div class="head-card"><div class="head-label">'+esc(S.tripper)+'\'s Head Card</div><div class="head-name">'+esc(S.head.name)+'</div><div class="head-desc">'+esc(S.head.description)+'</div></div>' +
+                '<div class="waiting-box"><div class="waiting-icon">&#9203;</div><div class="waiting-text">'+esc(S.tripper)+' is locking in<span class="dots"></span></div></div>';
+        }
+        app.innerHTML = html;
+    }
+
+    function renderDebate() {
+        const tl = S.timerRemaining || 0;
+        const pct = S.debateTime > 0 ? (tl / S.debateTime) * 100 : 0;
+        const cls = tl <= 10 ? 'critical' : tl <= 30 ? 'warning' : 'ok';
+
+        app.innerHTML = progressHTML() +
+            '<div class="phase-banner"><div class="phase-label">Group Debate</div><h2>What did '+esc(S.tripper)+' pick as '+esc(S.head.name)+'?</h2></div>' +
+            '<div class="question-card"><div class="q-title">'+esc(S.question.title)+'</div><div class="scenario">'+esc(S.question.scenario)+'</div></div>' +
+            '<div class="choices">' + S.question.choices.map(c =>
+                '<div class="choice-btn disabled"><span class="letter">'+c.letter+'</span><span>'+esc(c.text)+'</span></div>'
+            ).join('') + '</div>' +
+            '<div class="timer-container"><div class="timer-display '+cls+'">'+fmtTime(tl)+'</div><div class="timer-bar"><div class="timer-fill '+cls+'" style="width:'+pct+'%"></div></div></div>' +
+            '<div class="btn-row"><button class="btn btn-primary" onclick="socket.emit(\'skip-to-voting\')">Skip to Voting &rarr;</button></div>';
+    }
+
+    function renderVoting() {
+        let html = progressHTML() +
+            '<div class="phase-banner"><div class="phase-label">Voting Phase</div><h2>What did '+esc(S.tripper)+' pick as '+esc(S.head.name)+'?</h2></div>' +
+            '<div class="question-card"><div class="q-title">'+esc(S.question.title)+'</div><div class="scenario">'+esc(S.question.scenario)+'</div></div>';
+
+        if (S.isTripper) {
+            html += '<div class="vote-tracker"><div class="vt-count">'+S.votesIn+' / '+S.totalEligibleVoters+'</div><div class="vt-label">votes in</div></div>' +
+                '<div class="waiting-box"><div class="waiting-icon">&#128499;</div><div class="waiting-text">Waiting for votes<span class="dots"></span></div></div>';
+            if (S.isHost) {
+                html += '<div class="btn-row"><button class="btn btn-outline btn-sm" onclick="socket.emit(\'force-reveal\')" '+(S.votesIn===0?'disabled':'')+'>Force Reveal (host)</button></div>';
+            }
+        } else if (!S.canVote) {
+            html += '<div class="callout callout-error"><strong>No chips to wager.</strong> You can\'t vote this round, but you can still discuss.</div>' +
+                '<div class="vote-tracker"><div class="vt-count">'+S.votesIn+' / '+S.totalEligibleVoters+'</div><div class="vt-label">votes in</div></div>';
+        } else if (S.myVote) {
+            html += '<div class="waiting-box"><div class="waiting-icon">&#9989;</div><div class="waiting-text">Vote locked in: '+S.myVote+'</div><div class="waiting-sub">'+S.votesIn+' of '+S.totalEligibleVoters+' votes in<span class="dots"></span></div></div>';
+        } else {
+            html += '<div class="wager-notice">&#127948; This vote costs 1 chip (you have '+S.players.find(p=>p.name===S.me).chips+')</div>' +
+                '<div class="choices">' + S.question.choices.map(c =>
+                    '<div class="choice-btn '+(localAnswer===c.letter?'selected':'')+'" onclick="localAnswer=\''+c.letter+'\';render()"><span class="letter">'+c.letter+'</span><span>'+esc(c.text)+'</span></div>'
+                ).join('') + '</div>' +
+                '<div class="btn-row"><button class="btn btn-primary" onclick="socket.emit(\'vote\',{answer:localAnswer})" '+(localAnswer?'':'disabled')+'>Lock In Vote</button></div>';
+        }
+        app.innerHTML = html;
+    }
+
+    function renderReveal() {
+        const rd = S.revealData;
+        if (!rd) return;
+
+        const myVote = rd.votes[S.me] || null;
+        const correct = myVote && myVote === rd.tripperAnswer;
+        const myDelta = rd.chipChanges[S.me] || 0;
+
+        let html = progressHTML();
+
+        // Result banner
+        if (S.isTripper) {
+            let bannerClass = 'neutral';
+            let icon = '&#127919;';
+            let text = 'Your answer: ' + rd.tripperAnswer;
+            if (rd.allCorrect) { bannerClass = 'match'; icon = '&#127881;'; text += ' — Everyone got it! +1 chip for you!'; }
+            else if (rd.allWrong) { bannerClass = 'no-match'; icon = '&#128557;'; text += ' — Nobody got it. -1 chip.'; }
+            html += '<div class="result-card '+bannerClass+'"><div class="result-icon">'+icon+'</div><div class="result-text">'+text+'</div></div>';
+        } else if (!myVote) {
+            html += '<div class="result-card neutral"><div class="result-icon">&#128554;</div><div class="result-text">Couldn\'t vote (no chips)</div><div style="font-size:13px;color:var(--text-light);margin-top:3px;">Tripper\'s answer: <strong>'+rd.tripperAnswer+'</strong></div></div>';
+        } else if (correct) {
+            html += '<div class="result-card match"><div class="result-icon">&#9989;</div><div class="result-text">Correct! Chip returned.</div><div style="font-size:13px;color:var(--text-light);margin-top:3px;">Tripper\'s answer: <strong>'+rd.tripperAnswer+'</strong></div></div>';
+        } else {
+            html += '<div class="result-card no-match"><div class="result-icon">&#10060;</div><div class="result-text">Wrong. Chip lost.</div><div style="font-size:13px;color:var(--text-light);margin-top:3px;">Tripper\'s answer: <strong>'+rd.tripperAnswer+'</strong> — You voted: <strong>'+myVote+'</strong></div></div>';
+        }
+
+        // Choices with correct highlighted
+        html += '<div class="choices">' + S.question.choices.map(c => {
+            let cls = 'disabled';
+            if (c.letter === rd.tripperAnswer) cls += ' correct';
+            else if (myVote && c.letter === myVote && !correct) cls += ' incorrect';
+            return '<div class="choice-btn '+cls+'"><span class="letter">'+c.letter+'</span><span>'+esc(c.text)+'</span></div>';
+        }).join('') + '</div>';
+
+        // Vote breakdown
+        html += '<div class="vote-breakdown"><h4>Vote Breakdown</h4>';
+        html += '<div class="vb-row tripper"><span class="vb-name">'+esc(S.tripper)+' (Tripper)</span><span><span class="vb-answer">'+rd.tripperAnswer+'</span>';
+        if (rd.chipChanges[S.tripper] > 0) html += '<span class="chip-delta gain">+1</span>';
+        else if (rd.chipChanges[S.tripper] < 0) html += '<span class="chip-delta lose">-1</span>';
+        html += '</span></div>';
+
+        S.players.filter(p => p.name !== S.tripper).forEach(p => {
+            const v = rd.votes[p.name];
+            const isRight = v === rd.tripperAnswer;
+            const delta = rd.chipChanges[p.name] || 0;
+            html += '<div class="vb-row"><span class="vb-name">'+esc(p.name)+(p.name===S.me?' (you)':'')+'</span><span>';
+            if (v) {
+                html += '<span class="vb-answer '+(isRight?'right':'wrong')+'">'+v+' '+(isRight?'&#10003;':'&#10007;')+'</span>';
+                if (delta < 0) html += '<span class="chip-delta lose">-1</span>';
+            } else {
+                html += '<span style="color:var(--text-light);font-size:12px;">no chips</span>';
+            }
+            html += '</span></div>';
+        });
+        html += '</div>';
+
+        // Debrief
+        html += '<div class="debrief-box"><h4>Facilitator Debrief</h4><p>'+esc(S.question.debrief)+'</p></div>';
+
+        // Scoreboard
+        html += scoreboardHTML();
+
+        // Next button (host or anyone)
+        html += '<div class="btn-row"><button class="btn btn-primary" onclick="socket.emit(\'next-question\')">'+(S.isLastQuestion?'See Final Results':'Next Question')+' &rarr;</button></div>';
+
+        app.innerHTML = html;
+    }
+
+    function renderFinal() {
+        const me = S.players.find(p => p.name === S.me);
+        const chips = me ? me.chips : 0;
+
+        let verdict = '';
+        if (chips >= 5) verdict = 'Outstanding! You read institutional perspectives like a seasoned public administrator.';
+        else if (chips >= 3) verdict = 'Strong work — you held your own and understand these roles well.';
+        else if (chips >= 1) verdict = 'You stayed in the game. A deeper dive into the materials will sharpen your perspective-taking.';
+        else verdict = 'Tough game! Review the course materials and try another round.';
+
+        const sorted = [...S.players].sort((a,b) => b.chips - a.chips);
+
+        app.innerHTML =
+            '<div class="phase-banner"><div class="phase-label">Game Over</div><h2>Final Results</h2></div>' +
+            '<div class="final-score">' +
+                '<div class="final-chips">' + Array.from({length:Math.max(chips,3)},(_,i) => '<div class="fc '+(i<chips?'full':'empty')+'"></div>').join('') + '</div>' +
+                '<div class="final-count">'+chips+' chip'+(chips!==1?'s':'')+' remaining</div>' +
+                '<div style="font-size:12px;color:var(--text-light)">Started with 3</div>' +
+                '<div class="final-verdict">'+verdict+'</div>' +
+            '</div>' +
+            scoreboardHTML() +
+            '<div style="margin-top:14px;">' +
+                '<h3 style="text-align:center;color:var(--navy);font-size:14px;margin-bottom:8px;">Final Standings</h3>' +
+                sorted.map((p,i) =>
+                    '<div class="vb-row'+(p.name===S.me?' tripper':'')+'"><span class="vb-name">'+(i+1)+'. '+esc(p.name)+(p.name===S.me?' (you)':'')+'</span><span style="font-weight:700;color:var(--navy);">'+p.chips+' chip'+(p.chips!==1?'s':'')+'</span></div>'
+                ).join('') +
+            '</div>' +
+            (S.isHost ? '<div class="btn-row"><button class="btn btn-outline" onclick="socket.emit(\'play-again\')">Play Again</button></div>' : '');
+    }
+
+    function scoreboardHTML() {
+        if (!S) return '';
+        return '<div class="scoreboard"><h3>Scoreboard</h3><table class="score-table"><thead><tr><th style="text-align:left">Player</th><th>Chips</th><th>Role</th></tr></thead><tbody>' +
+            S.players.map(p =>
+                '<tr class="'+(p.name===S.me?'me-row':'')+'"><td class="nc">'+esc(p.name)+(p.name===S.me?' (you)':'')+'</td><td><strong>'+p.chips+'</strong></td><td style="font-size:11px;color:var(--text-light)">'+(p.name===S.tripper?'&#127919; Tripper':(p.chips>0?'Voter':'Out'))+'</td></tr>'
+            ).join('') +
+            '</tbody></table></div>';
+    }
+
+    function toggleRound(id) {
+        const sel = S.selectedRounds || [];
+        const idx = sel.indexOf(id);
+        if (idx === -1) sel.push(id);
+        else sel.splice(idx, 1);
+        updateSettings({ selectedRounds: sel });
+    }
+
+    function updateSettings(data) {
+        socket.emit('update-settings', data);
+    }
+
+    // Handle enter key on join screen
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && document.getElementById('nameInput')) {
+            joinOrCreate();
+        }
+    });
+    </script>
+</body>
+</html>`;
+
+fs.writeFileSync('mnt/outputs/head-trip-breakout.html', html);
