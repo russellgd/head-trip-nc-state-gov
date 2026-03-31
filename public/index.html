@@ -237,7 +237,7 @@
         <h3>How to Play</h3>
         <p><strong>Head Trip</strong> is a cooperative perspective-taking game. One player creates a room and shares the code. Everyone joins on their own device.</p>
         <p><strong>Each question:</strong> The Tripper sees a Head Card (a role) and picks the answer that person would choose. Everyone else debates, then votes on what they think the Tripper picked.</p>
-        <p><strong>Chips:</strong> Everyone starts with 3. Voting costs 1 chip. Get it right = keep your chip. Wrong = lose it. If everyone's right, the Tripper earns +1. If everyone's wrong, the Tripper loses 1.</p>
+        <p><strong>Chips:</strong> Everyone starts with 3. Get it right = gain a chip. Wrong = lose a chip. If everyone's right, the Tripper earns +2. If everyone's wrong, the Tripper loses 2. No cap — pile them up!</p>
         <p><strong>Out of chips?</strong> You still debate but can't vote until a Tripper bonus round.</p>
     </div>
 
@@ -475,13 +475,13 @@
             let bannerClass = 'neutral';
             let icon = '&#127919;';
             let text = 'Your answer: ' + rd.tripperAnswer;
-            if (rd.allCorrect) { bannerClass = 'match'; icon = '&#127881;'; text += ' — Everyone got it! +1 chip for you!'; }
-            else if (rd.allWrong) { bannerClass = 'no-match'; icon = '&#128557;'; text += ' — Nobody got it. -1 chip.'; }
+            if (rd.allCorrect) { bannerClass = 'match'; icon = '&#127881;'; text += ' — Everyone got it! +2 chips for you!'; }
+            else if (rd.allWrong) { bannerClass = 'no-match'; icon = '&#128557;'; text += ' — Nobody got it. -2 chips.'; }
             html += '<div class="result-card '+bannerClass+'"><div class="result-icon">'+icon+'</div><div class="result-text">'+text+'</div></div>';
         } else if (!myVote) {
             html += '<div class="result-card neutral"><div class="result-icon">&#128554;</div><div class="result-text">Couldn\'t vote (no chips)</div><div style="font-size:13px;color:var(--text-light);margin-top:3px;">Tripper\'s answer: <strong>'+rd.tripperAnswer+'</strong></div></div>';
         } else if (correct) {
-            html += '<div class="result-card match"><div class="result-icon">&#9989;</div><div class="result-text">Correct! Chip returned.</div><div style="font-size:13px;color:var(--text-light);margin-top:3px;">Tripper\'s answer: <strong>'+rd.tripperAnswer+'</strong></div></div>';
+            html += '<div class="result-card match"><div class="result-icon">&#9989;</div><div class="result-text">Correct! +1 chip.</div><div style="font-size:13px;color:var(--text-light);margin-top:3px;">Tripper\'s answer: <strong>'+rd.tripperAnswer+'</strong></div></div>';
         } else {
             html += '<div class="result-card no-match"><div class="result-icon">&#10060;</div><div class="result-text">Wrong. Chip lost.</div><div style="font-size:13px;color:var(--text-light);margin-top:3px;">Tripper\'s answer: <strong>'+rd.tripperAnswer+'</strong> — You voted: <strong>'+myVote+'</strong></div></div>';
         }
@@ -497,8 +497,8 @@
         // Vote breakdown
         html += '<div class="vote-breakdown"><h4>Vote Breakdown</h4>';
         html += '<div class="vb-row tripper"><span class="vb-name">'+esc(S.tripper)+' (Tripper)</span><span><span class="vb-answer">'+rd.tripperAnswer+'</span>';
-        if (rd.chipChanges[S.tripper] > 0) html += '<span class="chip-delta gain">+1</span>';
-        else if (rd.chipChanges[S.tripper] < 0) html += '<span class="chip-delta lose">-1</span>';
+        if (rd.chipChanges[S.tripper] > 0) html += '<span class="chip-delta gain">+'+rd.chipChanges[S.tripper]+'</span>';
+        else if (rd.chipChanges[S.tripper] < 0) html += '<span class="chip-delta lose">'+rd.chipChanges[S.tripper]+'</span>';
         html += '</span></div>';
 
         S.players.filter(p => p.name !== S.tripper).forEach(p => {
@@ -508,7 +508,8 @@
             html += '<div class="vb-row"><span class="vb-name">'+esc(p.name)+(p.name===S.me?' (you)':'')+'</span><span>';
             if (v) {
                 html += '<span class="vb-answer '+(isRight?'right':'wrong')+'">'+v+' '+(isRight?'&#10003;':'&#10007;')+'</span>';
-                if (delta < 0) html += '<span class="chip-delta lose">-1</span>';
+                if (delta > 0) html += '<span class="chip-delta gain">+'+delta+'</span>';
+                else if (delta < 0) html += '<span class="chip-delta lose">'+delta+'</span>';
             } else {
                 html += '<span style="color:var(--text-light);font-size:12px;">no chips</span>';
             }
@@ -533,7 +534,8 @@
         const chips = me ? me.chips : 0;
 
         let verdict = '';
-        if (chips >= 5) verdict = 'Outstanding! You read institutional perspectives like a seasoned public administrator.';
+        if (chips >= 7) verdict = 'Outstanding! You read institutional perspectives like a seasoned public administrator.';
+        else if (chips >= 5) verdict = 'Impressive — you consistently nailed the perspective-taking.';
         else if (chips >= 3) verdict = 'Strong work — you held your own and understand these roles well.';
         else if (chips >= 1) verdict = 'You stayed in the game. A deeper dive into the materials will sharpen your perspective-taking.';
         else verdict = 'Tough game! Review the course materials and try another round.';

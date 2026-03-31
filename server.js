@@ -367,11 +367,12 @@ function doReveal(room, roomCode) {
         if (vote !== undefined) {
             totalVoters++;
             if (vote === room.tripperAnswer) {
-                // Correct - keep chip (no change)
-                chipChanges[p.name] = 0;
+                // Correct - gain a chip
+                p.chips += 1;
+                chipChanges[p.name] = 1;
                 correctCount++;
             } else {
-                // Wrong - lose chip
+                // Wrong - lose a chip
                 p.chips = Math.max(0, p.chips - 1);
                 chipChanges[p.name] = -1;
             }
@@ -383,11 +384,11 @@ function doReveal(room, roomCode) {
 
     // Tripper bonus/penalty
     if (allCorrect) {
-        tripper.chips += 1;
-        chipChanges[tripper.name] = 1;
+        tripper.chips += 2;
+        chipChanges[tripper.name] = 2;
     } else if (allWrong) {
-        tripper.chips = Math.max(0, tripper.chips - 1);
-        chipChanges[tripper.name] = -1;
+        tripper.chips = Math.max(0, tripper.chips - 2);
+        chipChanges[tripper.name] = -2;
     } else {
         chipChanges[tripper.name] = 0;
     }
