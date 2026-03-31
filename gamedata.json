@@ -49,7 +49,7 @@
       },
       {
         "title": "Why State Government Matters",
-        "scenario": "Your MPA classmate says: \"Honestly, state government is boring. All the real power is in Washington.\" How do you respond?",
+        "scenario": "An MPA student says to a colleague: \"Honestly, state government is boring. All the real power is in Washington.\" How should they respond?",
         "choices": [
           {
             "letter": "A",
@@ -78,7 +78,7 @@
       },
       {
         "title": "The Role of Government",
-        "scenario": "A constituent at a town hall argues: \"The best government is the least government. Get out of the way and let the market work.\" As a public administrator, how do you think about this?",
+        "scenario": "A constituent at a town hall argues: \"The best government is the least government. Get out of the way and let the market work.\" How should this claim be evaluated?",
         "choices": [
           {
             "letter": "A",
@@ -220,7 +220,7 @@
       },
       {
         "title": "Wright's IGR in Practice",
-        "scenario": "You're a state environmental regulator. New federal guidance contradicts existing state regulations. Your two largest counties are interpreting the old rules differently. A legislative caucus threatens to preempt both. A nonprofit has filed a Section 1983 lawsuit. What's your first move?",
+        "scenario": "A state environmental regulator faces a crisis: new federal guidance contradicts existing state regulations. The two largest counties are interpreting the old rules differently. A legislative caucus threatens to preempt both. A nonprofit has filed a Section 1983 lawsuit. What's your first move?",
         "choices": [
           {
             "letter": "A",
@@ -420,7 +420,7 @@
       },
       {
         "title": "Cooper v. Berger",
-        "scenario": "The NC legislature creates a bipartisan elections board where the governor must appoint from opposition party lists and can only remove members \"for cause.\" The governor sues, arguing this violates the Take Care Clause. You're a public administration student — what framework do you apply?",
+        "scenario": "The NC legislature creates a bipartisan elections board where the governor must appoint from opposition party lists and can only remove members \"for cause.\" The governor sues, arguing this violates the Take Care Clause. What framework best applies here?",
         "choices": [
           {
             "letter": "A",
@@ -595,7 +595,7 @@
       },
       {
         "title": "The Legislative Process",
-        "scenario": "You're a state agency director who needs legislative authority for a new program. A veteran lobbyist advises: \"Don't focus on passing your bill. Focus on not getting your bill killed. Most bills die in committee without ever getting a hearing.\" What does this tell you about the NC legislative process?",
+        "scenario": "A state agency director needs legislative authority for a new program. A veteran lobbyist advises: \"Don't focus on passing your bill. Focus on not getting your bill killed. Most bills die in committee without ever getting a hearing.\" What does this tell you about the NC legislative process?",
         "choices": [
           {
             "letter": "A",
