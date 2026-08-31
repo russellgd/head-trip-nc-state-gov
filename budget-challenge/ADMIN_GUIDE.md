@@ -230,9 +230,19 @@ After any data change, do all four:
 Then:
 
 ```bash
-npm run check     # type-check, lint, and the full test suite
-npm run build     # writes dist/
+npx vite-node src/tools/contentReport.ts > CONTENT_REPORT.md   # refresh the report
+npm run check                                # type-check, lint, and the full test suite
+npm run build                                # writes dist/
 ```
+
+`CONTENT_REPORT.md` is the quickest way to see where the data stands: which areas still have no
+real choices, and whether a surplus, a balanced budget, and a deficit are each reachable. While any
+of those three is unreachable, the challenge cannot be played end to end, and the report says so at
+the top.
+
+There is an acceptance gate for exactly this in `src/engine/playability.test.ts`, marked
+`it.skip`. Un-skip it once the dataset is populated; it then fails the build if the data ever stops
+being playable.
 
 `npm run check` must pass. It will fail if the baseline does not reconcile, if an unsourced figure
 is marked as scored, if a citation points at a non-government host, if an amount is not a whole

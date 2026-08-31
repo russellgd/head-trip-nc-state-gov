@@ -31,7 +31,10 @@ shows "amount not yet sourced" and excludes those options from the calculation.
 That rule is enforced in code, not by convention: `src/data/validate.ts` rejects any scored figure
 that is not `verified` or `derived`, and the test suite asserts it.
 
-See **[DATA_NOTES.md](./DATA_NOTES.md)** for exactly what is missing and what would resolve it, and
+**[CONTENT_REPORT.md](./CONTENT_REPORT.md)** is generated from the data (`npm run report:content`)
+and states exactly which budget areas have real choices and which are still placeholders, plus
+whether a surplus, a balanced budget, and a deficit are each reachable. See
+**[DATA_NOTES.md](./DATA_NOTES.md)** for what is missing and what would resolve it, and
 **[ADMIN_GUIDE.md](./ADMIN_GUIDE.md)** for how to add the figures once you have the documents.
 
 ---
@@ -58,6 +61,7 @@ npm run dev          # http://localhost:5173
 | `npm run typecheck` | TypeScript, no emit |
 | `npm run lint` | oxlint |
 | `npm run check` | Type-check, lint, and test together |
+| `npm run report:content` | Regenerate the content-completeness report |
 
 Three browser checks run against a build. Start `npm run build && npm run preview` first:
 

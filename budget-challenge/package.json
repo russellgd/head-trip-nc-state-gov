@@ -15,7 +15,8 @@
     "check": "npm run typecheck && npm run lint && npm run test",
     "verify:a11y": "node scripts/a11y.mjs",
     "verify:keyboard": "node scripts/keyboard.mjs",
-    "verify:screenshots": "node scripts/screenshots.mjs ./screenshots"
+    "verify:screenshots": "node scripts/screenshots.mjs ./screenshots",
+    "report:content": "vite-node src/tools/contentReport.ts"
   },
   "dependencies": {
     "react": "^19.2.8",
