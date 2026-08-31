@@ -66,29 +66,24 @@ describe('reachable range', () => {
   })
 })
 
-describe('the current dataset', () => {
-  /**
-   * These record the state of the data as it stands, so that populating it
-   * shows up here as a change rather than passing silently. The acceptance gate
-   * for a finished dataset is the test below.
-   */
-  it('can only move the balance downward, from the reserve decision alone', () => {
-    const play = analyzePlayability(DATASET)
-
-    expect(play.startingBalance).toBe(1_000_000_000)
-    expect(play.maxBalance).toBe(1_000_000_000)
-    expect(play.minBalance).toBe(0)
-    expect(play.decisionsWithScoredAlternatives).toBe(1)
-  })
-
-  it.skip('ACCEPTANCE GATE: surplus, balance, and deficit are all reachable', () => {
-    // Un-skip this once the sourced dataset is populated. It is the check that
-    // says the challenge can actually be played end to end, and it is expected
-    // to fail until spending and revenue options carry official figures.
+describe('the real dataset', () => {
+  it('ACCEPTANCE GATE: a surplus, a balanced budget, and a deficit are all reachable', () => {
+    // The check that says the challenge can actually be played end to end. If
+    // any of the three outcomes becomes unreachable, the exercise stops asking
+    // the visitor to balance anything, and this fails.
     const play = analyzePlayability(DATASET)
 
     expect(play.canIncreaseBalance).toBe(true)
     expect(play.zeroWithinRange).toBe(true)
     expect(play.canReachDeficit).toBe(true)
+  })
+
+  it('starts from the enacted unappropriated balance', () => {
+    expect(analyzePlayability(DATASET).startingBalance).toBe(1_000_000_000)
+  })
+
+  it('offers a scored alternative in every decision', () => {
+    const play = analyzePlayability(DATASET)
+    expect(play.decisionsWithScoredAlternatives).toBe(DATASET.decisions.length)
   })
 })

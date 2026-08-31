@@ -22,6 +22,13 @@ export default function AppropriationsBars({ categories }: { categories: Categor
           data={categories.map((c) => ({ name: c.name, value: c.enactedNetAppropriation }))}
           layout="vertical"
           margin={{ top: 8, right: 24, bottom: 8, left: 8 }}
+          // The chart sits inside an aria-hidden wrapper because the table
+          // beside it is the accessible representation. The library's own
+          // keyboard layer would put focusable elements inside that hidden
+          // subtree, which is a contradiction assistive technology cannot
+          // resolve, so it is turned off here rather than left to conflict.
+          accessibilityLayer={false}
+          tabIndex={-1}
         >
           <CartesianGrid horizontal={false} stroke="#d3dbe4" />
           <XAxis

@@ -100,6 +100,13 @@ export interface Category {
    * overview chart; a null area is shown as "not yet verified", never as zero.
    */
   enactedNetAppropriation: number | null
+  /**
+   * Why `enactedNetAppropriation` is null, when it is. Some areas are funded
+   * through reservations of revenue taken off the top of availability, or are
+   * the revenue side itself, and so never appear in the appropriations
+   * schedule. Saying that is different from saying a figure is unverified.
+   */
+  appropriationNote?: string
   sources: Source[]
 }
 

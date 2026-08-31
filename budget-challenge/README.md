@@ -12,32 +12,36 @@ Management, or any state agency, and it is not affiliated with or endorsed by an
 
 ## Read this first: the state of the data
 
-The application is complete and runnable. The dataset is not.
+The application is populated from the text of **S.L. 2026-41**, the Current Operations
+Appropriations Act of 2026, read in full (634 pages). Thirty decisions span all twelve budget areas,
+and a surplus, a balanced budget, and a deficit are all reachable.
 
-The three baseline anchors are in place and reconcile internally:
+Every enacted figure was checked by re-deriving a total the act itself prints — the 78 agency lines
+sum to the stated total net appropriation, the availability statement reconciles line by line, and
+the reservations sum to their stated subtotals. Those checks run in the test suite, so a
+transcription error fails the build.
 
-| Anchor | Amount |
-| --- | --- |
-| Revised total General Fund availability | $35,374,286,763 |
-| General Fund net appropriations | $34,374,286,763 |
-| Unappropriated balance remaining | $1,000,000,000 |
+The three baseline anchors were confirmed against the act, unchanged:
 
-Most **policy options carry no dollar amount yet**. They are presented, and a visitor can choose
-them, but they do not move the balance. The environment this version was built in could not reach
-`ncleg.gov` or `osbm.nc.gov`, so the session laws, the committee report, and the certified budget
-could not be opened and read. Rather than put plausible-looking numbers on the page, the project
-shows "amount not yet sourced" and excludes those options from the calculation.
+| Anchor | Amount | Source |
+| --- | --- | --- |
+| Revised total General Fund availability | $35,374,286,763 | Section 2.2(a) |
+| General Fund net appropriations | $34,374,286,763 | Section 2.1(a) |
+| Unappropriated balance remaining | $1,000,000,000 | Section 2.2(a) |
 
-That rule is enforced in code, not by convention: `src/data/validate.ts` rejects any scored figure
-that is not `verified` or `derived`, and the test suite asserts it.
+**What still needs care.** An appropriations act establishes what an agency receives; it does not
+publish a costed alternative to itself, and no document that prices alternatives was available.
+So options built on the reservations of revenue are firm — dropping a reservation frees exactly what
+the act reserves — while options that change an agency's funding are expressed as a percentage of
+the enacted appropriation. The dollar figure is exact arithmetic on a sourced number and every
+option shows its working, but **the percentage is this project's choice, not a proposal anyone
+made**. Neither the technical corrections acts (S.L. 2026-42, S.L. 2026-61) nor the certified budget
+were available, so the baseline is still marked provisional in the app.
 
-**[CONTENT_REPORT.md](./CONTENT_REPORT.md)** is generated from the data (`npm run report:content`)
-and states exactly which budget areas have real choices and which are still placeholders, plus
-whether a surplus, a balanced budget, and a deficit are each reachable. See
-**[DATA_NOTES.md](./DATA_NOTES.md)** for what is missing and what would resolve it, and
-**[ADMIN_GUIDE.md](./ADMIN_GUIDE.md)** for how to add the figures once you have the documents.
-
----
+**[CONTENT_REPORT.md](./CONTENT_REPORT.md)** is generated from the data
+(`npm run report:content`) and states which areas have real choices and whether each outcome is
+reachable. **[DATA_NOTES.md](./DATA_NOTES.md)** covers what is verified, what is assumed, and what
+remains. **[ADMIN_GUIDE.md](./ADMIN_GUIDE.md)** covers updating the figures.
 
 ## Setup
 

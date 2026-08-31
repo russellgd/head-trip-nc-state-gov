@@ -18,6 +18,7 @@ or `src/pages/` contains a dollar amount, and a test fails if one appears there.
 | File | What it holds |
 | --- | --- |
 | `src/data/baseline.ts` | The three General Fund anchors and the fiscal year |
+| `src/data/enacted.ts` | **Generated.** The 78 agency lines from the act's schedule, the ten reservations of revenue, and the availability statement. Do not hand-edit; see below. |
 | `src/data/categories.ts` | The twelve budget areas and their enacted appropriations |
 | `src/data/sources.ts` | The source ledger, the `cite()` helper, and the verified-through date |
 | `src/data/decisions/*.ts` | The policy decisions, grouped by area |
@@ -73,7 +74,26 @@ That removes the "provisional" banners from the home and methodology pages.
 
 ---
 
+## Task 1b: replacing the enacted figures after a new budget
+
+`src/data/enacted.ts` carries every figure transcribed from the act, and it is machine-generated
+rather than typed, because 78 agency lines are too many to transcribe by hand reliably. Its header
+says so.
+
+Each figure is checked by re-deriving a total the act itself prints, in
+`src/data/enacted.test.ts`: the agency lines must sum to the stated total net appropriation, the
+availability statement must reconcile line by line, and the reservations must sum to their stated
+subtotals. **If you edit this file by hand and make a mistake, those tests will catch it.** That is
+what they are for.
+
+The area totals in `src/data/categories.ts` read from `CATEGORY_NET_APPROPRIATIONS` in this file,
+so filling in a new year's agency schedule updates the overview chart automatically.
+
 ## Task 2: fill in appropriations by budget area
+
+> For FY 2026-27 this is already done: the area totals are summed from the agency schedule in
+> `src/data/enacted.ts`. This section applies when adding an area, or when an area's figure comes
+> from somewhere other than that schedule.
 
 Open `src/data/categories.ts`. Each area starts as:
 

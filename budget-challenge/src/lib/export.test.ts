@@ -55,12 +55,18 @@ describe('JSON export', () => {
     expect(data.results.recurring.reserve).toBe(0)
   })
 
-  it('records which choices were not scored', () => {
-    const withUnsourced = { ...selections, 'teacher-compensation': 'larger-raise' }
-    const t = computeTotals(DATASET, withUnsourced)
-    const data = JSON.parse(buildJson(DATASET, withUnsourced, t))
+  it('reports nothing as unscored while every option carries a sourced figure', () => {
+    const data = JSON.parse(buildJson(DATASET, selections, totals))
+    expect(data.results.decisionsChangedButNotScored).toEqual([])
+  })
 
-    expect(data.results.decisionsChangedButNotScored).toContain('teacher-compensation')
+  it('records each changed decision and its verification status', () => {
+    const data = JSON.parse(buildJson(DATASET, selections, totals))
+    const row = data.choices.find((c: { decisionId: string }) => c.decisionId === 'unappropriated-balance')
+
+    expect(row.choiceId).toBe('deposit-half')
+    expect(row.verificationStatus).toBe('derived')
+    expect(row.scored).toBe(true)
   })
 })
 

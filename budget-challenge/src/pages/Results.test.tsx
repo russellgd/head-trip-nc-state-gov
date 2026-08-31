@@ -81,16 +81,17 @@ describe('a changed result', () => {
     expect(within(section).getByText('$0')).toBeInTheDocument()
   })
 
-  it('flags choices that are recorded but not counted', async () => {
+  it('records a changed decision and its effect on the balance', async () => {
     const user = userEvent.setup()
 
     const challenge = renderWithProviders(<Challenge />)
-    await user.click(screen.getByRole('radio', { name: /fund a larger salary increase/i }))
+    await user.click(screen.getByRole('radio', { name: /reduce by 3%/i }))
     challenge.unmount()
 
     renderWithProviders(<Results />)
 
-    expect(screen.getByText(/not reflected in these totals/i)).toBeInTheDocument()
-    expect(screen.getAllByText(/not counted in the balance/i).length).toBeGreaterThan(0)
+    const section = screen.getByRole('region', { name: 'Every choice you made' })
+    expect(within(section).getByText(/Reduce by 3%/)).toBeInTheDocument()
+    expect(screen.getAllByText(/\+\$375,010,837 to the balance/).length).toBeGreaterThan(0)
   })
 })

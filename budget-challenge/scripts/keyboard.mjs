@@ -28,15 +28,24 @@ if (!skip.onScreen) problems.push('skip link does not become visible when focuse
 
 // 2. Every interactive element must show a visible focus indicator.
 const focusReport = await page.evaluate(() => {
-  const targets = [...document.querySelectorAll('a[href], button:not([disabled]), input, summary, [tabindex="0"]')]
+  const all = [...document.querySelectorAll('a[href], button:not([disabled]), input, summary, [tabindex="0"]')]
   const bad = []
-  for (const el of targets) {
+  let checked = 0
+
+  for (const el of all) {
     el.focus()
+    // Content inside a closed <details> is in the DOM and even reports client
+    // rects, but cannot take focus. If focus did not land, there is no focus
+    // ring to check and nothing a keyboard user could reach.
+    if (document.activeElement !== el) continue
+    checked += 1
+
     const s = getComputedStyle(el)
     const hasOutline = s.outlineStyle !== 'none' && parseFloat(s.outlineWidth) > 0
     if (!hasOutline) bad.push(el.tagName + '.' + String(el.className).split(' ')[0])
   }
-  return { count: targets.length, bad: [...new Set(bad)] }
+
+  return { count: checked, bad: [...new Set(bad)] }
 })
 if (focusReport.bad.length) problems.push(`no visible focus ring on: ${focusReport.bad.join(', ')}`)
 

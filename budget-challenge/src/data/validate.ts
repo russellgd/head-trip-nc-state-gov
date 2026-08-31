@@ -251,16 +251,25 @@ export function validateDataset(dataset: Dataset): ValidationIssue[] {
 export const errorsOnly = (issues: ValidationIssue[]): ValidationIssue[] =>
   issues.filter((i) => i.level === 'error')
 
-/** Every distinct source across the dataset, for the source ledger page. */
+/**
+ * Every distinct citation across the dataset, for the source ledger page.
+ *
+ * Keyed by document and section together: two references to different sections
+ * of the same act are two citations, and collapsing them would understate how
+ * specifically the data is sourced.
+ */
 export function collectSources(dataset: Dataset): Source[] {
   const byUrl = new Map<string, Source>()
   const add = (s: Source) => {
-    if (!byUrl.has(s.url)) byUrl.set(s.url, s)
+    const key = `${s.url}#${s.section}`
+    if (!byUrl.has(key)) byUrl.set(key, s)
   }
   dataset.baseline.sources.forEach(add)
   dataset.categories.forEach((c) => c.sources.forEach(add))
   dataset.decisions.forEach((d) => d.choices.forEach((c) => c.sources.forEach(add)))
-  return [...byUrl.values()].sort((a, b) => a.title.localeCompare(b.title))
+  return [...byUrl.values()].sort(
+    (a, b) => a.title.localeCompare(b.title) || a.section.localeCompare(b.section),
+  )
 }
 
 /** Counts used by the data-integrity panel on the methodology page. */

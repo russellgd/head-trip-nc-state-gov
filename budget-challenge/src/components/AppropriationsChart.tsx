@@ -37,9 +37,7 @@ export function AppropriationsChart({ categories }: { categories: Category[] }) 
             This chart has no data to draw yet
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-ink">
-            Net appropriations by budget area come from the money report incorporated into
-            S.L. 2026-41, read together with the two technical corrections acts and the certified
-            budget. Those figures have not been confirmed for this build, and the chart shows
+            No budget area currently carries a confirmed net appropriation, so the chart shows
             nothing rather than showing an estimate. Every area is listed below, so what is missing
             is visible rather than implied.
           </p>
@@ -77,8 +75,19 @@ export function AppropriationsChart({ categories }: { categories: Category[] }) 
             <tr key={category.id} className="border-b border-line">
               <th scope="row" className="py-2 pr-4 font-normal text-ink">
                 {category.name}
+                {category.appropriationNote ? (
+                  <span className="block text-xs font-normal text-muted">
+                    {category.appropriationNote}
+                  </span>
+                ) : null}
               </th>
-              <td className="py-2 text-right text-gold-700">Not yet verified</td>
+              <td className="py-2 text-right text-muted">
+                {category.appropriationNote ? (
+                  <span className="text-sm">No net appropriation</span>
+                ) : (
+                  <span className="text-gold-700">Not yet verified</span>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>

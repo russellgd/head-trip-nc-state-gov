@@ -4,6 +4,7 @@ import { Page, Section } from '../components/Page'
 import { AppropriationsChart } from '../components/AppropriationsChart'
 import { Callout } from '../components/Callout'
 import { formatDollars } from '../lib/format'
+import { ENACTED_TOTALS } from '../data/enacted'
 
 export function Overview() {
   const { baseline, categories } = DATASET
@@ -73,10 +74,18 @@ export function Overview() {
               </div>
             </dl>
             <p>
-              A budget figure quoted from the requirements column will always look much larger than
-              the same agency&rsquo;s net appropriation, because it includes money the General Fund
-              never provided. Mixing the two is how a state budget gets described as far bigger than
-              the amount legislators were deciding about.
+              The scale of the difference is worth seeing. Across all agencies, the enacted budget
+              shows total requirements of{' '}
+              <strong className="tabular">{formatDollars(ENACTED_TOTALS.requirements)}</strong>, less
+              receipts of <strong className="tabular">{formatDollars(ENACTED_TOTALS.receipts)}</strong>,
+              giving net appropriations of{' '}
+              <strong className="tabular">{formatDollars(ENACTED_TOTALS.netAppropriation)}</strong>.
+            </p>
+            <p>
+              A budget figure quoted from the requirements column is therefore well over twice the
+              net appropriation, because it includes money the General Fund never provided. Mixing
+              the two is how a state budget gets described as far bigger than the amount legislators
+              were actually deciding about.
             </p>
           </Section>
 
@@ -180,7 +189,7 @@ export function Overview() {
                 the forecast is revised during the year.
               </li>
               <li>
-                <strong>Two to four options per decision.</strong> Real budget decisions are
+                <strong>Two or three options per decision.</strong> Real budget decisions are
                 continuous, not multiple choice, and they are negotiated together rather than one at
                 a time.
               </li>
@@ -189,8 +198,8 @@ export function Overview() {
                 independently. In practice, a change in one area can change what another costs.
               </li>
               <li>
-                <strong>Roughly two dozen decisions.</strong> The enacted budget contains thousands
-                of individual items across hundreds of pages.
+                <strong>Thirty decisions.</strong> S.L. 2026-41 runs to 634 pages and contains
+                thousands of individual items.
               </li>
               <li>
                 <strong>No debt service or capital financing detail.</strong> Existing obligations

@@ -41,6 +41,7 @@
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",
     "vite": "^8.2.2",
+    "vite-node": "^6.0.0",
     "vitest": "^4.1.11"
   },
   "description": "The North Carolina Budget Challenge: an independent educational simulation of the FY 2026-27 General Fund."

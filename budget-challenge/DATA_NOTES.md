@@ -5,111 +5,131 @@ in a classroom or a workshop can judge the exercise fairly, and so that whoever 
 up next knows exactly where it stands.
 
 **Data verified through:** 2026-08-31
-**Dataset version:** 0.1.0
+**Dataset version:** 0.2.0
+**Primary source:** Current Operations Appropriations Act of 2026, S.L. 2026-41 (Senate Bill 257),
+read in full as an eight-part PDF of the enrolled act, 634 pages.
 
 ---
 
-## 1. The blocking limitation
+## 1. What is verified, and how
 
-**No figure in this build was read from a primary source document.**
+Every enacted figure in the dataset was read from the text of S.L. 2026-41 and then checked by
+re-deriving a total the act itself prints. Those checks run in the test suite
+(`src/data/enacted.test.ts`), so a transcription error fails the build rather than reaching a
+reader.
 
-The environment this version was built in blocks outbound requests to every host the project needs:
-
-| Host | Status |
+| Check | Result |
 | --- | --- |
-| `www.ncleg.gov` | blocked by network egress policy |
-| `sites.ncleg.gov` | blocked |
-| `webservices.ncleg.gov` | blocked |
-| `www.osbm.nc.gov` | blocked |
+| 78 agency lines transcribed from the Section 2.1(a) schedule | requirements − receipts = net appropriation on every line |
+| Sum of the 78 net appropriations | $34,374,286,763, equal to the act's stated Total Net Appropriation |
+| Sum of requirements / receipts | $82,456,429,733 / $48,082,142,970, equal to the act's stated totals |
+| Availability statement, Section 2.2(a) | reconciles line by line to $35,374,286,763 |
+| Statutory reservations | sum to $1,152,175,000, the act's stated subtotal |
+| Discretionary reservations | sum to $3,017,385,236, the act's stated subtotal |
+| Availability − net appropriations | $1,000,000,000, equal to the stated Unappropriated Balance Remaining |
+| Twelve category totals | sum back to $34,374,286,763 |
 
-General internet access works, so this is a targeted policy, not an outage. Web search results were
-available and were used to confirm that the documents exist and to establish their bill numbers, but
-search results are model-generated summaries of snippets. One such summary already returned a
-General Fund availability figure that conflicted with the enacted anchors, which is precisely why
-they are not treated as a source for dollar amounts here.
+### The three baseline anchors: confirmed
 
-The consequence: the baseline anchors are carried as provisional, and almost every policy option is
-`pending` and unscored.
+All three figures given at the outset of this project were confirmed against the act, unchanged:
 
-### What was confirmed, and how
-
-| Item | How it was established | Confidence |
+| Anchor | Amount | Where it comes from |
 | --- | --- | --- |
-| FY 2026-27 net appropriations, $34,374,286,763 | Supplied in the project brief; independently corroborated by web search against S.L. 2026-41 | Good, but not read from the act |
-| Total availability, $35,374,286,763 | Supplied in the brief; reconciles exactly with the other two anchors | Arithmetically consistent, not read from the act |
-| Unappropriated balance, $1,000,000,000 | Supplied in the brief; equals availability less net appropriations | Arithmetically consistent, not read from the act |
-| S.L. 2026-41 is SB 257, the Current Operations Appropriations Act of 2026 | Web search | Good |
-| S.L. 2026-42 is House Bill 56, Budget Technical Corrections | Web search | Good |
-| S.L. 2026-61 is House Bill 268, 2026 Budget Technical Corrections II | Web search | Good |
+| General Fund net appropriations | $34,374,286,763 | Section 2.1(a), Total Net Appropriation |
+| Revised total General Fund availability | $35,374,286,763 | Section 2.2(a) |
+| Unappropriated balance remaining | $1,000,000,000 | Section 2.2(a) |
 
-### What is not confirmed
+### Which document controls which figure
 
-- **Whether the anchors survive the technical corrections.** S.L. 2026-42 and S.L. 2026-61 have not
-  been read. A correction can move an appropriation without changing the headline total, so the
-  top-line figures may hold while the detail beneath them shifts.
-- **Net appropriations by budget area.** None of the twelve areas has a confirmed amount. The
-  overview chart therefore has nothing to draw and says so; areas are listed as "not yet verified"
-  rather than shown as zero, because zero would be a claim.
-- **Every policy option's fiscal impact**, except the derived reserve options described below.
-- **The enacted budget's own recurring position.** Not among the published anchors, so the app
-  reports a *change* in recurring position rather than an absolute structural balance.
-- **Whether every source URL resolves.** The URLs follow the General Assembly's documented patterns
-  and appeared in search results, but they could not be requested from this environment. Check them
-  before publishing.
+Only one document was available, so the ledger is short and unambiguous:
+
+| Figure | Controlling document and section |
+| --- | --- |
+| Every agency net appropriation, and the area totals built from them | S.L. 2026-41, Section 2.1(a) |
+| The three baseline anchors | S.L. 2026-41, Sections 2.1(a) and 2.2(a) |
+| Consensus revenue forecast and the act's adjustments to it | S.L. 2026-41, Section 2.2(a) |
+| The ten reservations of revenue | S.L. 2026-41, Section 2.2(a), with the operative subsections at 2.2(b), (d), (f), (g), (h), (i), (j), (k) |
 
 ---
 
-## 2. What *is* scored, and why that is defensible
+## 2. The honest limitation: where the *alternatives* come from
 
-Two options, both in **The Unappropriated Balance** decision, move the balance:
+This is the part a reader most needs to understand, and it is stated in the application itself as
+well as here.
 
-| Option | Amount | Derivation |
-| --- | --- | --- |
-| Deposit the full balance into the Savings Reserve | $1,000,000,000 | The enacted unappropriated balance itself |
-| Deposit half the balance into the Savings Reserve | $500,000,000 | $1,000,000,000 ÷ 2 |
+**An appropriations act establishes what an agency receives. It does not publish a costed
+alternative to itself.** No document that prices alternatives — the Governor's Recommended Budget
+above all — was available to this build. So the alternatives fall into two classes:
 
-These are `derived`, not `verified`: the amount is arithmetic performed on a figure that is itself
-one of the baseline anchors, and the arithmetic is shown to the reader on the option. Moving a known
-$1,000,000,000 is a calculation, not a forecast of what a policy would cost. Every other option would
-require a fiscal estimate from a document, and is therefore unscored.
+**Firm (`verified`, 42 options).** Options built on the reservations of revenue in Section 2.2(a),
+and on the unappropriated balance. Keeping, halving, or dropping a reservation moves an amount the
+act prints to the dollar. "Reserve nothing for the Medicaid Contingency Reserve" frees exactly
+$333,000,000 because that is exactly what the act reserves.
 
-**A consequence worth knowing before teaching with this version:** because no option increases
-spending, a visitor cannot currently produce a deficit through the interface. The deficit path is
-fully implemented, warned about, and tested at the component level, but it is unreachable from the
-data until spending options carry amounts.
+**Scaled (`derived`, 46 options).** Options that change an agency's funding are expressed as a
+percentage of the enacted appropriation — 3%, 5%, 10%, or 20% depending on the size of the line.
+The dollar figure is exact arithmetic on a sourced number, and every option shows its working. **The
+percentage is this project's choice, not a proposal anyone made.** Nothing in the application should
+be read as saying the General Assembly, the Governor, or any other party proposed these changes.
 
----
-
-## 3. Open questions to resolve with the documents in hand
-
-1. Do the three anchors match S.L. 2026-41 **as amended** by S.L. 2026-42 and S.L. 2026-61? Record
-   which document each final figure comes from.
-2. What is the net appropriation for each of the twelve budget areas, and do the twelve sum to
-   $34,374,286,763? If the official groupings do not map cleanly onto these twelve areas, the
-   categories should be changed to match the documents rather than the documents summarised to fit.
-3. For each `pending` option, does the Governor's Recommended Budget carry a costed version, and at
-   what recurring/nonrecurring split?
-4. Which revenue options have an official estimate from the consensus forecast or a bill fiscal
-   note? Revenue estimates depend on a forecast, so they need a named source and a date.
-5. What does the enacted budget actually deposit into the Savings Reserve, and what is the reserve's
-   projected balance? Needed before a withdrawal option can be offered at all.
-6. Is the enacted budget's own recurring/nonrecurring split published anywhere? If so, the app could
-   report an absolute structural balance instead of only a change.
+If you use this in a course, that distinction is worth ten minutes of discussion on its own: the
+difference between a number that is *sourced* and a scenario that is *plausible*.
 
 ---
 
-## 4. Deliberate exclusions
+## 3. What is still unresolved
+
+1. **The technical corrections have not been applied.** S.L. 2026-42 (House Bill 56) and S.L.
+   2026-61 (House Bill 268) were not available. A correction can move an appropriation without
+   changing the headline total, so the top-line anchors may well hold while individual agency lines
+   beneath them have changed. The baseline is therefore still marked provisional in the application.
+2. **The certified budget has not been checked.** OSBM's certified FY 2025-27 agency budgets are the
+   authoritative agency-level figures once certification is complete.
+3. **The committee report was not available.** The money report incorporated into the act at Section
+   45.2 carries detail below the agency level — individual programmes and line items — which would
+   support far more specific decisions than agency totals allow.
+4. **No costed alternatives.** The Governor's Recommended Budget would replace most of the `derived`
+   percentage options with real proposals carrying official fiscal estimates. This is the single
+   highest-value addition remaining.
+5. **Recurring / nonrecurring splits are assumed, not sourced.** See the next section.
+
+---
+
+## 4. Assumptions recorded as assumptions
+
+- **Agency appropriation changes are treated as recurring.** The act's schedule does not split
+  agency totals into recurring and nonrecurring parts. An operating budget continues from year to
+  year, so a change to one is counted as recurring throughout. Where the act does state a split it
+  is followed: Section 2.2(b) says the $450,000,000 Savings Reserve transfer is nonrecurring, and it
+  is stored that way.
+- **Reservation changes are treated as nonrecurring.** They are reservations of a single year's
+  availability.
+- **Revenue adjustments are treated as nonrecurring**, because the availability statement presents
+  them as adjustments to FY 2026-27 availability. A change to the consensus forecast itself is
+  treated as recurring, since that is the ongoing revenue base.
+- **Agency-to-area mapping.** The act groups agencies under eight headings; this project uses twelve
+  areas. Every one of the 78 agencies is assigned to exactly one area, the assignments are visible
+  in `src/data/enacted.ts`, and the twelve totals are asserted to sum to the act's grand total. Two
+  assignments are judgement calls worth naming: the Department of Labor and the Department of
+  Commerce are both placed in Economic and Community Development, following the act's own
+  "Agriculture, Natural, and Economic Resources" grouping; and the General Fund Reserve for the pay
+  plan is placed in General Government and State Workforce, since it funds state employee
+  compensation across all agencies.
+
+---
+
+## 5. Deliberate exclusions
 
 These are design decisions, not gaps.
 
 - **One fund.** General Fund net appropriations only. No all-funds figures, agency receipts, federal
   funds, Highway Fund, or Highway Trust Fund. Combining them is the most common way a state budget
   figure gets misreported, and the app refuses to do it.
-- **One year.** FY 2026-27. No projection into later years, even though recurring choices plainly
-  affect them.
+- **One year.** FY 2026-27, with no projection into later years.
 - **Fixed revenue forecast.** Spending choices are not modelled as affecting collections.
 - **No interaction between decisions.** Effects are added independently.
-- **Discrete options.** Two to four choices where the real decision is a continuous amount.
+- **Discrete options.** Two or three choices where the real decision is a continuous amount.
+- **Thirty decisions.** The act runs to 634 pages and contains thousands of individual items.
 - **No behavioural or economic modelling.** No multipliers, elasticities, or dynamic scoring.
 - **No federal match modelling.** Where a state dollar draws federal dollars, as in Medicaid, only
   the General Fund side is shown. Options where this matters say so in their trade-offs.
@@ -120,20 +140,20 @@ These are design decisions, not gaps.
 
 ---
 
-## 5. Editorial rules applied to the content
+## 6. Editorial rules applied to the content
 
-- Each decision offers the enacted policy plus one or more alternatives. Where only one alternative
-  has a plausible documented basis, only one is offered: no false symmetry.
+- Each decision offers the enacted policy plus alternatives, and the enacted option is always
+  labelled as enacted. No proposed alternative is presented as law.
 - Every alternative carries both the strongest argument in favour and the strongest concern, and a
   test fails the build if either is missing.
 - No ideological labels anywhere, and a test scans all option text for them. The results page
   describes the budget, never the person who built it.
-- Descriptions of the enacted policy are written to say *where* the detail lives rather than to
-  assert a specific figure, because those figures have not been read.
+- Every scored figure cites the act and the section it came from, and every `derived` figure prints
+  its arithmetic where the reader can see it.
 
 ---
 
-## 6. How to record a change
+## 7. How to record a change
 
 When any figure changes, update all four:
 
@@ -142,4 +162,4 @@ When any figure changes, update all four:
 3. `VERSION_HISTORY` in `src/pages/Methodology.tsx`
 4. `VERIFIED_THROUGH` in `src/data/sources.ts`, and this file's header
 
-Then run `npm run check`. See [ADMIN_GUIDE.md](./ADMIN_GUIDE.md).
+Then run `npm run check` and regenerate `CONTENT_REPORT.md`. See [ADMIN_GUIDE.md](./ADMIN_GUIDE.md).

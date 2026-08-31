@@ -118,3 +118,55 @@ export function derivedOption(input: {
     },
   }
 }
+
+/**
+ * An option whose amount is stated in an official document exactly as used.
+ */
+export function verifiedOption(input: {
+  id: string
+  label: string
+  description: string
+  spending?: Partial<Money>
+  revenue?: Partial<Money>
+  reserve?: Partial<Money>
+  affects: string[]
+  benefits: string[]
+  tradeoffs: string[]
+  note: string
+  sources: Source[]
+}): Choice {
+  return {
+    id: input.id,
+    label: input.label,
+    description: input.description,
+    spending: { ...zero(), ...input.spending },
+    revenue: { ...zero(), ...input.revenue },
+    reserve: { ...zero(), ...input.reserve },
+    affects: input.affects,
+    benefits: input.benefits,
+    tradeoffs: input.tradeoffs,
+    sources: input.sources,
+    verification: { status: 'verified', scored: true, note: input.note },
+  }
+}
+
+/** Format an integer dollar amount for use inside generated prose. */
+export const usd = (amount: number): string =>
+  new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumFractionDigits: 0,
+  }).format(amount)
+
+/**
+ * A percentage of a verified enacted appropriation.
+ *
+ * Used for spending decisions, where the act establishes what an agency
+ * receives but publishes no costed alternative to it. The percentage is this
+ * project's, chosen to give a reader a sense of scale; the dollar figure that
+ * follows is exact arithmetic on a sourced number, and the working is shown on
+ * the option so a reader can check it and judge it for themselves.
+ */
+export function percentOf(base: number, percent: number): number {
+  return Math.round((base * percent) / 100)
+}

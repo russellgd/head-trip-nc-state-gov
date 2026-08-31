@@ -7,13 +7,21 @@ import { formatDollars } from '../lib/format'
 /** Version history. Add a row whenever any figure in the dataset changes. */
 const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = [
   {
+    version: '0.2.0',
+    date: '2026-08-31',
+    note:
+      'Populated from the text of S.L. 2026-41. All 78 agency lines in the appropriations ' +
+      'schedule transcribed and reconciled to the act\u2019s stated totals; the availability ' +
+      'statement reconciled line by line; the ten reservations of revenue reconciled to their ' +
+      'stated subtotals. Every policy option now carries a figure traceable to a section of ' +
+      'the act. Decisions rebuilt on those figures, and the overview chart populated.',
+  },
+  {
     version: '0.1.0',
     date: '2026-08-31',
     note:
-      'First release. FY 2026-27 General Fund baseline anchors in place and reconciling. ' +
-      'Twenty-eight decisions across all twelve budget areas, with the reserve decisions ' +
-      'scored from the unappropriated balance and the remaining options awaiting official ' +
-      'fiscal figures.',
+      'First release: application framework, calculation engine, and validation rules, with ' +
+      'the three baseline anchors in place and most policy options awaiting official figures.',
   },
 ]
 
@@ -217,26 +225,32 @@ export function Methodology() {
         </table>
         </TableScroll>
 
-        <Callout tone="caution" title="The state of the data in this version">
+        <Callout tone="caution" title="Where the alternatives come from, and what they are not">
           <p>
-            Of {DATASET.decisions.length} decisions, {scoredDecisions.length} currently{' '}
-            {scoredDecisions.length === 1 ? 'has an alternative' : 'have alternatives'} that move the
-            balance. The rest present their options and record your preference without scoring them,
-            because no official fiscal estimate has been confirmed for those options.
+            All {DATASET.decisions.length} decisions carry figures traceable to S.L. 2026-41, and{' '}
+            {scoredDecisions.length} of them offer alternatives that move the balance. The enacted
+            amounts are transcribed from the act: the 78 agency lines in its appropriations schedule
+            sum to the total it states, and its availability statement reconciles line by line. Those
+            checks run in the test suite, so a transcription error cannot pass silently.
           </p>
           <p>
-            The reason is stated plainly rather than worked around: the environment this version was
-            built in could not reach{' '}
-            <code className="rounded bg-white px-1 py-0.5 text-xs">ncleg.gov</code> or{' '}
-            <code className="rounded bg-white px-1 py-0.5 text-xs">osbm.nc.gov</code>, so the session
-            laws, the committee report, and the certified budget could not be opened and read. The
-            alternative would have been to put plausible-looking numbers on the page, and for a tool
-            that people may cite, an absent figure is far better than an invented one.
+            The <strong>alternatives</strong> need a different kind of care. An appropriations act
+            establishes what an agency receives; it does not publish a costed alternative to itself.
+            No other official document was available to this build. So where an option changes an
+            agency&rsquo;s funding, the amount is a stated percentage of the enacted appropriation,
+            and the arithmetic is shown on the option. The percentage is this project&rsquo;s,
+            chosen to give a sense of scale. It is not a proposal that anyone made, and nothing here
+            should be read as one.
           </p>
           <p>
-            The application is built to take those figures as soon as they can be read. See{' '}
-            <code className="rounded bg-white px-1 py-0.5 text-xs">DATA_NOTES.md</code> and the
-            administrator guide in the repository for what specifically is needed and where it goes.
+            Options built on the reservations of revenue in Section 2.2(a) are firmer: keeping,
+            halving, or dropping a reservation moves an amount the act prints to the dollar.
+          </p>
+          <p>
+            What would improve this most is the Governor&rsquo;s Recommended Budget, which carries
+            costed alternatives with official fiscal estimates behind them. See{' '}
+            <code className="rounded bg-white px-1 py-0.5 text-xs">DATA_NOTES.md</code> in the
+            repository for what remains unresolved.
           </p>
         </Callout>
       </Section>
@@ -270,12 +284,12 @@ export function Methodology() {
             Real budget items interact.
           </li>
           <li>
-            <strong>Discrete options.</strong> Two to four choices where the real decision is a
+            <strong>Discrete options.</strong> Two or three choices where the real decision is a
             continuous amount.
           </li>
           <li>
-            <strong>Roughly two dozen decisions.</strong> The enacted budget contains thousands of
-            items.
+            <strong>Thirty decisions.</strong> The act runs to 634 pages and contains thousands of
+            individual items.
           </li>
           <li>
             <strong>No behavioural or economic modelling.</strong> No multipliers, no elasticities,
@@ -286,8 +300,20 @@ export function Methodology() {
             equivalents or served populations.
           </li>
           <li>
-            <strong>Area appropriation totals are not yet populated</strong>, so the overview chart
-            has nothing to draw. Areas are listed as unverified rather than shown as zero.
+            <strong>Alternatives are scaled, not proposed.</strong> Where an option changes an
+            agency&rsquo;s funding, the percentage is this project&rsquo;s rather than a figure from
+            a budget document. The dollar amount that follows from it is exact.
+          </li>
+          <li>
+            <strong>Agency changes are treated as recurring.</strong> The act&rsquo;s schedule does
+            not split agency totals into recurring and nonrecurring parts, and an operating budget
+            continues from year to year, so a change to one is counted as recurring throughout.
+          </li>
+          <li>
+            <strong>Three areas carry no appropriation figure</strong> — disaster and
+            infrastructure, revenue, and reserves. They are funded through reservations of revenue
+            taken off the top of availability, or they are the revenue side itself, so they never
+            appear in the appropriations schedule. They are shown as such rather than as zero.
           </li>
         </ul>
       </Section>

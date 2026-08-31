@@ -1,148 +1,188 @@
 /**
  * Taxes and other General Fund revenue.
  *
- * Revenue options are the hardest part of a budget simulation to source
- * honestly, because the amount a tax change raises or costs depends on a
- * forecast, not on an appropriation. A rate is written in statute; the dollars
- * it produces are an estimate produced by the Fiscal Research Division and the
- * Office of State Budget and Management. Only those official estimates are
- * usable here.
+ * Revenue is the hardest side of a budget to source honestly, because what a
+ * tax change raises is a forecast rather than an appropriation. These decisions
+ * therefore work only from figures the act's own availability statement prints:
+ * the consensus forecast the budget was built on, and the two adjustments the
+ * act applies to it.
+ *
+ * The act does not split its revenue adjustments into recurring and
+ * nonrecurring parts. They are treated here as nonrecurring adjustments to
+ * FY 2026-27 availability, which is how the availability statement presents
+ * them; that treatment is recorded as a simplification in DATA_NOTES.md.
  */
 import type { Decision } from '../types'
-import { enactedOption, unsourcedOption } from './helpers'
+import { AVAILABILITY } from '../enacted'
+import { cite } from '../sources'
+import { derivedOption, enactedOption, percentOf, usd, verifiedOption } from './helpers'
 
-const FISCAL_NOTE_WOULD_SETTLE =
-  'A revenue figure for this option would come from the consensus revenue forecast or an official fiscal note prepared for the relevant bill.'
+const AVAILABILITY_SECTION = 'Section 2.2(a), General Fund Availability'
+const sources = [cite('sl2026_41', AVAILABILITY_SECTION)]
 
-const GOVERNOR_WOULD_SETTLE =
-  "The Governor's Recommended Budget for FY 2026-27 carries a costed version of this option, which is what would make it scoreable here."
+const TAX = AVAILABILITY.consensusTaxRevenue
+const ONE_PERCENT_OF_TAX = percentOf(TAX, 1)
+const TAX_ADJUSTMENT = AVAILABILITY.adjustmentsToTaxRevenue
+const NONTAX_ADJUSTMENT = AVAILABILITY.adjustmentsToNonTaxRevenue
 
 export const REVENUE_DECISIONS: Decision[] = [
   {
-    id: 'personal-income-tax-rate',
+    id: 'tax-revenue-level',
     category: 'revenue',
-    title: 'Personal Income Tax Rate',
-    question: 'Should the scheduled personal income tax rate change take effect as enacted?',
-    enactedBaseline:
-      'North Carolina statute sets a flat personal income tax rate with scheduled changes in future years, as reflected in the revenue assumptions underlying S.L. 2026-41.',
+    title: 'The Level of Tax Revenue',
+    question:
+      'Should the state collect more or less tax revenue than the budget assumes?',
+    enactedBaseline: `S.L. 2026-41 builds the budget on a consensus forecast of ${usd(
+      TAX,
+    )} in tax revenue for FY 2026-27, the largest single component of General Fund availability.`,
     background:
-      'North Carolina taxes personal income at a single flat rate. Because the rate applies to a broad base, a change of a fraction of a percentage point moves a large amount of revenue. Some scheduled reductions are conditioned on revenue meeting specified triggers, so what takes effect depends on collections as well as on statute. Income tax is the largest single General Fund revenue source, which means it is also the most consequential lever available on the revenue side.',
+      'North Carolina taxes personal income at a single flat rate, and that tax is the largest source of General Fund revenue, followed by the sales and use tax and the corporate income and franchise taxes. Because the rates apply to a broad base, a change of a fraction of a percentage point moves a large amount of money. The consensus forecast is prepared jointly by legislative and executive staff and is a projection, not a guarantee: collections can come in above or below it. This decision changes the amount collected without specifying which tax is changed, because the act publishes the forecast total rather than a costed rate change.',
     choices: [
       enactedOption({
+        label: `Collect as forecast: ${usd(TAX)}`,
         description:
-          'Leave the personal income tax rate and its scheduled changes as they stand in current law.',
-        affects: ['All North Carolina income taxpayers', 'Future General Fund availability'],
+          'Leave tax revenue at the level the consensus forecast projects and the budget was built on.',
+        affects: ['All North Carolina taxpayers', 'Every programme funded from recurring revenue'],
       }),
-      unsourcedOption({
-        id: 'pause-rate-reduction',
-        label: 'Pause the scheduled rate reduction',
-        description:
-          'Hold the personal income tax rate at its current level rather than allowing the scheduled reduction to take effect.',
-        affects: ['Income taxpayers', 'Programs funded from recurring revenue'],
+      derivedOption({
+        id: 'increase-one-percent',
+        label: `Collect 1% more: ${usd(ONE_PERCENT_OF_TAX)}`,
+        description: `Raise ${usd(
+          ONE_PERCENT_OF_TAX,
+        )} in additional recurring tax revenue, one per cent above the forecast.`,
+        revenue: { recurring: ONE_PERCENT_OF_TAX },
+        affects: [
+          'Taxpayers, in proportion to whichever tax is changed',
+          'Programmes that depend on recurring revenue',
+          'Future budgets, because a rate change recurs',
+        ],
         benefits: [
-          'Retains recurring revenue, which is the only kind that can support recurring commitments.',
-          'Rate reductions compound across years, so pausing one affects every year that follows.',
+          'Recurring revenue is the only kind that can support recurring commitments without leaving a hole in the following year.',
+          'A one per cent change is small in rate terms and large in dollar terms, because the base is broad.',
         ],
         tradeoffs: [
-          'Taxpayers keep less than current law promises them.',
-          'Scheduled reductions are part of the plan businesses and households have already made decisions against.',
+          'Taxpayers keep less than current law provides, and under a flat rate the effect is spread across every income level.',
+          'Households and businesses have already planned against the rates in current law.',
         ],
-        wouldBeSourcedBy: FISCAL_NOTE_WOULD_SETTLE,
+        derivation: `1% of the consensus tax revenue forecast of ${usd(TAX)}: ${usd(
+          TAX,
+        )} × 1% = ${usd(
+          ONE_PERCENT_OF_TAX,
+        )}. The percentage is a scale chosen for this exercise, not a proposal from any budget document; the dollar figure that follows is exact.`,
+        sources,
       }),
-      unsourcedOption({
-        id: 'accelerate-rate-reduction',
-        label: 'Accelerate the rate reduction',
-        description: 'Lower the personal income tax rate faster than current law provides.',
-        affects: ['Income taxpayers', 'Recurring General Fund availability'],
+      derivedOption({
+        id: 'reduce-one-percent',
+        label: `Collect 1% less: ${usd(ONE_PERCENT_OF_TAX)}`,
+        description: `Forgo ${usd(
+          ONE_PERCENT_OF_TAX,
+        )} in recurring tax revenue, one per cent below the forecast.`,
+        revenue: { recurring: -ONE_PERCENT_OF_TAX },
+        affects: [
+          'Taxpayers, in proportion to whichever tax is changed',
+          'Programmes funded from recurring revenue',
+          'Future budgets, because a rate reduction recurs',
+        ],
         benefits: [
-          'Leaves more income with households and businesses, and the reduction applies at every income level under a flat rate.',
-          'A lower rate is one factor businesses weigh when comparing states.',
+          'Leaves more income with households and businesses.',
+          'Tax rates are one factor businesses weigh when comparing states.',
         ],
         tradeoffs: [
           'Reduces recurring revenue permanently unless a later budget reverses it.',
-          'Under a flat rate, the dollar value of a rate cut rises with income.',
+          'Recurring commitments already in the base do not fall with revenue.',
         ],
-        wouldBeSourcedBy: FISCAL_NOTE_WOULD_SETTLE,
+        derivation: `1% of the consensus tax revenue forecast of ${usd(TAX)}: ${usd(
+          TAX,
+        )} × 1% = ${usd(
+          ONE_PERCENT_OF_TAX,
+        )}. The percentage is a scale chosen for this exercise, not a proposal from any budget document; the dollar figure that follows is exact.`,
+        sources,
       }),
     ],
   },
+
   {
-    id: 'corporate-tax',
+    id: 'tax-revenue-adjustments',
     category: 'revenue',
-    title: 'Corporate Income and Franchise Tax',
-    question: 'Should the scheduled corporate income tax phase-out proceed as enacted?',
-    enactedBaseline:
-      'North Carolina statute provides for a scheduled reduction of the corporate income tax rate, as reflected in the revenue assumptions underlying S.L. 2026-41.',
+    title: 'Enacted Adjustments to Tax Revenue',
+    question: 'Should the budget keep its enacted adjustment to tax revenue?',
+    enactedBaseline: `On top of the consensus forecast, the availability statement adds ${usd(
+      TAX_ADJUSTMENT,
+    )} in adjustments to tax revenue for FY 2026-27.`,
     background:
-      'North Carolina has been reducing its corporate income tax rate on a statutory schedule toward elimination. Corporate income tax collections are more volatile year to year than personal income tax, which affects both how much the state loses from a reduction and how reliable that revenue was to begin with.',
+      'The availability statement starts from the consensus forecast and then applies adjustments reflecting changes the budget itself makes to tax law or administration. They are shown as a single line rather than itemised in the act, so what can be said with confidence is the total, not its composition. Removing the adjustment means building the budget on the forecast alone.',
     choices: [
       enactedOption({
-        description: 'Leave the corporate income tax schedule as it stands in current law.',
-        affects: ['Corporations doing business in North Carolina', 'Recurring General Fund revenue'],
+        label: `Keep the adjustment: ${usd(TAX_ADJUSTMENT)}`,
+        description: 'Count the enacted adjustment to tax revenue as part of availability.',
+        affects: ['Taxpayers affected by the underlying changes', 'Total General Fund availability'],
       }),
-      unsourcedOption({
-        id: 'pause-corporate-phaseout',
-        label: 'Pause the corporate phase-out',
-        description:
-          'Hold the corporate income tax rate at its current level rather than continuing the scheduled reduction.',
-        affects: ['Corporate taxpayers', 'Recurring revenue'],
+      verifiedOption({
+        id: 'forgo',
+        label: 'Make no adjustment',
+        description: `Build the budget on the consensus forecast alone, forgoing ${usd(
+          TAX_ADJUSTMENT,
+        )} in availability.`,
+        revenue: { nonrecurring: -TAX_ADJUSTMENT },
+        affects: [
+          'Taxpayers who would have been affected by the underlying changes',
+          'Every programme competing for the resulting availability',
+        ],
         benefits: [
-          'Retains recurring revenue from a base that is largely paid by businesses operating in multiple states.',
-          'Preserves flexibility while the effects of reductions already taken are still being observed.',
+          'Builds the budget on the consensus forecast alone, without relying on the effect of changes the budget itself makes.',
+          'Avoids counting revenue whose composition the act does not itemise.',
         ],
         tradeoffs: [
-          'Changes a schedule businesses have planned around, which carries its own cost in predictability.',
-          'Corporate tax revenue is volatile, so the retained revenue is less dependable than its size suggests.',
+          'Removes real availability the enacted budget counted on, which has to be found elsewhere.',
+          'The underlying policy changes may be worth making regardless of the revenue they raise.',
         ],
-        wouldBeSourcedBy: FISCAL_NOTE_WOULD_SETTLE,
+        note: `${usd(
+          TAX_ADJUSTMENT,
+        )} is the exact adjustment to tax revenue printed in the availability statement.`,
+        sources,
       }),
     ],
   },
+
   {
-    id: 'sales-tax-base',
+    id: 'nontax-revenue-adjustments',
     category: 'revenue',
-    title: 'Sales Tax Base',
-    question: 'Should the state change what the sales tax applies to?',
-    enactedBaseline:
-      'The sales and use tax applies to the goods and services specified in current law, as reflected in the revenue assumptions underlying S.L. 2026-41.',
+    title: 'Enacted Adjustments to Non-Tax Revenue',
+    question: 'Should the budget keep its enacted adjustment to non-tax revenue?',
+    enactedBaseline: `The availability statement adds ${usd(
+      NONTAX_ADJUSTMENT,
+    )} in adjustments to non-tax revenue, on top of a consensus non-tax forecast of ${usd(
+      AVAILABILITY.consensusNonTaxRevenue,
+    )}.`,
     background:
-      'Sales tax is charged on most goods and on a limited set of services. As household spending has shifted from goods toward services, a base built mainly on goods grows more slowly than the economy does. Broadening the base to more services raises revenue without changing the rate, but sales tax takes a larger share of income from lower-income households, so base changes have distributional effects that rate changes do not fully mirror.',
+      'Non-tax revenue includes fees, investment income, court costs, and transfers into the General Fund from other funds. It is much smaller than tax revenue but also less visible to the public, since most of it is charged to the people who use a particular service rather than levied generally. Adjustments here often reflect changes to fee schedules or to transfers between funds.',
     choices: [
       enactedOption({
-        description: 'Leave the sales tax base as it stands in current law.',
-        affects: ['Consumers', 'Service businesses', 'Local governments sharing sales tax revenue'],
+        label: `Keep the adjustment: ${usd(NONTAX_ADJUSTMENT)}`,
+        description: 'Count the enacted adjustment to non-tax revenue as part of availability.',
+        affects: ['People and businesses paying state fees', 'Total General Fund availability'],
       }),
-      unsourcedOption({
-        id: 'broaden-sales-base',
-        label: 'Broaden the base to more services',
-        description:
-          'Extend the sales tax to additional services that are currently untaxed.',
-        affects: ['Consumers of newly taxed services', 'Service businesses', 'Local governments'],
+      verifiedOption({
+        id: 'forgo',
+        label: 'Make no adjustment',
+        description: `Forgo ${usd(NONTAX_ADJUSTMENT)} in non-tax revenue adjustments.`,
+        revenue: { nonrecurring: -NONTAX_ADJUSTMENT },
+        affects: [
+          'People and businesses who would pay the fees or charges involved',
+          'Funds that would transfer money to the General Fund',
+        ],
         benefits: [
-          'A base that tracks how households actually spend grows with the economy instead of falling behind it.',
-          'Treats similar transactions alike rather than by whether they are classified as a good or a service.',
+          'Fees fall on the people who use a service, which is not always the group best able to pay.',
+          'Transfers from other funds move money away from the purposes those funds were created for.',
         ],
         tradeoffs: [
-          'Sales tax takes a larger share of income from lower-income households.',
-          'Newly covered businesses face collection and compliance costs they do not have today.',
+          'Removes availability the enacted budget counted on.',
+          'Non-tax revenue is charged to identifiable users rather than levied on everyone.',
         ],
-        wouldBeSourcedBy: FISCAL_NOTE_WOULD_SETTLE,
-      }),
-      unsourcedOption({
-        id: 'narrow-sales-base',
-        label: 'Exempt additional necessities',
-        description:
-          'Remove sales tax from additional categories of household necessities.',
-        affects: ['Lower-income households', 'Retailers', 'Local governments sharing the revenue'],
-        benefits: [
-          'Reduces the share of income lower-income households pay in sales tax.',
-          'Exemptions reach households directly at the point of purchase.',
-        ],
-        tradeoffs: [
-          'Reduces recurring revenue, and local governments share the sales tax base.',
-          'Exemptions apply to every buyer, including those who do not need the relief.',
-        ],
-        wouldBeSourcedBy: GOVERNOR_WOULD_SETTLE,
+        note: `${usd(
+          NONTAX_ADJUSTMENT,
+        )} is the exact adjustment to non-tax revenue printed in the availability statement.`,
+        sources,
       }),
     ],
   },

@@ -1,25 +1,38 @@
 import type { Decision } from '../types'
-import { EDUCATION_DECISIONS } from './education'
-import { HEALTH_DECISIONS } from './health'
-import { RESOURCES_DECISIONS } from './resources'
-import { GOVERNMENT_DECISIONS } from './government'
-import { INFRASTRUCTURE_DECISIONS } from './infrastructure'
+import { APPROPRIATION_DECISIONS } from './appropriations'
+import { RESERVATION_DECISIONS } from './reservations'
 import { REVENUE_DECISIONS } from './revenue'
 import { RESERVE_DECISIONS } from './reserves'
 
 /**
- * Every decision in the challenge, in the order they are presented.
+ * Every decision in the challenge, ordered by budget area.
  *
- * Order follows the category order: spending areas first, then revenue, then
- * savings and reserves last, so that a user has seen what their spending
- * choices cost before deciding how to pay for them.
+ * Spending areas come first, then revenue, then savings and reserves last, so
+ * that a visitor has seen what their spending choices cost before deciding how
+ * to pay for them.
  */
-export const DECISIONS: Decision[] = [
-  ...EDUCATION_DECISIONS,
-  ...HEALTH_DECISIONS,
-  ...RESOURCES_DECISIONS,
-  ...GOVERNMENT_DECISIONS,
-  ...INFRASTRUCTURE_DECISIONS,
+const CATEGORY_ORDER = [
+  'k12-education',
+  'community-colleges',
+  'unc-system',
+  'health-human-services',
+  'agriculture-environment',
+  'economic-development',
+  'justice-public-safety',
+  'general-government',
+  'information-technology',
+  'disaster-infrastructure',
+  'revenue',
+  'reserves',
+] as const
+
+const ALL = [
+  ...APPROPRIATION_DECISIONS,
+  ...RESERVATION_DECISIONS,
   ...REVENUE_DECISIONS,
   ...RESERVE_DECISIONS,
 ]
+
+export const DECISIONS: Decision[] = [...ALL].sort(
+  (a, b) => CATEGORY_ORDER.indexOf(a.category) - CATEGORY_ORDER.indexOf(b.category),
+)

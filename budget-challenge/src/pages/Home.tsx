@@ -195,13 +195,16 @@ export function Home() {
             <Callout tone="caution" title="What is not settled in this version">
               <p>{baseline.provisionalNote}</p>
               <p>
-                Most policy options in this version also carry no dollar amount yet. They are
-                presented, and you can choose them, but they do not move the balance until an
-                official figure has been confirmed for them. The{' '}
+                Enacted amounts throughout are transcribed from the act and check out against the
+                totals it states. The alternatives are a different matter: an appropriations act
+                does not publish a costed alternative to itself, so where an option changes an
+                agency&rsquo;s funding, the amount is a stated percentage of the enacted figure and
+                the arithmetic is shown. Those are scales chosen to give a sense of proportion, not
+                proposals anyone made. The{' '}
                 <Link className="font-medium underline underline-offset-2" to="/methodology">
                   methodology page
                 </Link>{' '}
-                sets out exactly which figures are in place and which are not.
+                sets out exactly what each figure rests on.
               </p>
             </Callout>
           ) : null}

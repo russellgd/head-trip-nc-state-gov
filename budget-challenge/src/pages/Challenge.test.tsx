@@ -36,7 +36,7 @@ describe('the challenge page', () => {
   it('opens every decision on the enacted policy', () => {
     renderWithProviders(<Challenge />)
 
-    const enacted = screen.getByRole('radio', { name: /keep the enacted policy/i })
+    const enacted = screen.getByRole('radio', { name: /fund as enacted/i })
     expect(enacted).toBeChecked()
   })
 
@@ -60,7 +60,7 @@ describe('the challenge page', () => {
     const live = container.querySelector('[aria-live="polite"]')!
     expect(live.textContent).toBe('')
 
-    await user.click(screen.getByRole('radio', { name: /deposit half the balance/i }))
+    await user.click(screen.getByRole('radio', { name: /deposit half into the savings reserve/i }))
 
     expect(live.textContent).toContain('$500,000,000')
     expect(live.textContent).toMatch(/surplus/i)
@@ -77,20 +77,17 @@ describe('the challenge page', () => {
     expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$1,000,000,000')
   })
 
-  it('records an unsourced choice without pretending it is free', async () => {
+  it('shows the working behind a calculated amount', async () => {
     const user = userEvent.setup()
     renderWithProviders(<Challenge />)
 
-    const larger = screen.getByRole('radio', { name: /fund a larger salary increase/i })
-    await user.click(larger)
+    await user.click(screen.getByRole('radio', { name: /increase by 3%/i }))
 
-    expect(larger).toBeChecked()
-    // The option states the absence of a figure rather than showing a zero.
-    expect(screen.getAllByText(/amount not yet sourced/i).length).toBeGreaterThan(0)
+    // A derived figure has to show its arithmetic, not just assert a number.
+    expect(screen.getAllByText(/how it is calculated/i).length).toBeGreaterThan(0)
+    expect(screen.getAllByText(/\$12,500,361,218/).length).toBeGreaterThan(0)
 
-    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$1,000,000,000')
-    const panel = screen.getByRole('region', { name: /running balance/i })
-    expect(within(panel).getByText(/not counted in this balance/i)).toBeInTheDocument()
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$624,989,163')
   })
 })
 
@@ -156,16 +153,16 @@ describe('keyboard use', () => {
     const user = userEvent.setup()
     renderWithProviders(<Challenge />)
 
-    const enacted = screen.getByRole('radio', { name: /keep the enacted policy/i })
+    const enacted = screen.getByRole('radio', { name: /fund as enacted/i })
     enacted.focus()
     expect(enacted).toHaveFocus()
 
     // Arrow keys move within a radio group and select as they go.
     await user.keyboard('{ArrowDown}')
 
-    const larger = screen.getByRole('radio', { name: /fund a larger salary increase/i })
-    expect(larger).toHaveFocus()
-    expect(larger).toBeChecked()
+    const increase = screen.getByRole('radio', { name: /increase by 3%/i })
+    expect(increase).toHaveFocus()
+    expect(increase).toBeChecked()
   })
 
   it('labels every option so a screen reader announces what it is', () => {
@@ -204,7 +201,7 @@ describe('resetting', () => {
     renderWithProviders(<Challenge />)
     await goToReserves(user)
 
-    await user.click(screen.getByRole('radio', { name: /deposit half the balance/i }))
+    await user.click(screen.getByRole('radio', { name: /deposit half into the savings reserve/i }))
     await user.click(screen.getByRole('button', { name: /reset to the enacted budget/i }))
     await user.click(screen.getByRole('button', { name: /keep my answers/i }))
 
@@ -217,7 +214,7 @@ describe('saved progress', () => {
     const user = userEvent.setup()
     const first = renderWithProviders(<Challenge />)
     await goToReserves(user)
-    await user.click(screen.getByRole('radio', { name: /deposit half the balance/i }))
+    await user.click(screen.getByRole('radio', { name: /deposit half into the savings reserve/i }))
 
     expect(window.localStorage.getItem(STORAGE_KEY)).toContain('deposit-half')
 
@@ -231,7 +228,7 @@ describe('saved progress', () => {
     const user = userEvent.setup()
     renderWithProviders(<Challenge />)
     await goToReserves(user)
-    await user.click(screen.getByRole('radio', { name: /deposit half the balance/i }))
+    await user.click(screen.getByRole('radio', { name: /deposit half into the savings reserve/i }))
 
     const stored = JSON.parse(window.localStorage.getItem(STORAGE_KEY)!)
     expect(Object.keys(stored).sort()).toEqual(['datasetVersion', 'savedAt', 'selections', 'version'])
