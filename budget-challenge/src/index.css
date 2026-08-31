@@ -1,0 +1,151 @@
+@import 'tailwindcss';
+
+/*
+ * Visual identity for The North Carolina Budget Challenge.
+ *
+ * Deep navy carries structure and headings; a mid Carolina blue carries
+ * interaction; warm gold is reserved for emphasis and for the geography motif.
+ * Gold is never used for body text — at the saturation that makes it warm it
+ * cannot meet contrast requirements — so a darkened gold is provided for the
+ * few places gold-toned text is wanted.
+ */
+@theme {
+  --color-navy-900: #0a2342;
+  --color-navy-800: #12365e;
+  --color-navy-700: #1b4a7a;
+  --color-navy-100: #dde5ee;
+
+  --color-carolina-600: #22688f;
+  --color-carolina-500: #2f7fb8;
+  --color-carolina-400: #4e9bcf;
+  --color-carolina-100: #e3f0f9;
+  --color-carolina-50: #f2f8fc;
+
+  --color-gold-700: #6f5413;
+  --color-gold-600: #8a6a18;
+  --color-gold-500: #c9a227;
+  --color-gold-200: #f0e0ac;
+  --color-gold-100: #fbf3dc;
+
+  --color-ink: #17202a;
+  --color-muted: #4d5866;
+  --color-line: #d3dbe4;
+  --color-canvas: #f6f8fb;
+
+  /* Status colours. Always paired with a word or icon, never used alone. */
+  --color-surplus: #1c6b47;
+  --color-surplus-bg: #e8f4ee;
+  --color-deficit: #9a2c1b;
+  --color-deficit-bg: #fbecea;
+  --color-balanced: #1b4a7a;
+  --color-balanced-bg: #e6eff7;
+
+  /*
+   * System fonts only. No webfont is loaded from a third party, because doing
+   * so would send every visitor's IP address to another company, and this
+   * project tells them nothing about them is collected.
+   */
+  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: Charter, 'Bitstream Charter', 'Iowan Old Style', Georgia, Cambria,
+    'Times New Roman', serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * A single visible focus treatment everywhere. Keyboard users need to be able
+   * to find themselves on every page, including on top of navy backgrounds,
+   * which is why the ring is gold rather than blue.
+   */
+  :focus-visible {
+    outline: 3px solid var(--color-gold-500);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    color: var(--color-navy-900);
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Numbers line up in columns when they are tabular. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer utilities {
+  .skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+  }
+
+  .skip-link:focus {
+    left: 0.5rem;
+    top: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--color-navy-900);
+    color: white;
+    border-radius: 0.375rem;
+  }
+}
+
+/*
+ * Anyone who has asked their system to reduce motion gets no transitions and no
+ * smooth scrolling. The balance panel still updates; it simply does not animate.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .print-break-inside-avoid {
+    break-inside: avoid;
+  }
+
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.75em;
+    word-break: break-all;
+  }
+}

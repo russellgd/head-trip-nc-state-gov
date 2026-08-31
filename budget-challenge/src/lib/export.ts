@@ -1,0 +1,158 @@
+/**
+ * Downloadable summaries of a completed challenge.
+ *
+ * Both formats carry the same thing: the baseline the session started from,
+ * every decision and the option chosen, and whether that option's dollars were
+ * scored. Exporting an unscored choice without saying so would let a figure of
+ * zero read as a finding rather than as an absence of data.
+ */
+import type { Dataset } from '../data/types'
+import { resolveChoice, type BudgetTotals, type Selections } from '../engine/budget'
+
+export interface ExportRow {
+  decisionId: string
+  category: string
+  decision: string
+  choiceId: string
+  choice: string
+  isEnacted: boolean
+  scored: boolean
+  verificationStatus: string
+  spendingRecurring: number
+  spendingNonrecurring: number
+  revenueRecurring: number
+  revenueNonrecurring: number
+  reserveRecurring: number
+  reserveNonrecurring: number
+}
+
+export function buildRows(dataset: Dataset, selections: Selections): ExportRow[] {
+  return dataset.decisions.map((decision) => {
+    const choice = resolveChoice(decision, selections)
+    return {
+      decisionId: decision.id,
+      category: decision.category,
+      decision: decision.title,
+      choiceId: choice.id,
+      choice: choice.label,
+      isEnacted: choice.isEnactedBaseline === true,
+      scored: choice.verification.scored,
+      verificationStatus: choice.verification.status,
+      spendingRecurring: choice.spending.recurring,
+      spendingNonrecurring: choice.spending.nonrecurring,
+      revenueRecurring: choice.revenue.recurring,
+      revenueNonrecurring: choice.revenue.nonrecurring,
+      reserveRecurring: choice.reserve.recurring,
+      reserveNonrecurring: choice.reserve.nonrecurring,
+    }
+  })
+}
+
+export function buildJson(
+  dataset: Dataset,
+  selections: Selections,
+  totals: BudgetTotals,
+): string {
+  return JSON.stringify(
+    {
+      product: 'The North Carolina Budget Challenge',
+      note: 'An independent educational project. Not a publication of the State of North Carolina.',
+      exportedAt: new Date().toISOString(),
+      datasetVersion: dataset.version,
+      fiscalYear: dataset.baseline.fiscalYear,
+      dataVerifiedThrough: dataset.baseline.verifiedThrough,
+      baselineIsProvisional: dataset.baseline.provisional,
+      baseline: {
+        netAppropriations: dataset.baseline.netAppropriations,
+        totalAvailability: dataset.baseline.totalAvailability,
+        unappropriatedBalance: dataset.baseline.unappropriatedBalance,
+      },
+      results: {
+        remainingBalance: totals.remainingBalance,
+        structuralChange: totals.structuralChange,
+        spendingIncreases: totals.spendingIncreases,
+        spendingReductions: totals.spendingReductions,
+        revenueIncreases: totals.revenueIncreases,
+        revenueReductions: totals.revenueReductions,
+        reserveDeposits: totals.reserveDeposits,
+        reserveWithdrawals: totals.reserveWithdrawals,
+        recurring: {
+          spending: totals.spending.recurring,
+          revenue: totals.revenue.recurring,
+          reserve: totals.reserve.recurring,
+        },
+        nonrecurring: {
+          spending: totals.spending.nonrecurring,
+          revenue: totals.revenue.nonrecurring,
+          reserve: totals.reserve.nonrecurring,
+        },
+        decisionsChanged: totals.changedDecisionIds.length,
+        decisionsChangedButNotScored: totals.unscoredSelectionIds,
+      },
+      byCategory: totals.byCategory,
+      choices: buildRows(dataset, selections),
+    },
+    null,
+    2,
+  )
+}
+
+const CSV_HEADERS: Array<[keyof ExportRow, string]> = [
+  ['decisionId', 'Decision ID'],
+  ['category', 'Budget area'],
+  ['decision', 'Decision'],
+  ['choiceId', 'Option ID'],
+  ['choice', 'Option chosen'],
+  ['isEnacted', 'Is the enacted policy'],
+  ['scored', 'Counted in the balance'],
+  ['verificationStatus', 'Verification status'],
+  ['spendingRecurring', 'Spending change, recurring'],
+  ['spendingNonrecurring', 'Spending change, one-time'],
+  ['revenueRecurring', 'Revenue change, recurring'],
+  ['revenueNonrecurring', 'Revenue change, one-time'],
+  ['reserveRecurring', 'Reserve change, recurring'],
+  ['reserveNonrecurring', 'Reserve change, one-time'],
+]
+
+/** Quote a CSV field, doubling any embedded quotes. */
+function csvCell(value: string | number | boolean): string {
+  const text = String(value)
+  return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text
+}
+
+export function buildCsv(
+  dataset: Dataset,
+  selections: Selections,
+  totals: BudgetTotals,
+): string {
+  const lines: string[] = []
+
+  lines.push(csvCell('The North Carolina Budget Challenge'))
+  lines.push(csvCell(`Fiscal year,${dataset.baseline.fiscalYear}`))
+  lines.push(`Data verified through,${csvCell(dataset.baseline.verifiedThrough)}`)
+  lines.push(`Dataset version,${csvCell(dataset.version)}`)
+  lines.push(`Starting unappropriated balance,${totals.startingBalance}`)
+  lines.push(`Remaining balance,${totals.remainingBalance}`)
+  lines.push(`Change in recurring position,${totals.structuralChange}`)
+  lines.push('')
+
+  lines.push(CSV_HEADERS.map(([, label]) => csvCell(label)).join(','))
+  for (const row of buildRows(dataset, selections)) {
+    lines.push(CSV_HEADERS.map(([key]) => csvCell(row[key])).join(','))
+  }
+
+  return lines.join('\n')
+}
+
+/** Hand the visitor a file. Nothing leaves the browser. */
+export function downloadFile(filename: string, contents: string, mimeType: string): void {
+  const blob = new Blob([contents], { type: `${mimeType};charset=utf-8` })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+  URL.revokeObjectURL(url)
+}

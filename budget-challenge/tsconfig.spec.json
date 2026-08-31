@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.spec.tsbuildinfo",
+    "composite": true,
+    // Tests read the source tree from disk, so they need the Node types the
+    // browser bundle deliberately does not get.
+    "types": ["vite/client", "node"],
+    "noEmit": true
+  },
+  "include": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/test", "src/**/*.ts", "src/**/*.tsx"]
+}

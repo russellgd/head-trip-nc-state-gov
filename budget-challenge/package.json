@@ -1,0 +1,46 @@
+{
+  "name": "nc-budget-challenge",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "oxlint src",
+    "typecheck": "tsc -b --noEmit",
+    "check": "npm run typecheck && npm run lint && npm run test",
+    "verify:a11y": "node scripts/a11y.mjs",
+    "verify:keyboard": "node scripts/keyboard.mjs",
+    "verify:screenshots": "node scripts/screenshots.mjs ./screenshots"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.3",
+    "recharts": "^3.10.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.6",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.1.0",
+    "@vitest/coverage-v8": "^4.1.11",
+    "axe-core": "^4.13.0",
+    "jsdom": "^30.0.1",
+    "oxlint": "^1.79.0",
+    "playwright": "^1.62.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~6.0.2",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
+  },
+  "description": "The North Carolina Budget Challenge: an independent educational simulation of the FY 2026-27 General Fund."
+}
