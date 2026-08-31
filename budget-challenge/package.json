@@ -17,7 +17,8 @@
     "verify:keyboard": "node scripts/keyboard.mjs",
     "verify:screenshots": "node scripts/screenshots.mjs ./screenshots",
     "report:content": "vite-node src/tools/contentReport.ts",
-    "report:replacements": "vite-node src/tools/replacementInventory.ts"
+    "report:replacements": "vite-node src/tools/replacementInventory.ts",
+    "report:ledger": "vite-node src/tools/ledgerCheck.ts"
   },
   "dependencies": {
     "react": "^19.2.8",
