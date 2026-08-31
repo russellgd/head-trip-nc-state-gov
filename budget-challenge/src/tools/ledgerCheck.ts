@@ -47,6 +47,39 @@ const SL_2026_61: Row[] = [
   { section: '4.4(2)', what: 'DHHS Community Foundation of NC East', kind: 'nonrecurring', delta: -1_500_000 },
 ]
 
+/**
+ * S.L. 2026-42 provisions that change the General Fund total, excluding the
+ * §6.2 directed-grant schedule, which is handled separately below because its
+ * effect turns on a question the act does not answer.
+ */
+const SL_2026_42: Row[] = [
+  { section: '2.5(1)', what: 'UNC BOG 16022, MAHEC at UNC-Chapel Hill', kind: 'recurring', delta: 1_000_000 },
+  { section: '2.5(1)', what: 'UNC BOG 16022, MAHEC at UNC-Chapel Hill', kind: 'nonrecurring', delta: 2_123_000 },
+  { section: '2.5(2)', what: 'UNC BOG 16011, Healthcare Workforce Programs', kind: 'recurring', delta: -1_000_000 },
+  { section: '2.5(2)', what: 'UNC BOG 16011, Healthcare Workforce Programs', kind: 'nonrecurring', delta: -500_000 },
+  { section: '3.5(2)', what: 'DHHS, Boys and Girls Homes directed grant', kind: 'nonrecurring', delta: -500_000 },
+  { section: '3.6', what: "DHHS, Dolly Parton's Imagination Library", kind: 'nonrecurring', delta: -1_000_000 },
+]
+
+/**
+ * S.L. 2026-42 §6.2, enacting SECTION 26.10.
+ *
+ * (a) allocates eight new directed grants "of the funds appropriated in this
+ * act to OSBM - Special Appropriations", which is a carve-out of an existing
+ * appropriation rather than new money. (b) amends existing directed grants,
+ * reducing twelve and increasing two.
+ *
+ * The act never says whether (b)'s reductions reduce the OSBM Special
+ * Appropriations line or merely free capacity within it for (a). That question
+ * is worth the amount below and cannot be settled from the statutory text.
+ */
+const SECTION_26_10_NEW_GRANTS = [1_000_000, 2_500_000, 500_000, 200_000, 500_000, 200_000, 100_000, 10_000]
+const SECTION_26_10_INCREASES = [500_000, 100_000]
+const SECTION_26_10_REDUCTIONS = [
+  100_000, 1_000_000, 500_000, 2_123_000, 200_000, 250_000, 250_000, 1_000_000, 100_000, 200_000,
+  500_000, 10_000,
+]
+
 const ENACTED_NET_APPROPRIATIONS = 34_374_286_763
 const ENACTED_UNAPPROPRIATED = 1_000_000_000
 
@@ -80,6 +113,37 @@ console.log(`  net change        recurring ${usd(incR + redR).padStart(16)}`)
 console.log(`                 nonrecurring ${usd(incN + redN).padStart(16)}`)
 console.log(`                        total ${usd(net).padStart(16)}`)
 
-console.log('\nIllustration only — S.L. 2026-42 is not yet totalled, so these are NOT the anchors:')
-console.log(`  net appropriations would be  ${usd(ENACTED_NET_APPROPRIATIONS + net)}`)
-console.log(`  unappropriated balance would be ${usd(ENACTED_UNAPPROPRIATED - net)}`)
+const sum = (xs: number[]): number => xs.reduce((a, b) => a + b, 0)
+
+const net42Base = SL_2026_42.reduce((a, r) => a + r.delta, 0)
+const s2610New = sum(SECTION_26_10_NEW_GRANTS)
+const s2610Inc = sum(SECTION_26_10_INCREASES)
+const s2610Red = sum(SECTION_26_10_REDUCTIONS)
+const s2610NetIfReal = s2610Inc - s2610Red
+
+console.log('\n\nS.L. 2026-42 reconciliation check\n')
+console.log(`  rows outside §6.2           ${SL_2026_42.length}`)
+console.log(`  net outside §6.2            ${usd(net42Base).padStart(16)}`)
+console.log(`  §6.2 new grants (carve-out) ${usd(s2610New).padStart(16)}`)
+console.log(`  §6.2 grant increases        ${usd(s2610Inc).padStart(16)}`)
+console.log(`  §6.2 grant reductions       ${usd(-s2610Red).padStart(16)}`)
+
+const readingA = net42Base
+const readingB = net42Base + s2610NetIfReal
+
+console.log('\n  Reading A — §26.10 redistributes within an unchanged appropriation line:')
+console.log(`    S.L. 2026-42 net          ${usd(readingA).padStart(16)}`)
+console.log('  Reading B — §26.10(b) reductions lower the line, (a) is a carve-out of the rest:')
+console.log(`    S.L. 2026-42 net          ${usd(readingB).padStart(16)}`)
+console.log(`  The unresolved question is worth ${usd(Math.abs(readingA - readingB))}.`)
+
+console.log('\n\nCombined, and why this is not yet an anchor\n')
+for (const [label, net42] of [['A', readingA], ['B', readingB]] as Array<[string, number]>) {
+  const combined = net + net42
+  console.log(`  Reading ${label}: combined net change ${usd(combined).padStart(16)}`)
+  console.log(`             net appropriations   ${usd(ENACTED_NET_APPROPRIATIONS + combined)}`)
+  console.log(`             unappropriated       ${usd(ENACTED_UNAPPROPRIATED - combined)}`)
+}
+console.log('\n  NOT AN ANCHOR. Two readings stand, and S.L. 2026-42 §8.2 grants a 13% salary')
+console.log('  increase to certain SBI and ALE officers with no amount stated. A controlling')
+console.log('  post-corrections total is required; neither act contains one.')

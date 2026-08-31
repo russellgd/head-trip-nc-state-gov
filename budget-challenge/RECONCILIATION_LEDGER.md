@@ -138,48 +138,76 @@ hand-added and was wrong by $1,000,000 on the nonrecurring line; the check exist
 
 ---
 
-## 2. S.L. 2026-42 (House Bill 56) — partially resolved
+## 2. S.L. 2026-42 (House Bill 56) — resolved except for one structural question
 
 The earlier pass treated this act as fiscally inert because it contains no sentence of the form
 "there is appropriated from the General Fund". It nonetheless adjusts the Part II totals by its own
 Section 12.1, and it changes allocations in both directions.
 
-### 2a. Rows established
+### 2a. Provisions that change the General Fund total
 
-| § | Agency / programme | R/NR | Delta | Type | Notes |
-| --- | --- | --- | ---: | --- | --- |
-| 2.5(1) | UNC BOG, Budget Code 16022 — MAHEC at UNC-Chapel Hill | R | **+1,000,000** | New funding | |
-| 2.5(1) | UNC BOG, Budget Code 16022 — MAHEC at UNC-Chapel Hill | NR | **+2,123,000** | New funding | |
-| 2.5(2) | UNC BOG, Budget Code 16011 — Healthcare Workforce Programs Expansion | R | **−1,000,000** | Reduction | Offsets 2.5(1) recurring exactly |
-| 2.5(2) | UNC BOG, Budget Code 16011 — Healthcare Workforce Programs Expansion | NR | **−500,000** | Reduction | |
-| 3.6 | DHHS — Dolly Parton's Imagination Library (Cttee Rpt p. C31, Item 73) | NR | **−1,000,000** | Reduction | |
-| 3.5(2) | DHHS — Boys and Girls Homes, Carolyn's Kaleidoscope (p. C110, Item 298) | NR | **−500,000** | Reduction | Paired with 3.5(1) |
+| § | Agency / programme | R/NR | Delta | Type | Source | Cond. | Part II | Avail. |
+| --- | --- | --- | ---: | --- | --- | --- | --- | --- |
+| 2.5(1) | UNC BOG, Budget Code 16022 — Mountain Area Health Education Center | R | **+1,000,000** | New funding | GF balance | No | Yes | No |
+| 2.5(1) | UNC BOG, Budget Code 16022 — Mountain Area Health Education Center | NR | **+2,123,000** | New funding | GF balance | No | Yes | No |
+| 2.5(2) | UNC BOG, Budget Code 16011 — Healthcare Workforce Programs Expansion | R | **−1,000,000** | Reduction | Existing appropriation | No | Yes | No |
+| 2.5(2) | UNC BOG, Budget Code 16011 — Healthcare Workforce Programs Expansion | NR | **−500,000** | Reduction | Existing appropriation | No | Yes | No |
+| 3.5(2) | DHHS — Boys and Girls Homes, Carolyn's Kaleidoscope (Cttee Rpt p. C110, Item 298) | NR | **−500,000** | Reduction | Existing appropriation | No | Yes | No |
+| 3.6 | DHHS — Dolly Parton's Imagination Library (p. C31, Item 73) | NR | **−1,000,000** | Reduction | Existing appropriation | No | Yes | No |
 
-### 2b. Rows established as net-zero
+**Subtotal outside §6.2: recurring $0; nonrecurring +$123,000.**
+
+The recurring pair in §2.5 offsets exactly: the MAHEC increase is funded by the Healthcare
+Workforce Programs reduction. The nonrecurring MAHEC increase of $2,123,000 matches, to the dollar,
+the reduction of the Guilford Technical Community College Aviation Center directed grant in §6.2
+below — money moved from OSBM directed grants to the UNC Board of Governors.
+
+### 2b. Provisions with no effect on the General Fund total
 
 | § | What it does | Why the delta is zero |
 | --- | --- | --- |
-| 2.3(1)(2) | DPI State Textbook Fund Sunset: **requirements** reduction and **receipts** reduction each decreased by $836,594 recurring; revised reduction $59,409,859 | Requirements and receipts move together |
+| 1.2 | Fair Bluff riverwalk transfer reduced $5,000,000 → $4,500,000 | Transfer out of **Budget Code 24558, the Hurricane Florence Disaster Recovery Fund** (Committee Report Part 5), not a General Fund appropriation |
+| 3.5(1) | State Controller transfers $500,000 NR to OSBM for the Boys and Girls Homes Lake Waccamaw campus | Same fund. The purpose is **re-funded from the Florence Disaster Recovery Fund** while the General Fund grant is reduced by the same amount in §3.5(2). This is the "reserve-funded appropriation that should not be charged again" case, in reverse: the General Fund side is a genuine reduction, and the disaster-fund side must not be added back |
+| 2.3(1)(2) | DPI State Textbook Fund Sunset: **requirements** and **receipts** reductions each decreased by $836,594 recurring; revised reduction $59,409,859 | Requirements and receipts move together |
 | 4.6(1)(2) | DNCR: Complete the Trails Fund −$5,516,000 NR; Great Trails Fund +$5,516,000 NR | Exactly offsetting |
 | 4.7 | $650,000 NR moved from the Great Trails Fund to OSBM for three directed grants | Within the General Fund. **Repealed by S.L. 2026-61 §5.15(a)**, so it does not stand |
-| 2.7 | BRIGHT Institute name corrected | No amount changed |
-| 1.1(a)(b) | Helene fund transfer sources corrected | Transfer sourcing |
-| 1.2 | Fair Bluff riverwalk transfer reduced $5,000,000 → $4,500,000 | Transfer from Budget Code 24558 / Fund 206842, **not a General Fund appropriation** — see open item |
-| 3.5(1) | State Controller transfers $500,000 NR from Budget Code 24558 to OSBM for a directed grant | Same open question on the source code |
+| 9.1 | SCIF project authorisations raised: DPS23-3 to $63,785,000, DPS23-7 to $84,103,000 | **State Capital and Infrastructure Fund** authorisations. SCIF is funded by a reservation of revenue above the appropriation line and is not a General Fund net appropriation |
+| 1.1, 2.6, 2.7, 2.8, 3.1–3.4, 4.1–4.5, 4.8, 5.1, 5.2, 6.1, 8.1, 8.3, 11.2, 11.3 | Statutory amendments, recipient and purpose clarifications, effective dates | No appropriation amount changed |
 
-### 2c. Open — the block that must be totalled
+### 2c. §6.2 (SECTION 26.10) — totalled, but its effect is ambiguous
 
-**§6.2, enacting SECTION 26.10 of S.L. 2026-41 ("OSBM Directed Grant Changes"), pages 13–14.**
-This is a long schedule that creates new directed grants (Camp Grier $2,500,000; Town of
-Yanceyville $500,000; Lenoir County Sheriff $200,000; Charlotte Healthcare Coalition $500,000; Care
-Ring $200,000; Southeastern Healthcare $100,000; Cabarrus County $10,000, and others) **and**
-reduces at least twenty-one existing directed grants (Greensboro water/wastewater −$1,000,000;
-Guilford Technical CC Aviation Center −$2,123,000; Greensboro Science Center −$500,000; Diaper Bank
-−$500,000; Town of Yanceyville airport −$1,000,000; and more).
+| Component | Amount |
+| --- | ---: |
+| (a) Eight new directed grants | +$5,010,000 |
+| (b) Two directed-grant increases | +$600,000 |
+| (b) Twelve directed-grant reductions | −$6,233,000 |
 
-It has not been totalled here. Doing it correctly means transcribing every subdivision on both
-sides and determining whether the schedule is self-funding or a net change. Until that is done, no
-net figure for S.L. 2026-42 can be stated.
+Subdivisions (2), (15)–(20) and (22)–(28) change recipients, titles or permitted purposes without
+changing an amount. Subdivisions (3) and (4) offset exactly within Craven County. Subdivision (21)
+removes $10,000 from a Rowan County grant and (a)(8) gives $10,000 to Cabarrus County for the same
+volunteer fire department, so that pair offsets too.
+
+**The act does not say whether (b)'s reductions lower the appropriation or free capacity within
+it.** Subsection (a) allocates its grants "of the funds appropriated in this act to the Office of
+State Budget and Management – Special Appropriations", which is a carve-out of an existing
+appropriation, not new money. Whether the reductions in (b) shrink that line, or simply make room
+inside it, decides the whole section:
+
+| Reading | §26.10 net | S.L. 2026-42 net |
+| --- | ---: | ---: |
+| **A** — §26.10 redistributes within an unchanged appropriation line | $0 | **+$123,000** |
+| **B** — (b)'s reductions lower the line; (a) is a carve-out of the remainder | −$5,633,000 | **−$5,510,000** |
+
+The two readings differ by **$5,633,000**. Nothing in either act settles it, and the section does
+not self-balance under either: (a) totals $5,010,000 against a net reduction in (b) of $5,633,000,
+a difference of $623,000 that is not accounted for within the section.
+
+### 2d. One provision that cannot be quantified at all
+
+**§8.2** grants sworn law enforcement employees of the State Bureau of Investigation and Alcohol Law
+Enforcement whose salaries are not set under §41.17(a) a **13% salary increase** in FY 2026-27. No
+dollar amount is stated, and the act does not say whether it is absorbed within existing salary
+appropriations or requires more. It needs a fiscal note or the certified budget.
 
 ---
 
@@ -190,32 +218,51 @@ net figure for S.L. 2026-42 can be stated.
 | 1 | Gross new General Fund appropriations (S.L. 2026-61) | **+$65,029,935** |
 | 2 | Gross appropriation reductions (S.L. 2026-61) | **−$6,142,433** |
 | 3 | Net change to Part II appropriations (S.L. 2026-61) | **+$58,887,502** |
-| 3a | Net change to Part II appropriations (S.L. 2026-42) | **not yet determined** — §6.2 outstanding |
+| 3a | Net change to Part II appropriations (S.L. 2026-42) | **+$123,000** (Reading A) or **−$5,510,000** (Reading B) |
 | 4 | Change to General Fund availability | **none identified in either act** |
-| 5 | Reconciled net appropriations | **cannot be stated** until 3a resolves |
-| 6 | Reconciled unappropriated balance | **cannot be stated** until 3a resolves |
+| 5 | Reconciled net appropriations | $34,433,297,265 (A) or $34,427,664,265 (B) |
+| 6 | Reconciled unappropriated balance | $940,989,498 (A) or $946,622,498 (B) |
 
-If S.L. 2026-42 were to prove net-neutral — which it may well be, since its directed-grant schedule
-looks self-funding — the anchors would become net appropriations **$34,433,174,265** and an
-unappropriated balance of **$941,112,498**. **That is an illustration of the arithmetic, not a
-result**, and it must not be used until §6.2 is totalled. `npm run report:ledger` prints it with the
-same warning attached.
+Neither pair may be used. `npm run report:ledger` prints both with the same warning attached.
+
+**On availability (item 4).** Nothing in either act changes General Fund availability. S.L. 2026-61
+Part XII amends a local sales tax effective date and vapor product licensing without a stated
+General Fund revenue effect; S.L. 2026-42 Part XI likewise. The reservations of revenue in S.L.
+2026-41 §2.2(a) are untouched except for the net-zero adjustment in S.L. 2026-61 §1.2. So the
+availability anchor of $35,374,286,763 stands, and every change above falls on the appropriation
+side, reducing the unappropriated balance dollar for dollar.
 
 ---
 
 ## 4. What is still open
 
-1. **S.L. 2026-42 §6.2 (SECTION 26.10)** must be transcribed and totalled in both directions.
-2. **Committee Report line items** referenced but not quantified in the acts: the Farm to School
-   amount (p. B22, Item 75) for S.L. 2026-61 §5.1, and confirmation of the base amounts behind
-   several reductions. The Committee Report is now available and these can be looked up.
-3. **Budget Code 24558 / Budget Fund 206842** must be identified. If it is a disaster reserve rather
-   than a General Fund code, the Fair Bluff and Boys and Girls Homes transfers do not touch the
-   General Fund total; if it is General Fund, two rows change.
-4. **A controlling check.** Neither act states a revised total. The OSBM certified budget, or a
-   Fiscal Research Division consolidated post-corrections summary, would settle the whole exercise
-   in one line. Neither is available: `osbm.nc.gov` is blocked by this environment's network policy,
-   so the certified budget would have to be uploaded as a file.
-5. **Whether S.L. 2026-52 and S.L. 2026-54** — cited in S.L. 2026-61 §§7.19 and 7.21 as the statutes
-   being implemented — carry appropriations of their own. They are outside the scope named in the
-   brief, but they are referenced by provisions inside it.
+The ledger has been carried as far as the statutory text allows. Three things remain, and the first
+two cannot be resolved by reading the acts again.
+
+1. **The §26.10 structural question**, worth $5,633,000. Requires a document showing the OSBM –
+   Special Appropriations line before and after corrections.
+2. **S.L. 2026-42 §8.2**, the 13% SBI and ALE salary increase, with no amount stated.
+3. **A controlling post-corrections total.** Both acts say only that the Part II totals "are
+   adjusted in accordance with the provisions of this act" and neither states a revised figure.
+
+### What would close it
+
+The **OSBM certified budget for FY 2026-27** would settle all three at once: it is produced after
+the corrections and states agency-level figures on a post-corrections basis. It is not available
+here — `osbm.nc.gov` is blocked by this environment's network policy, so it would need to be
+uploaded as a file. A **Fiscal Research Division post-corrections summary** would do the same.
+
+The Governor's Recommended Budget, now in hand, cannot serve this purpose: it is dated April 2026
+and predates both the enacted act and the corrections. Its role in this project is to supply
+costed alternatives, not a baseline.
+
+### Resolved since the first draft
+
+- **Budget Code 24558 identified** as the Hurricane Florence Disaster Recovery Fund, which settles
+  the two transfer rows in S.L. 2026-42 §§1.2 and 3.5(1).
+- **Farm to School quantified** at $2,500,000 nonrecurring (Committee Report p. B22, Item 75,
+  Budget Fund 101180). S.L. 2026-61 §5.1 moves it from Public Instruction to Agriculture and
+  Consumer Services in the same amount: no change to the Part II total, but a $2,500,000 shift
+  between two budget areas that would matter to the area totals if they were rebuilt.
+- **§6.2 totalled** in both directions, with the internal offsets identified.
+- **SCIF authorisation changes** established as outside the General Fund net appropriation.
