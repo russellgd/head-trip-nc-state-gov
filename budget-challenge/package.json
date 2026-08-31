@@ -16,7 +16,8 @@
     "verify:a11y": "node scripts/a11y.mjs",
     "verify:keyboard": "node scripts/keyboard.mjs",
     "verify:screenshots": "node scripts/screenshots.mjs ./screenshots",
-    "report:content": "vite-node src/tools/contentReport.ts"
+    "report:content": "vite-node src/tools/contentReport.ts",
+    "report:replacements": "vite-node src/tools/replacementInventory.ts"
   },
   "dependencies": {
     "react": "^19.2.8",

@@ -187,15 +187,39 @@ in `DATA_NOTES.md`. Guessing the split defeats the purpose of tracking them sepa
 
 ### Choosing a verification status
 
+**Arithmetic status** — can the figure be traced?
+
 | Status | Use when | Scored |
 | --- | --- | --- |
 | `verified` | The amount is stated in a document you have read, cited in `sources` | yes |
-| `derived` | You calculated it from a verified figure; you must fill in `derivation` showing the arithmetic | yes |
+| `derived` | You calculated it from a verified figure; fill in `derivation` showing the arithmetic | yes |
 | `pending` | You do not have an official figure | no |
-| `illustrative` | A round number to make a teaching point, not an estimate | no |
 
-The validator rejects `scored: true` on a `pending` or `illustrative` option, so a mistake here fails
-the tests rather than reaching a visitor.
+**Provenance** — did anyone propose the policy? This is a separate field, and it is the one that
+governs how the option is labelled to a reader.
+
+| Provenance | Use when |
+| --- | --- |
+| `enacted` | It is what the act does. Only the baseline option. |
+| `documented` | The dollar impact equals an amount an official document states |
+| `proposal` | It appears in an official document that both proposes it and prices it |
+| `illustrative` | You chose the magnitude. Requires `derivation`, `implementationNote`, and `replacementNeeded`. |
+
+The validator rejects `scored: true` on a `pending` option, and rejects an `illustrative` option
+missing any of its three required fields, so a mistake here fails the tests rather than reaching a
+visitor.
+
+### Converting an illustrative scenario into a documented proposal
+
+This is the main data task once a document with costed alternatives arrives. Find the option in
+`REPLACEMENT_INVENTORY.md`, which names what is needed, then:
+
+1. Replace `illustrativeOption({...})` with `verifiedOption({...})` from the same helpers file.
+2. Set the amounts to the figures the document states.
+3. Set `provenance: 'proposal'` on the choice.
+4. Cite the document and section in `sources`.
+5. Drop `implementationNote` and `replacementNeeded`; they apply only to illustrative options.
+6. Regenerate the inventory: `npm run report:replacements > REPLACEMENT_INVENTORY.md`.
 
 ---
 

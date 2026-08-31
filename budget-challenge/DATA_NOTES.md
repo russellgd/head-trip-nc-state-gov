@@ -61,16 +61,26 @@ well as here.
 alternative to itself.** No document that prices alternatives — the Governor's Recommended Budget
 above all — was available to this build. So the alternatives fall into two classes:
 
-**Firm (`verified`, 42 options).** Options built on the reservations of revenue in Section 2.2(a),
-and on the unappropriated balance. Keeping, halving, or dropping a reservation moves an amount the
-act prints to the dollar. "Reserve nothing for the Medicaid Contingency Reserve" frees exactly
-$333,000,000 because that is exactly what the act reserves.
+Every option carries a **provenance**, recorded in the data, shown on screen, and carried through
+the export and the printed report. Provenance is a separate question from whether the arithmetic is
+traceable, and conflating the two is how a simulation ends up implying that a scenario it invented
+is a proposal somebody made.
 
-**Scaled (`derived`, 46 options).** Options that change an agency's funding are expressed as a
-percentage of the enacted appropriation — 3%, 5%, 10%, or 20% depending on the size of the line.
-The dollar figure is exact arithmetic on a sourced number, and every option shows its working. **The
-percentage is this project's choice, not a proposal anyone made.** Nothing in the application should
-be read as saying the General Assembly, the Governor, or any other party proposed these changes.
+| Provenance | Options | What it means |
+| --- | ---: | --- |
+| **Enacted policy** | 30 | What S.L. 2026-41 actually does. The reference point. |
+| **Documented alternative** | 12 | The dollar impact equals an amount an official document states. Not making a reservation the act makes frees exactly what the act reserves: "reserve nothing for the Medicaid Contingency Reserve" frees exactly $333,000,000. The magnitude is documented; this does not assert that anyone proposed it. |
+| **Published proposal** | 0 | An alternative published in an official document with an official fiscal estimate behind it. None yet. |
+| **Illustrative allocation scenario** | 46 | A percentage change constructed for this exercise — 3%, 5%, 10%, or 20% depending on the size of the line. The arithmetic is exact and shown. **No North Carolina official or institution proposed it**, and it must never be described as a policy proposal. |
+
+Every illustrative option also carries, on its own card, a note on what a change of that shape would
+actually run into: appropriations are distributed by statutory formulas and allotments, parts are
+committed to entitlements, contracts, debt, or federally required matching, and some lines cannot be
+changed without amending statute. **A uniform percentage is an arithmetic device, not an
+implementable plan**, and nothing in the application implies otherwise.
+
+`REPLACEMENT_INVENTORY.md` lists all 46 illustrative options and the official proposal or fiscal
+estimate that would replace each.
 
 If you use this in a course, that distinction is worth ten minutes of discussion on its own: the
 difference between a number that is *sourced* and a scenario that is *plausible*.

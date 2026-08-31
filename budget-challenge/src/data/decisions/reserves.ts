@@ -14,7 +14,7 @@ import type { Decision } from '../types'
 import { BASELINE } from '../baseline'
 import { RESERVATIONS } from '../enacted'
 import { cite } from '../sources'
-import { derivedOption, enactedOption, usd, verifiedOption } from './helpers'
+import { enactedOption, illustrativeOption, usd, verifiedOption } from './helpers'
 
 const reservation = (id: string) => {
   const found = RESERVATIONS.find((r) => r.id === id)
@@ -67,7 +67,7 @@ function reservationDecision(input: {
         affects: input.affects,
         benefits: input.keepBenefits ?? [],
       }),
-      derivedOption({
+      illustrativeOption({
         id: 'halve',
         label: `Reserve half: ${usd(half)}`,
         description: `Set aside ${usd(half)} instead of ${usd(
@@ -79,7 +79,14 @@ function reservationDecision(input: {
         tradeoffs: input.reduceTradeoffs,
         derivation: `Half of the enacted reservation: ${usd(r.amount)} ÷ 2 = ${usd(
           half,
-        )}. Reserving that much rather than the full amount frees ${usd(half)}.`,
+        )}. Reserving that much rather than the full amount frees ${usd(
+          half,
+        )}. Halving is a scale chosen for this exercise; no North Carolina official or institution proposed this amount.`,
+        implementationNote:
+          r.kind === 'statutory'
+            ? `This reservation is required by statute. Reserving a different amount would take an amendment to the law that directs it, not a budget decision alone, and the programmes the fund supports carry commitments that do not scale with the reservation.`
+            : `Reserving half would leave the purpose this fund exists for only partly covered. What the shortfall meant in practice would depend on what the fund was called on to do during the year, and the reserve's governing subsection sets conditions on how the money may be released.`,
+        replacementNeeded: `A costed alternative to the ${r.name} for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation.`,
         sources,
       }),
       verifiedOption({
@@ -129,7 +136,7 @@ export const RESERVE_DECISIONS: Decision[] = [
           'The state’s position if revenue comes in below the consensus forecast',
         ],
       }),
-      derivedOption({
+      illustrativeOption({
         id: 'deposit-half',
         label: `Deposit half into the Savings Reserve: ${usd(HALF_UNAPPROPRIATED)}`,
         description:
@@ -146,7 +153,11 @@ export const RESERVE_DECISIONS: Decision[] = [
         ],
         derivation: `Half of the enacted unappropriated balance: ${usd(UNAPPROPRIATED)} ÷ 2 = ${usd(
           HALF_UNAPPROPRIATED,
-        )}.`,
+        )}. Halving is a scale chosen for this exercise; no North Carolina official or institution proposed this amount.`,
+        implementationNote:
+          'A transfer to the Savings Reserve is governed by G.S. 143C-4-2, which sets conditions on deposits and on when money may be withdrawn. Choosing an amount is the simple part; the constraint is that money placed in the reserve is not readily available again within the year.',
+        replacementNeeded:
+          'A costed proposal for the disposition of the unappropriated balance from the Governor’s Recommended Budget, or a fiscal note on a bill directing a transfer.',
         sources: BALANCE_SOURCES,
       }),
       verifiedOption({

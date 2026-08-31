@@ -7,7 +7,13 @@ import { buildCsv, buildJson, downloadFile } from '../lib/export'
 import { describeDelta, formatDelta, formatDollars } from '../lib/format'
 import { Callout } from '../components/Callout'
 import { TableScroll } from '../components/TableScroll'
-import { VerificationBadge } from '../components/VerificationBadge'
+import {
+  PROVENANCE,
+  PROVENANCE_MEANING,
+  ProvenanceBadge,
+  UnsourcedBadge,
+} from '../components/ProvenanceBadge'
+import type { Provenance } from '../data/types'
 
 const HEADLINE = {
   balanced: 'Your budget balances exactly.',
@@ -61,6 +67,14 @@ export function Results() {
 
   const changed = DATASET.decisions.filter((d) => totals.changedDecisionIds.includes(d.id))
 
+  const byProvenance = DATASET.decisions.reduce<Record<string, number>>((counts, decision) => {
+    const { provenance } = resolveChoice(decision, selections)
+    counts[provenance] = (counts[provenance] ?? 0) + 1
+    return counts
+  }, {})
+
+  const illustrativeCount = byProvenance.illustrative ?? 0
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6">
       <h1 className="font-serif text-3xl font-bold sm:text-4xl">Your Budget</h1>
@@ -68,6 +82,47 @@ export function Results() {
         {baseline.fiscalYear} General Fund &middot; data verified through {baseline.verifiedThrough}{' '}
         &middot; dataset version {DATASET.version}
       </p>
+
+      <section
+        aria-labelledby="provenance-notice"
+        className="mt-6 rounded-lg bg-white p-5 shadow-sm ring-1 ring-gold-500 print-break-inside-avoid"
+      >
+        <h2 id="provenance-notice" className="font-serif text-lg font-semibold">
+          How to read these choices
+        </h2>
+        <p className="mt-2 leading-relaxed text-ink">
+          Some choices reflect enacted or formally proposed policies. Others are illustrative
+          percentage changes designed to demonstrate budget trade-offs.{' '}
+          <strong>
+            Illustrative choices should not be interpreted as proposals made by any North Carolina
+            official or institution.
+          </strong>
+        </p>
+        <p className="mt-2 leading-relaxed text-ink">
+          {illustrativeCount === 0
+            ? 'None of the options you selected is an illustrative scenario.'
+            : `${illustrativeCount} of the ${DATASET.decisions.length} options you selected ${
+                illustrativeCount === 1 ? 'is an illustrative scenario' : 'are illustrative scenarios'
+              }. Each is marked below.`}
+        </p>
+
+        <dl className="mt-4 grid gap-3 sm:grid-cols-3">
+          {(['enacted', 'documented', 'illustrative'] as Provenance[]).map((provenance) => (
+            <div key={provenance} className={`border-l-4 pl-3 ${PROVENANCE[provenance].stripe}`}>
+              <dt className="text-sm font-semibold text-navy-900">
+                <span aria-hidden="true">{PROVENANCE[provenance].glyph} </span>
+                {PROVENANCE[provenance].label}
+                <span className="ml-1 font-normal text-muted">
+                  ({byProvenance[provenance] ?? 0} selected)
+                </span>
+              </dt>
+              <dd className="mt-1 text-xs leading-relaxed text-muted">
+                {PROVENANCE_MEANING[provenance]}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </section>
 
       {/* The result describes the budget, never the person who built it. */}
       <section
@@ -299,9 +354,9 @@ export function Results() {
             return (
               <li
                 key={decision.id}
-                className={`rounded-lg p-4 ring-1 print-break-inside-avoid ${
-                  isEnacted ? 'bg-white ring-line' : 'bg-carolina-50 ring-carolina-400'
-                }`}
+                className={`rounded-lg border-l-4 p-4 ring-1 print-break-inside-avoid ${
+                  PROVENANCE[choice.provenance].stripe
+                } ${isEnacted ? 'bg-white ring-line' : 'bg-carolina-50 ring-carolina-400'}`}
               >
                 <p className="text-xs font-semibold uppercase tracking-wide text-carolina-600">
                   {category?.name}
@@ -310,14 +365,10 @@ export function Results() {
                 <p className="mt-1 text-sm text-ink">
                   <span className="font-semibold">You chose: </span>
                   {choice.label}
-                  {isEnacted ? (
-                    <span className="ml-2 rounded bg-navy-100 px-1.5 py-0.5 text-xs font-semibold text-navy-800">
-                      Enacted policy
-                    </span>
-                  ) : null}
                 </p>
                 <div className="mt-2 flex flex-wrap items-center gap-3">
-                  <VerificationBadge verification={choice.verification} />
+                  <ProvenanceBadge provenance={choice.provenance} />
+                  {choice.verification.scored ? null : <UnsourcedBadge />}
                   {choice.verification.scored ? (
                     <span className="tabular text-sm text-ink">
                       <span aria-hidden="true">
@@ -343,6 +394,12 @@ export function Results() {
                     <span className="text-sm text-gold-700">Not counted in the balance</span>
                   )}
                 </div>
+                {choice.implementationNote ? (
+                  <p className="mt-2 text-xs leading-relaxed text-gold-700">
+                    <span className="font-semibold">Illustrative scenario. </span>
+                    {choice.implementationNote}
+                  </p>
+                ) : null}
               </li>
             )
           })}

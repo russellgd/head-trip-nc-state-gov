@@ -1,4 +1,6 @@
-import { DATASET, SOURCE_LEDGER, collectSources, verificationSummary } from '../data'
+import { DATASET, SOURCE_LEDGER, collectSources, provenanceSummary, verificationSummary } from '../data'
+import { PROVENANCE, PROVENANCE_MEANING } from '../components/ProvenanceBadge'
+import type { Provenance } from '../data/types'
 import { Page, Section } from '../components/Page'
 import { Callout } from '../components/Callout'
 import { TableScroll } from '../components/TableScroll'
@@ -28,6 +30,7 @@ const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = 
 export function Methodology() {
   const { baseline } = DATASET
   const counts = verificationSummary(DATASET)
+  const provenance = provenanceSummary(DATASET)
   const sources = collectSources(DATASET)
   const scoredDecisions = DATASET.decisions.filter((d) =>
     d.choices.some((c) => !c.isEnactedBaseline && c.verification.scored),
@@ -208,9 +211,8 @@ export function Methodology() {
           <tbody className="tabular">
             {[
               ['verified', 'Yes', 'Stated in an official document'],
-              ['derived', 'Yes', 'Calculated from a sourced figure'],
+              ['derived', 'Yes', 'Calculated from a sourced figure, with the working shown'],
               ['pending', 'No', 'No official figure confirmed yet'],
-              ['illustrative', 'No', 'A magnitude for teaching, not an estimate'],
             ].map(([key, counted, description]) => (
               <tr key={key} className="border-b border-line">
                 <th scope="row" className="py-2 pr-4 font-normal">
@@ -225,6 +227,60 @@ export function Methodology() {
         </table>
         </TableScroll>
 
+        <h3 className="font-serif text-xl font-semibold">Where each option comes from</h3>
+        <p>
+          Whether the arithmetic is traceable and whether anyone proposed the policy are two
+          different questions. The table above answers the first. This one answers the second, and
+          it is the distinction that matters most when reading a result.
+        </p>
+
+        <TableScroll label="Scrollable table: options by provenance">
+        <table className="w-full min-w-[30rem] text-left text-sm">
+          <caption className="pb-2 text-left text-sm text-muted">
+            Options in this dataset by provenance
+          </caption>
+          <thead>
+            <tr className="border-b-2 border-navy-900">
+              <th scope="col" className="py-2 pr-4 font-semibold text-navy-900">
+                Provenance
+              </th>
+              <th scope="col" className="py-2 pr-4 font-semibold text-navy-900">
+                What it means
+              </th>
+              <th scope="col" className="py-2 text-right font-semibold text-navy-900">
+                Options
+              </th>
+            </tr>
+          </thead>
+          <tbody className="tabular">
+            {(['enacted', 'documented', 'proposal', 'illustrative'] as Provenance[]).map((key) => (
+              <tr key={key} className="border-b border-line align-top">
+                <th scope="row" className="py-2 pr-4 font-normal">
+                  <span className="font-semibold">
+                    <span aria-hidden="true">{PROVENANCE[key].glyph} </span>
+                    {PROVENANCE[key].label}
+                  </span>
+                </th>
+                <td className="py-2 pr-4 text-xs leading-relaxed text-muted">
+                  {PROVENANCE_MEANING[key]}
+                </td>
+                <td className="py-2 text-right">{provenance[key] ?? 0}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        </TableScroll>
+
+        <p>
+          Nothing in this dataset carries the <strong>published proposal</strong> label yet. That
+          class exists for alternatives drawn from a document that both proposes a change and
+          prices it — a Governor&rsquo;s recommended budget, a fiscal note, a committee report.
+          Adding such a document is what would convert illustrative scenarios into proposals, and{' '}
+          <code className="rounded bg-white px-1 py-0.5 text-xs">REPLACEMENT_INVENTORY.md</code> in
+          the repository lists every illustrative option together with the document that would
+          replace it.
+        </p>
+
         <Callout tone="caution" title="Where the alternatives come from, and what they are not">
           <p>
             All {DATASET.decisions.length} decisions carry figures traceable to S.L. 2026-41, and{' '}
@@ -236,11 +292,19 @@ export function Methodology() {
           <p>
             The <strong>alternatives</strong> need a different kind of care. An appropriations act
             establishes what an agency receives; it does not publish a costed alternative to itself.
-            No other official document was available to this build. So where an option changes an
-            agency&rsquo;s funding, the amount is a stated percentage of the enacted appropriation,
-            and the arithmetic is shown on the option. The percentage is this project&rsquo;s,
-            chosen to give a sense of scale. It is not a proposal that anyone made, and nothing here
-            should be read as one.
+            No document that prices alternatives was available to this build. So where an option
+            changes an agency&rsquo;s funding, it is an{' '}
+            <strong>illustrative allocation scenario</strong>: a stated percentage of the enacted
+            appropriation, with the arithmetic shown. The percentage is this project&rsquo;s, chosen
+            to give a sense of scale. No North Carolina official or institution proposed it, and it
+            must not be described as a policy proposal.
+          </p>
+          <p>
+            An illustrative scenario is also not a plan. A percentage applied evenly across an
+            agency total is an arithmetic device: the money is distributed by statutory formulas and
+            allotments, parts of it are committed to entitlements, contracts, debt, or federally
+            required matching, and some line items cannot be changed without amending statute. Every
+            illustrative option says so on its own card.
           </p>
           <p>
             Options built on the reservations of revenue in Section 2.2(a) are firmer: keeping,

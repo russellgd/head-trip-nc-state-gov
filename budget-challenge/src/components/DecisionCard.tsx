@@ -4,7 +4,7 @@ import { choiceBalanceEffect, choiceMovesMoney } from '../engine/budget'
 import { describeDelta, formatDelta, formatDollars } from '../lib/format'
 import { SourceList } from './SourceList'
 import { TableScroll } from './TableScroll'
-import { VerificationBadge } from './VerificationBadge'
+import { PROVENANCE, ProvenanceBadge, UnsourcedBadge } from './ProvenanceBadge'
 
 /** What to print where the dollar impact goes. */
 function ImpactLine({ choice }: { choice: Choice }) {
@@ -141,9 +141,9 @@ export function DecisionCard({
               return (
                 <div
                   key={choice.id}
-                  className={`rounded-lg ring-1 transition-colors ${
-                    selected ? 'bg-carolina-50 ring-carolina-500' : 'bg-white ring-line'
-                  }`}
+                  className={`rounded-lg border-l-4 ring-1 transition-colors ${
+                    PROVENANCE[choice.provenance].stripe
+                  } ${selected ? 'bg-carolina-50 ring-carolina-500' : 'bg-white ring-line'}`}
                 >
                   <div className="flex gap-3 p-4">
                     <input
@@ -158,18 +158,14 @@ export function DecisionCard({
                     <div className="min-w-0 flex-1">
                       <label htmlFor={inputId} className="block cursor-pointer">
                         <span className="font-semibold text-navy-900">{choice.label}</span>
-                        {choice.isEnactedBaseline ? (
-                          <span className="ml-2 rounded bg-navy-100 px-1.5 py-0.5 text-xs font-semibold text-navy-800">
-                            Enacted
-                          </span>
-                        ) : null}
                       </label>
 
                       <p className="mt-1 text-sm leading-relaxed text-ink">{choice.description}</p>
 
                       <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
                         <ImpactLine choice={choice} />
-                        <VerificationBadge verification={choice.verification} />
+                        <ProvenanceBadge provenance={choice.provenance} />
+                        {choice.verification.scored ? null : <UnsourcedBadge />}
                       </div>
 
                       <p className="mt-2 text-xs leading-relaxed text-muted">
@@ -179,6 +175,15 @@ export function DecisionCard({
                         <p className="mt-1 text-xs leading-relaxed text-muted">
                           <span className="font-semibold">How it is calculated: </span>
                           {choice.verification.derivation}
+                        </p>
+                      ) : null}
+
+                      {choice.implementationNote ? (
+                        <p className="mt-3 rounded-md bg-gold-100 p-3 text-xs leading-relaxed text-gold-700 ring-1 ring-gold-500">
+                          <span className="font-semibold">
+                            What this would run into in practice:{' '}
+                          </span>
+                          {choice.implementationNote}
                         </p>
                       ) : null}
 

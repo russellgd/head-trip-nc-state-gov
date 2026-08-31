@@ -11,7 +11,13 @@
  */
 import { DATASET } from '../data'
 import { CATEGORIES } from '../data/categories'
-import { collectSources, errorsOnly, validateDataset, verificationSummary } from '../data/validate'
+import {
+  collectSources,
+  errorsOnly,
+  provenanceSummary,
+  validateDataset,
+  verificationSummary,
+} from '../data/validate'
 import { analyzePlayability } from '../engine/playability'
 import { choiceBalanceEffect, isScored } from '../engine/budget'
 import type { CategoryId } from '../data/types'
@@ -69,6 +75,7 @@ function report(): string {
   const rows = categoryRows()
   const play = analyzePlayability(DATASET)
   const counts = verificationSummary(DATASET)
+  const provenance = provenanceSummary(DATASET)
   const errors = errorsOnly(validateDataset(DATASET))
   const sources = collectSources(DATASET)
 
@@ -157,7 +164,26 @@ function report(): string {
     }
   }
 
-  line('## Options by verification status')
+  line('## Options by provenance')
+  line()
+  line('Whether the arithmetic is traceable and whether anyone proposed the policy are two')
+  line('different questions. This table answers the second.')
+  line()
+  line('| Provenance | Options | Meaning |')
+  line('| --- | ---: | --- |')
+  line(`| Enacted policy | ${provenance.enacted ?? 0} | What S.L. 2026-41 actually does. |`)
+  line(
+    `| Documented alternative | ${provenance.documented ?? 0} | The dollar impact equals an amount an official document states. |`,
+  )
+  line(
+    `| Published proposal | ${provenance.proposal ?? 0} | Published in an official document with a fiscal estimate behind it. |`,
+  )
+  line(
+    `| Illustrative allocation scenario | ${provenance.illustrative ?? 0} | Constructed for this exercise. Not proposed by any North Carolina official or institution. See REPLACEMENT_INVENTORY.md. |`,
+  )
+  line()
+
+  line('## Options by arithmetic status')
   line()
   line('| Status | Counted in the balance | Options |')
   line('| --- | --- | ---: |')

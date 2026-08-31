@@ -30,18 +30,43 @@ export interface Source {
  * How much confidence stands behind a fiscal impact, and whether the engine is
  * allowed to score it.
  *
+ * This describes the ARITHMETIC ONLY: whether the dollar figure can be traced.
+ * It says nothing about whether anyone proposed the policy. That is a separate
+ * question, answered by `Provenance` below, and conflating the two is how a
+ * simulation ends up implying that a scenario it invented is a proposal
+ * somebody made.
+ *
  * - `verified`   The dollar amount is stated in an official NC government
  *                document cited in `sources`.
  * - `derived`    The dollar amount is arithmetic performed by this project on
  *                verified figures. `derivation` must show the work.
  * - `pending`    No official figure has been confirmed yet. NEVER scored.
- * - `illustrative` A magnitude chosen to make a teaching point, not an official
- *                estimate. NEVER scored by default.
  *
  * Invariant enforced by `validateDataset`: only `verified` and `derived`
  * impacts may be scored.
  */
-export type VerificationStatus = 'verified' | 'derived' | 'pending' | 'illustrative'
+export type VerificationStatus = 'verified' | 'derived' | 'pending'
+
+/**
+ * Where a policy option comes from, as distinct from whether its arithmetic
+ * checks out.
+ *
+ * - `enacted`      The policy S.L. 2026-41 actually enacts. The reference point.
+ * - `documented`   An alternative whose dollar impact equals an amount an
+ *                  official document states. Not making a reservation the act
+ *                  makes frees exactly what the act reserves. The magnitude is
+ *                  documented; this does not assert that anyone proposed it.
+ * - `proposal`     An alternative published in an official document with an
+ *                  official fiscal estimate behind it — a Governor's
+ *                  recommended budget, a fiscal note, a committee report. None
+ *                  are in the dataset yet; the value exists so they can be
+ *                  added without reworking the model.
+ * - `illustrative` An illustrative allocation scenario: a percentage change to
+ *                  an enacted amount, where THIS PROJECT chose the percentage.
+ *                  Never to be described as a policy proposal, because no North
+ *                  Carolina official or institution proposed it.
+ */
+export type Provenance = 'enacted' | 'documented' | 'proposal' | 'illustrative'
 
 export interface Verification {
   status: VerificationStatus
@@ -128,6 +153,23 @@ export interface Choice {
   description: string
   /** Exactly one choice per decision must set this. Its impacts must all be zero. */
   isEnactedBaseline?: boolean
+  /**
+   * Where this option comes from. Drives how it is labelled and styled
+   * everywhere it appears, including the results export and the printed report.
+   */
+  provenance: Provenance
+  /**
+   * Required on every illustrative option: what an across-the-board change of
+   * this kind would actually run into. A percentage applied uniformly to an
+   * agency total is an arithmetic device, not an implementable plan, and saying
+   * so is part of presenting it honestly.
+   */
+  implementationNote?: string
+  /**
+   * Required on every illustrative option: the official proposal or fiscal
+   * estimate that would replace it. Drives REPLACEMENT_INVENTORY.md.
+   */
+  replacementNeeded?: string
   spending: Money
   revenue: Money
   reserve: Money

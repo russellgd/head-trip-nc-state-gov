@@ -15,7 +15,7 @@
 import type { Decision } from '../types'
 import { AVAILABILITY } from '../enacted'
 import { cite } from '../sources'
-import { derivedOption, enactedOption, percentOf, usd, verifiedOption } from './helpers'
+import { enactedOption, illustrativeOption, percentOf, usd, verifiedOption } from './helpers'
 
 const AVAILABILITY_SECTION = 'Section 2.2(a), General Fund Availability'
 const sources = [cite('sl2026_41', AVAILABILITY_SECTION)]
@@ -44,7 +44,7 @@ export const REVENUE_DECISIONS: Decision[] = [
           'Leave tax revenue at the level the consensus forecast projects and the budget was built on.',
         affects: ['All North Carolina taxpayers', 'Every programme funded from recurring revenue'],
       }),
-      derivedOption({
+      illustrativeOption({
         id: 'increase-one-percent',
         label: `Collect 1% more: ${usd(ONE_PERCENT_OF_TAX)}`,
         description: `Raise ${usd(
@@ -68,10 +68,12 @@ export const REVENUE_DECISIONS: Decision[] = [
           TAX,
         )} × 1% = ${usd(
           ONE_PERCENT_OF_TAX,
-        )}. The percentage is a scale chosen for this exercise, not a proposal from any budget document; the dollar figure that follows is exact.`,
+        )}. The percentage is a scale chosen for this exercise. It is not a proposal from any budget document, and no North Carolina official or institution proposed it; the dollar figure that follows is exact.`,
+        implementationNote: 'A change in tax revenue is not something the budget can simply specify. It has to come from a change to a rate, a base, a credit, or an exemption, each written in statute and each falling on a different set of taxpayers. What a given change would actually raise is an estimate produced by the consensus forecasting process, not a figure a budget writer can choose. This option shows the size of a one per cent movement without saying which tax produced it, because the act publishes the forecast total rather than a costed rate change.',
+        replacementNeeded: 'An official fiscal estimate for a specific tax change: a fiscal note prepared by the Fiscal Research Division on a bill amending a rate, base, credit or exemption, or the revenue provisions of the Governor’s Recommended Budget for FY 2026-27.',
         sources,
       }),
-      derivedOption({
+      illustrativeOption({
         id: 'reduce-one-percent',
         label: `Collect 1% less: ${usd(ONE_PERCENT_OF_TAX)}`,
         description: `Forgo ${usd(
@@ -95,7 +97,9 @@ export const REVENUE_DECISIONS: Decision[] = [
           TAX,
         )} × 1% = ${usd(
           ONE_PERCENT_OF_TAX,
-        )}. The percentage is a scale chosen for this exercise, not a proposal from any budget document; the dollar figure that follows is exact.`,
+        )}. The percentage is a scale chosen for this exercise. It is not a proposal from any budget document, and no North Carolina official or institution proposed it; the dollar figure that follows is exact.`,
+        implementationNote: 'A change in tax revenue is not something the budget can simply specify. It has to come from a change to a rate, a base, a credit, or an exemption, each written in statute and each falling on a different set of taxpayers. What a given change would actually raise is an estimate produced by the consensus forecasting process, not a figure a budget writer can choose. This option shows the size of a one per cent movement without saying which tax produced it, because the act publishes the forecast total rather than a costed rate change.',
+        replacementNeeded: 'An official fiscal estimate for a specific tax change: a fiscal note prepared by the Fiscal Research Division on a bill amending a rate, base, credit or exemption, or the revenue provisions of the Governor’s Recommended Budget for FY 2026-27.',
         sources,
       }),
     ],

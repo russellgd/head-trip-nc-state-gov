@@ -19,6 +19,7 @@ export function choice(input: Partial<Choice> & { id: string }): Choice {
     affects: [],
     benefits: ['a benefit'],
     tradeoffs: ['a trade-off'],
+    provenance: input.isEnactedBaseline ? 'enacted' : 'documented',
     sources: [
       {
         title: 'Test source',

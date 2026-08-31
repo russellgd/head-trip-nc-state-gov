@@ -7,15 +7,17 @@
  * this build, so the alternatives here are expressed as percentages of the
  * enacted appropriation.
  *
- * That makes each option `derived`: the percentage is this project's, chosen to
- * give a sense of scale, while the dollar figure is exact arithmetic on a
- * sourced number. Every option shows its working, and none of them is presented
- * as a proposal anyone actually made.
+ * Every alternative here is therefore an ILLUSTRATIVE ALLOCATION SCENARIO: the
+ * percentage is this project's, chosen to give a sense of scale, while the
+ * dollar figure is exact arithmetic on a sourced number. None of them is a
+ * policy proposal, and none may be described as one. Each carries a note on
+ * what a change of that shape would actually run into, and a statement of the
+ * official document that would replace it.
  */
 import type { CategoryId, Decision } from '../types'
 import { AGENCY_APPROPRIATIONS } from '../enacted'
 import { cite } from '../sources'
-import { derivedOption, enactedOption, percentOf, usd } from './helpers'
+import { enactedOption, illustrativeOption, percentOf, usd } from './helpers'
 
 /** Look up one agency's enacted net appropriation by its name in the schedule. */
 function netAppropriation(agency: string): number {
@@ -70,7 +72,13 @@ function appropriationDecision(input: {
       : `${input.percent}% of the enacted net appropriations totalling ${usd(base)} across ${input.agencies.length} lines in the act's schedule (${input.agencies.join('; ')}): ${usd(base)} × ${input.percent}% = ${usd(delta)}.`
 
   const hypothetical =
-    'The percentage is a scale chosen for this exercise, not a proposal from any budget document. The dollar amount that follows from it is exact.'
+    'The percentage is a scale chosen for this exercise. It is not a proposal from any budget document, and no North Carolina official or institution proposed it. The dollar amount that follows from it is exact.'
+
+  const implementationNote =
+    `An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of ${usd(delta)} to ${input.baseLabel} could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.`
+
+  const replacementNeeded =
+    `A costed alternative for ${input.baseLabel} from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.`
 
   return {
     id: input.id,
@@ -85,7 +93,7 @@ function appropriationDecision(input: {
         description: `Leave the appropriation for ${input.baseLabel} where the enacted budget sets it.`,
         affects: input.affects,
       }),
-      derivedOption({
+      illustrativeOption({
         id: 'increase',
         label: `Increase by ${input.percent}%: ${usd(delta)} more`,
         description: `Add ${usd(delta)} in recurring funds to ${input.baseLabel}, ${input.percent}% above the enacted level.`,
@@ -94,9 +102,11 @@ function appropriationDecision(input: {
         benefits: input.increaseBenefits,
         tradeoffs: input.increaseTradeoffs,
         derivation: `${derivation} ${hypothetical}`,
+        implementationNote,
+        replacementNeeded,
         sources,
       }),
-      derivedOption({
+      illustrativeOption({
         id: 'reduce',
         label: `Reduce by ${input.percent}%: ${usd(delta)} less`,
         description: `Cut ${usd(delta)} in recurring funds from ${input.baseLabel}, ${input.percent}% below the enacted level.`,
@@ -105,6 +115,8 @@ function appropriationDecision(input: {
         benefits: input.reduceBenefits,
         tradeoffs: input.reduceTradeoffs,
         derivation: `${derivation} ${hypothetical}`,
+        implementationNote,
+        replacementNeeded,
         sources,
       }),
     ],

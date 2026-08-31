@@ -29,14 +29,24 @@ The three baseline anchors were confirmed against the act, unchanged:
 | General Fund net appropriations | $34,374,286,763 | Section 2.1(a) |
 | Unappropriated balance remaining | $1,000,000,000 | Section 2.2(a) |
 
-**What still needs care.** An appropriations act establishes what an agency receives; it does not
-publish a costed alternative to itself, and no document that prices alternatives was available.
-So options built on the reservations of revenue are firm — dropping a reservation frees exactly what
-the act reserves — while options that change an agency's funding are expressed as a percentage of
-the enacted appropriation. The dollar figure is exact arithmetic on a sourced number and every
-option shows its working, but **the percentage is this project's choice, not a proposal anyone
-made**. Neither the technical corrections acts (S.L. 2026-42, S.L. 2026-61) nor the certified budget
-were available, so the baseline is still marked provisional in the app.
+**Every option carries a provenance**, shown on screen, in the export, and in the printed report:
+
+| Provenance | Options | What it means |
+| --- | ---: | --- |
+| Enacted policy | 30 | What S.L. 2026-41 actually does |
+| Documented alternative | 12 | The dollar impact equals an amount an official document states |
+| Published proposal | 0 | Published in an official document with a fiscal estimate behind it |
+| Illustrative allocation scenario | 46 | Constructed for this exercise; **not proposed by any North Carolina official or institution** |
+
+An appropriations act establishes what an agency receives; it does not publish a costed alternative
+to itself. So options that change an agency's funding are illustrative allocation scenarios: the
+arithmetic is exact and shown, but the percentage is this project's choice. They must never be
+described as policy proposals, and each carries a note on what a change of that shape would actually
+run into — a uniform percentage is an arithmetic device, not an implementable plan.
+`REPLACEMENT_INVENTORY.md` lists all 46 with the document that would replace each.
+
+Neither the technical corrections acts (S.L. 2026-42, S.L. 2026-61) nor the certified budget had
+been applied at this version, so the baseline is still marked provisional in the app.
 
 **[CONTENT_REPORT.md](./CONTENT_REPORT.md)** is generated from the data
 (`npm run report:content`) and states which areas have real choices and whether each outcome is
@@ -66,6 +76,7 @@ npm run dev          # http://localhost:5173
 | `npm run lint` | oxlint |
 | `npm run check` | Type-check, lint, and test together |
 | `npm run report:content` | Regenerate the content-completeness report |
+| `npm run report:replacements` | Regenerate the replacement inventory |
 
 Three browser checks run against a build. Start `npm run build && npm run preview` first:
 
@@ -152,12 +163,24 @@ consequence is the point of the exercise.
 
 ### Verification statuses
 
+Two independent axes, deliberately not collapsed into one.
+
+**Arithmetic status** — can the figure be traced?
+
 | Status | Scored | Meaning |
 | --- | --- | --- |
 | `verified` | yes | The amount is stated in an official NC government document, cited on the option |
 | `derived` | yes | Arithmetic on a verified figure, with the calculation shown to the reader |
 | `pending` | **no** | No official figure confirmed yet |
-| `illustrative` | **no** | A magnitude chosen to make a teaching point, not an estimate |
+
+**Provenance** — did anyone propose the policy?
+
+| Provenance | Meaning |
+| --- | --- |
+| `enacted` | What the act actually does |
+| `documented` | The dollar impact equals an amount an official document states |
+| `proposal` | Published in an official document with a fiscal estimate behind it |
+| `illustrative` | Constructed for this exercise; not proposed by anyone. Must carry an implementation note and a statement of what would replace it |
 
 `src/data/validate.ts` rejects a citation on any host that is not an official North Carolina
 government domain.

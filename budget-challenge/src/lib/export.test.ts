@@ -83,7 +83,8 @@ describe('CSV export', () => {
     const csv = buildCsv(DATASET, selections, totals)
 
     expect(csv).toContain('Counted in the balance')
-    expect(csv).toContain('Verification status')
+    expect(csv).toContain('Arithmetic status')
+    expect(csv).toContain('Provenance')
   })
 
   it('keeps every data row on the same number of columns', () => {
@@ -93,7 +94,7 @@ describe('CSV export', () => {
     const headerIndex = lines.findIndex((l) => l.startsWith('Decision ID'))
     const columns = countFields(lines[headerIndex]!)
 
-    expect(columns).toBe(14)
+    expect(columns).toBe(16)
     for (const line of lines.slice(headerIndex + 1)) {
       expect(countFields(line), line).toBe(columns)
     }

@@ -25,4 +25,11 @@ export * from './types'
 export { CATEGORIES, CATEGORY_BY_ID } from './categories'
 export { BASELINE } from './baseline'
 export { SOURCE_LEDGER, VERIFIED_THROUGH } from './sources'
-export { validateDataset, errorsOnly, collectSources, verificationSummary } from './validate'
+export {
+  validateDataset,
+  errorsOnly,
+  collectSources,
+  verificationSummary,
+  provenanceSummary,
+  illustrativeOptions,
+} from './validate'

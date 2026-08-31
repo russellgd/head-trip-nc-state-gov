@@ -33,6 +33,7 @@ export function enactedOption(input: {
     affects: input.affects,
     benefits: input.benefits ?? [],
     tradeoffs: input.tradeoffs ?? [],
+    provenance: 'enacted',
     sources: [],
     verification: {
       status: 'verified',
@@ -71,6 +72,7 @@ export function unsourcedOption(input: {
     affects: input.affects,
     benefits: input.benefits,
     tradeoffs: input.tradeoffs,
+    provenance: 'proposal',
     sources: [],
     verification: {
       status: 'pending',
@@ -81,10 +83,15 @@ export function unsourcedOption(input: {
 }
 
 /**
- * An option whose dollar amount is arithmetic this project performed on figures
- * that are themselves verified, with the arithmetic shown.
+ * An illustrative allocation scenario.
+ *
+ * The dollar figure is exact arithmetic on a sourced amount, and the working is
+ * shown. The POLICY is not from any document: this project chose the
+ * percentage, and nobody in North Carolina proposed it. Everything about how
+ * these are labelled follows from that, which is why the builder demands an
+ * implementation note and a statement of what would replace it.
  */
-export function derivedOption(input: {
+export function illustrativeOption(input: {
   id: string
   label: string
   description: string
@@ -95,6 +102,10 @@ export function derivedOption(input: {
   benefits: string[]
   tradeoffs: string[]
   derivation: string
+  /** What a change of this shape would actually run into in practice. */
+  implementationNote: string
+  /** The official proposal or fiscal estimate that would replace this option. */
+  replacementNeeded: string
   sources: Source[]
 }): Choice {
   return {
@@ -107,13 +118,17 @@ export function derivedOption(input: {
     affects: input.affects,
     benefits: input.benefits,
     tradeoffs: input.tradeoffs,
+    provenance: 'illustrative',
+    implementationNote: input.implementationNote,
+    replacementNeeded: input.replacementNeeded,
     sources: input.sources,
     verification: {
       status: 'derived',
       scored: true,
       note:
-        'This amount is arithmetic performed on a figure that is itself sourced, not a ' +
-        'separate official estimate. The calculation is shown so you can check it.',
+        'The dollar amount is exact arithmetic on a sourced figure, shown below. The ' +
+        'change itself is a scenario constructed for this exercise: no North Carolina ' +
+        'official or institution proposed it.',
       derivation: input.derivation,
     },
   }
@@ -145,6 +160,7 @@ export function verifiedOption(input: {
     affects: input.affects,
     benefits: input.benefits,
     tradeoffs: input.tradeoffs,
+    provenance: 'documented',
     sources: input.sources,
     verification: { status: 'verified', scored: true, note: input.note },
   }

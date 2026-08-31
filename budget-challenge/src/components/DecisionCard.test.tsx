@@ -21,6 +21,7 @@ const withPendingOption: Decision = {
     choice({
       id: 'pending',
       label: 'Do something else',
+      provenance: 'proposal',
       sources: [],
       verification: {
         status: 'pending',

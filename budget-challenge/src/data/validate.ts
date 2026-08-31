@@ -84,6 +84,53 @@ function checkChoice(choice: Choice, where: string, issues: ValidationIssue[]): 
   const hasMoney = amounts.some(([, value]) => value !== 0)
   const { status, scored } = choice.verification
 
+  // An illustrative scenario carries obligations that a documented figure does
+  // not: it has to show its arithmetic, say what a change of that shape would
+  // run into in practice, and name what would replace it.
+  if (choice.provenance === 'illustrative') {
+    if (!choice.verification.derivation) {
+      issues.push({
+        level: 'error',
+        where,
+        message: 'An illustrative scenario must show its arithmetic in verification.derivation.',
+      })
+    }
+    if (!choice.implementationNote) {
+      issues.push({
+        level: 'error',
+        where,
+        message:
+          'An illustrative scenario must carry an implementationNote, so it is not presented as ' +
+          'something that could be carried out uniformly as written.',
+      })
+    }
+    if (!choice.replacementNeeded) {
+      issues.push({
+        level: 'error',
+        where,
+        message:
+          'An illustrative scenario must name the official proposal or fiscal estimate that ' +
+          'would replace it, so the replacement inventory stays complete.',
+      })
+    }
+  }
+
+  if (choice.isEnactedBaseline && choice.provenance !== 'enacted') {
+    issues.push({
+      level: 'error',
+      where,
+      message: 'The enacted-baseline choice must have provenance "enacted".',
+    })
+  }
+
+  if (!choice.isEnactedBaseline && choice.provenance === 'enacted') {
+    issues.push({
+      level: 'error',
+      where,
+      message: 'Only the enacted-baseline choice may have provenance "enacted".',
+    })
+  }
+
   // The central rule: only figures traceable to an official document, or
   // arithmetic performed on such figures, may move the running balance.
   if (scored && status !== 'verified' && status !== 'derived') {
@@ -274,11 +321,36 @@ export function collectSources(dataset: Dataset): Source[] {
 
 /** Counts used by the data-integrity panel on the methodology page. */
 export function verificationSummary(dataset: Dataset): Record<string, number> {
-  const counts: Record<string, number> = { verified: 0, derived: 0, pending: 0, illustrative: 0 }
+  const counts: Record<string, number> = { verified: 0, derived: 0, pending: 0 }
   for (const decision of dataset.decisions) {
     for (const choice of decision.choices) {
       counts[choice.verification.status] = (counts[choice.verification.status] ?? 0) + 1
     }
   }
   return counts
+}
+
+/** Counts by provenance, for the legend, the report, and the methodology page. */
+export function provenanceSummary(dataset: Dataset): Record<string, number> {
+  const counts: Record<string, number> = {
+    enacted: 0,
+    documented: 0,
+    proposal: 0,
+    illustrative: 0,
+  }
+  for (const decision of dataset.decisions) {
+    for (const choice of decision.choices) {
+      counts[choice.provenance] = (counts[choice.provenance] ?? 0) + 1
+    }
+  }
+  return counts
+}
+
+/** Every illustrative option, with what would replace it. Drives the inventory. */
+export function illustrativeOptions(dataset: Dataset) {
+  return dataset.decisions.flatMap((decision) =>
+    decision.choices
+      .filter((choice) => choice.provenance === 'illustrative')
+      .map((choice) => ({ decision, choice })),
+  )
 }

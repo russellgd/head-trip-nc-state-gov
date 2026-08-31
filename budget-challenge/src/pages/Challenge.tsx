@@ -6,6 +6,7 @@ import { useChallenge } from '../lib/challengeContext'
 import { BalancePanel } from '../components/BalancePanel'
 import { DecisionCard } from '../components/DecisionCard'
 import { StickyBalanceBar } from '../components/StickyBalanceBar'
+import { ProvenanceLegend } from '../components/ProvenanceLegend'
 
 const DECISIONS = DATASET.decisions
 
@@ -61,6 +62,10 @@ export function Challenge() {
         Each card offers the enacted policy and one or more alternatives. Your balance updates as
         soon as you choose. You can move back and forth freely, and change any answer at any time.
       </p>
+
+      <div className="mt-6">
+        <ProvenanceLegend />
+      </div>
 
       {/* Progress. The bar is decorative; the text beside it carries the meaning. */}
       <div className="mt-6">

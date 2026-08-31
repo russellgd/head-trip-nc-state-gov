@@ -49,7 +49,19 @@ in both directions, by the options on offer.
 ## Areas still lacking meaningful choices
 
 None. Every budget area offers at least one alternative that moves the balance.
-## Options by verification status
+## Options by provenance
+
+Whether the arithmetic is traceable and whether anyone proposed the policy are two
+different questions. This table answers the second.
+
+| Provenance | Options | Meaning |
+| --- | ---: | --- |
+| Enacted policy | 30 | What S.L. 2026-41 actually does. |
+| Documented alternative | 12 | The dollar impact equals an amount an official document states. |
+| Published proposal | 0 | Published in an official document with a fiscal estimate behind it. |
+| Illustrative allocation scenario | 46 | Constructed for this exercise. Not proposed by any North Carolina official or institution. See REPLACEMENT_INVENTORY.md. |
+
+## Options by arithmetic status
 
 | Status | Counted in the balance | Options |
 | --- | --- | ---: |

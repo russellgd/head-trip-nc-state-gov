@@ -6,8 +6,20 @@
  * scored. Exporting an unscored choice without saying so would let a figure of
  * zero read as a finding rather than as an absence of data.
  */
-import type { Dataset } from '../data/types'
+import type { Dataset, Provenance } from '../data/types'
 import { resolveChoice, type BudgetTotals, type Selections } from '../engine/budget'
+
+/**
+ * Provenance, spelled out for anyone reading the export without the app open.
+ * An exported row that said only "derived" would tell a reader the arithmetic
+ * was sound while leaving them to assume somebody proposed the policy.
+ */
+const PROVENANCE_LABELS: Record<Provenance, string> = {
+  enacted: 'Enacted policy',
+  documented: 'Documented alternative',
+  proposal: 'Published proposal',
+  illustrative: 'Illustrative allocation scenario (not proposed by any NC official or institution)',
+}
 
 export interface ExportRow {
   decisionId: string
@@ -17,6 +29,10 @@ export interface ExportRow {
   choice: string
   isEnacted: boolean
   scored: boolean
+  /** enacted | documented | proposal | illustrative. See Provenance in data/types. */
+  provenance: string
+  /** Plain-language form of the same thing, for a reader of the CSV. */
+  provenanceLabel: string
   verificationStatus: string
   spendingRecurring: number
   spendingNonrecurring: number
@@ -37,6 +53,8 @@ export function buildRows(dataset: Dataset, selections: Selections): ExportRow[]
       choice: choice.label,
       isEnacted: choice.isEnactedBaseline === true,
       scored: choice.verification.scored,
+      provenance: choice.provenance,
+      provenanceLabel: PROVENANCE_LABELS[choice.provenance],
       verificationStatus: choice.verification.status,
       spendingRecurring: choice.spending.recurring,
       spendingNonrecurring: choice.spending.nonrecurring,
@@ -48,6 +66,21 @@ export function buildRows(dataset: Dataset, selections: Selections): ExportRow[]
   })
 }
 
+/** How many of the visitor's selected options fall into each provenance class. */
+function countByProvenance(dataset: Dataset, selections: Selections): Record<string, number> {
+  const counts: Record<string, number> = {
+    enacted: 0,
+    documented: 0,
+    proposal: 0,
+    illustrative: 0,
+  }
+  for (const decision of dataset.decisions) {
+    const choice = resolveChoice(decision, selections)
+    counts[choice.provenance] = (counts[choice.provenance] ?? 0) + 1
+  }
+  return counts
+}
+
 export function buildJson(
   dataset: Dataset,
   selections: Selections,
@@ -57,6 +90,11 @@ export function buildJson(
     {
       product: 'The North Carolina Budget Challenge',
       note: 'An independent educational project. Not a publication of the State of North Carolina.',
+      provenanceNotice:
+        'Some choices reflect enacted or formally proposed policies. Others are illustrative ' +
+        'percentage changes designed to demonstrate budget trade-offs. Illustrative choices ' +
+        'should not be interpreted as proposals made by any North Carolina official or ' +
+        'institution. Each row below carries a "provenance" field saying which it is.',
       exportedAt: new Date().toISOString(),
       datasetVersion: dataset.version,
       fiscalYear: dataset.baseline.fiscalYear,
@@ -88,6 +126,7 @@ export function buildJson(
         },
         decisionsChanged: totals.changedDecisionIds.length,
         decisionsChangedButNotScored: totals.unscoredSelectionIds,
+        choicesByProvenance: countByProvenance(dataset, selections),
       },
       byCategory: totals.byCategory,
       choices: buildRows(dataset, selections),
@@ -105,7 +144,9 @@ const CSV_HEADERS: Array<[keyof ExportRow, string]> = [
   ['choice', 'Option chosen'],
   ['isEnacted', 'Is the enacted policy'],
   ['scored', 'Counted in the balance'],
-  ['verificationStatus', 'Verification status'],
+  ['provenance', 'Provenance'],
+  ['provenanceLabel', 'What that means'],
+  ['verificationStatus', 'Arithmetic status'],
   ['spendingRecurring', 'Spending change, recurring'],
   ['spendingNonrecurring', 'Spending change, one-time'],
   ['revenueRecurring', 'Revenue change, recurring'],
@@ -128,12 +169,26 @@ export function buildCsv(
   const lines: string[] = []
 
   lines.push(csvCell('The North Carolina Budget Challenge'))
+  lines.push(
+    csvCell(
+      'Some choices reflect enacted or formally proposed policies. Others are illustrative ' +
+        'percentage changes designed to demonstrate budget trade-offs. Illustrative choices ' +
+        'should not be interpreted as proposals made by any North Carolina official or institution.',
+    ),
+  )
   lines.push(csvCell(`Fiscal year,${dataset.baseline.fiscalYear}`))
   lines.push(`Data verified through,${csvCell(dataset.baseline.verifiedThrough)}`)
   lines.push(`Dataset version,${csvCell(dataset.version)}`)
   lines.push(`Starting unappropriated balance,${totals.startingBalance}`)
   lines.push(`Remaining balance,${totals.remainingBalance}`)
   lines.push(`Change in recurring position,${totals.structuralChange}`)
+  lines.push('')
+
+  const byProvenance = countByProvenance(dataset, selections)
+  lines.push('Choices selected by provenance')
+  for (const [key, label] of Object.entries(PROVENANCE_LABELS) as Array<[Provenance, string]>) {
+    lines.push(`${csvCell(label)},${byProvenance[key] ?? 0}`)
+  }
   lines.push('')
 
   lines.push(CSV_HEADERS.map(([, label]) => csvCell(label)).join(','))
