@@ -184,6 +184,47 @@ not an extraction error. The two costings evidently cover different components o
 these documents do not resolve which. The appropriation difference is exact; it is not the price of
 two percentage points, and the card says so.
 
+### Medicaid rebase, split from Health Benefits
+
+A rebase funds the projected cost of continuing the Medicaid programme that already exists. The
+projection moves with enrollment, service utilisation, medical prices, the capitation rates paid to
+managed care plans, and the federal matching rate. **It is not an expansion of eligibility and not a
+new benefit**, and the card is tested to make sure it never reads as one.
+
+| | |
+| --- | --- |
+| Enacted | Committee Report item 99, "Medicaid Rebase": **$847,200,000 recurring** (requirements $2,658,573,067 less receipts $1,811,373,067) |
+| Governor | Budget Book p. 174 item 7, "Medicaid Rebase": **$1,047,197,722 recurring** |
+| Scored | **+$199,997,722 recurring**, the incremental appropriation only |
+| Residual left with the aggregate | $171,801,963 − $199,997,722 = **−$28,195,759** |
+
+Both figures are net of receipts, so the federal share is already removed on each side and the
+comparison is like-for-like. Both are entirely recurring in their own documents; nothing here is
+converted by convention.
+
+**Neither amount is presented as creating or preventing a shortfall.** No source establishes that
+conclusion, so the card does not draw it. What it says is that the two are forecasts of the same
+obligation, made at different times, and that they differ by $199,997,722.
+
+**The residual is negative, and it is not a Medicaid cut.** It is the arithmetic net of items each
+budget funds and the other does not, and the card names every one of them:
+
+| | Amount |
+| --- | ---: |
+| Funded by the enacted budget, not carried by the Governor: personal care service rates | $70,800,000 |
+| Innovations Waiver direct care worker wages | $21,300,000 |
+| Healthy Opportunities Pilot | $9,000,000 |
+| Funded by the Governor, not by the enacted budget: Managed Care Oversight | −$13,666,009 |
+| Innovations Waiver slots | −$9,339,600 |
+| Reductions the Governor states explicitly (Vacant Position Reductions) | −$659,084 |
+| Other offsetting items on both sides | the remainder |
+| **Residual** | **−$28,195,759** |
+
+Explicit reductions account for about a fortieth of it. Both sides sum exactly to the change each
+document states for budget code 14445, so nothing has gone missing to another code; the difference
+is one of scope. `MEDICAID_AUDIT.md` carries the full item-by-item reconciliation, and the aggregate
+card is tested to state that this is not one policy and to name each item.
+
 ### Not double-counting the splits
 
 The UNC aggregate decision previously scored the whole 16011 + 16012 difference, which included the

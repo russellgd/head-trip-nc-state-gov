@@ -98,6 +98,61 @@ const ENACTED_TEACHER_TOTAL =
 const GOVERNOR_TEACHER_TOTAL =
   TEACHER_COMPENSATION.governorRecurring + TEACHER_COMPENSATION.governorNonrecurring
 
+/**
+ * The Medicaid rebase.
+ *
+ * A rebase funds the projected cost of continuing the Medicaid programme as it
+ * already exists. The projection moves with enrollment, how much care enrollees
+ * use, medical prices, the capitation rates paid to managed care plans, and the
+ * federal matching rate. It is not an expansion of eligibility and it does not
+ * add a benefit; both budgets are pricing the same programme, and they arrive
+ * at different numbers for it.
+ *
+ * Enacted: Committee Report item 99, "Medicaid Rebase", $847,200,000 recurring.
+ * Governor: Budget Book p. 174 item 7, "Medicaid Rebase", $1,047,197,722
+ * recurring. Identical item titles, the same budget code 14445, the same
+ * November 2025 certified base of $6,544,062,901, and both figures net of
+ * receipts: the enacted item shows requirements of $2,658,573,067 less receipts
+ * of $1,811,373,067, so the federal share is already removed on that side, and
+ * the Governor's figure is likewise an appropriation. The bridge is therefore
+ * like-for-like.
+ *
+ * Both figures are entirely recurring in their own documents, and are stored
+ * that way. Nothing here is converted by convention.
+ *
+ * The remaining Health Benefits residual of -$28,195,759 is not a Medicaid
+ * reduction the Governor proposes. It is the net of items each budget funds and
+ * the other does not; MEDICAID_AUDIT.md sets out every item on both sides, and
+ * the summary of it is carried onto the aggregate card.
+ */
+const MEDICAID_REBASE = {
+  enacted: 847_200_000,
+  governor: 1_047_197_722,
+  page: '174',
+  item: 7,
+}
+
+export const MEDICAID_REBASE_BRIDGE = MEDICAID_REBASE.governor - MEDICAID_REBASE.enacted
+
+/**
+ * The Health Benefits residual, in the documents' own items.
+ *
+ * Stated as data rather than prose so the aggregate card, the audit and the
+ * tests all quote the same figures. Signs are as each budget records them.
+ */
+export const HEALTH_BENEFITS_RESIDUAL_ITEMS = {
+  enactedOnly: [
+    { title: 'Rates for Personal Care Services', amount: 70_800_000 },
+    { title: 'Innovations Waiver direct care worker wages', amount: 21_300_000 },
+    { title: 'Healthy Opportunities Pilot', amount: 9_000_000 },
+  ],
+  governorOnly: [
+    { title: 'Managed Care Oversight', amount: 13_666_009 },
+    { title: 'Innovations Waiver slots', amount: 9_339_600 },
+  ],
+  explicitGovernorReductions: [{ title: 'Vacant Position Reductions', amount: -659_084 }],
+} as const
+
 export const PROGRAM_LEVEL_DECISIONS: Decision[] = [
   {
     id: 'teacher-compensation',
@@ -273,6 +328,84 @@ export const PROGRAM_LEVEL_DECISIONS: Decision[] = [
           cite(
             'committeeReport',
             'Department of Adult Correction, item 40, Correctional Officers - Salary Adjustments ($47,429,250 recurring, 13% per schedule step)',
+          ),
+        ],
+      }),
+    ],
+  },
+  {
+    id: 'medicaid-rebase',
+    category: 'health-human-services',
+    title: 'Fund Projected Medicaid Costs',
+    question:
+      'How much should the state budget against the projected cost of continuing the Medicaid programme it already runs?',
+    enactedBaseline: `S.L. 2026-41 funds a Medicaid rebase of ${usd(
+      MEDICAID_REBASE.enacted,
+    )} in recurring General Fund money for FY 2026-27 (Committee Report item 99, "Medicaid Rebase"). The figure is net of receipts: the item shows requirements of $2,658,573,067 against receipts of $1,811,373,067, so what is scored here is the state share only.`,
+    background:
+      'A rebase is not new policy. It funds the projected cost of maintaining the existing Medicaid programme for people already eligible for it, and the projection moves with enrollment, how much care enrollees use, medical prices, the capitation rates paid to managed care plans, and the federal matching rate. Nothing on this card expands eligibility or adds a benefit. Because Medicaid is an entitlement, the obligation exists whether or not the budget funds it in full: budgeting below the projection does not reduce what the state owes providers, it defers recognition of the cost, usually into a later supplemental appropriation. Both figures below are General Fund appropriations with federal receipts already netted out, so each state dollar moves considerably more total health care spending than the state itself pays. The two numbers are two forecasts of the same programme, made at different times by different agencies, and neither document scores the other.',
+    choices: [
+      enactedOption({
+        label: `Maintain the enacted rebase: ${usd(MEDICAID_REBASE.enacted)}`,
+        description: `Fund the rebase at the enacted ${usd(
+          MEDICAID_REBASE.enacted,
+        )} recurring, the amount S.L. 2026-41 provides against projected FY 2026-27 Medicaid costs.`,
+        affects: [
+          'Medicaid enrollees, through what the programme can pay providers',
+          'Hospitals, clinics and other providers',
+          'Later budgets, which absorb any gap between the appropriation and actual cost',
+        ],
+        benefits: [
+          'Leaves more General Fund capacity available for other purposes in this budget.',
+          'The enacted figure is the projection the General Assembly acted on, and it is the more recent of the two.',
+        ],
+        tradeoffs: [
+          'The two forecasts differ by about $200 million, and these documents do not establish which is closer to what the programme will actually cost.',
+          'Because the obligation is an entitlement, any gap between the appropriation and the actual cost does not disappear; it appears in a later budget instead.',
+        ],
+      }),
+      proposalOption({
+        id: 'governor-rebase',
+        label: `Adopt the Governor's rebase recommendation: ${usd(MEDICAID_REBASE_BRIDGE)} more`,
+        description: `Fund the rebase at ${usd(
+          MEDICAID_REBASE.governor,
+        )} recurring, the amount recommended in Governor Stein's Recommended Budget for FY 2026-27 (p. ${MEDICAID_REBASE.page}, item ${MEDICAID_REBASE.item}, "Medicaid Rebase"), rather than the enacted ${usd(
+          MEDICAID_REBASE.enacted,
+        )}. The incremental appropriation is ${usd(
+          MEDICAID_REBASE_BRIDGE,
+        )} recurring. This funds the same programme at a higher projected cost; it does not change who is eligible or what Medicaid covers.`,
+        spending: { recurring: MEDICAID_REBASE_BRIDGE },
+        affects: [
+          'Medicaid enrollees, through what the programme can pay providers',
+          'Hospitals, clinics and other providers',
+          'Every other area of the budget, through the General Fund capacity this uses',
+        ],
+        benefits: [
+          'Budgets more against the projected cost of an entitlement the state is obliged to pay either way.',
+          'A larger appropriation leaves less of the programme to be settled in a later supplemental bill, which is decided outside the ordinary budget debate.',
+          'Because federal dollars match state dollars, the additional state share draws further federal money into health care in the state.',
+        ],
+        tradeoffs: [
+          'A recurring commitment of about $200 million that is not available for anything else, and recurring money continues into every later year.',
+          'It is a forecast. If actual enrollment and utilisation come in lower, money is committed against a cost that did not arise.',
+          'The state share is the smaller part of the total: raising it also raises total programme spending by considerably more than the state pays.',
+        ],
+        derivation: `The Governor's recommended FY 2026-27 Medicaid rebase of ${usd(
+          MEDICAID_REBASE.governor,
+        )} (p. ${MEDICAID_REBASE.page}, item ${MEDICAID_REBASE.item}) less the enacted ${usd(
+          MEDICAID_REBASE.enacted,
+        )} (Committee Report item 99) is ${usd(
+          MEDICAID_REBASE_BRIDGE,
+        )}. Both are recurring FY 2026-27 appropriations for the same item in the same budget code, measured from the same certified base and both net of receipts, and only the difference is scored.`,
+        note:
+          `Both figures are FY 2026-27 appropriations measured from the same November 2025 certified budget of $6,544,062,901, which is what makes subtracting them valid; the Governor's published change columns are never scored against the enacted budget directly. Two cautions. First, this is a rebase: it prices the existing programme, and neither document presents it as an expansion of eligibility or as a new benefit. Second, neither document states that either amount would create or prevent a shortfall, and nothing here should be read as saying so. What can be said is that the two are forecasts of the same obligation and differ by ${usd(
+            MEDICAID_REBASE_BRIDGE,
+          )}.`,
+        sources: [
+          cite('governorRecommendation', 'DHHS - Health Benefits, item 7, Medicaid Rebase, p. 174'),
+          cite(
+            'committeeReport',
+            'Department of Health and Human Services, Division of Health Benefits, item 99, Medicaid Rebase ($847,200,000 recurring; requirements $2,658,573,067 less receipts $1,811,373,067)',
           ),
         ],
       }),

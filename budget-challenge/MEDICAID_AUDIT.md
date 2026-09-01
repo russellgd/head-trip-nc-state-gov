@@ -1,6 +1,11 @@
 # Medicaid rebase: reconciliation audit
 
-**Audit only. Nothing implemented.** The purpose is to explain the −$28,195,759 residual that
+**Status: the audit is complete and the split has since been implemented**, in the decision "Fund
+Projected Medicaid Costs" (`src/data/decisions/programLevel.ts`), on the strength of the finding
+below. This document remains the reconciliation of record for it. The text below was written as an
+audit and is unchanged apart from this note and the closing section.
+
+The purpose is to explain the −$28,195,759 residual that
 appears when the Medicaid rebase is removed from the Health Benefits aggregate, and to say whether
 the split can be built safely.
 
@@ -124,14 +129,20 @@ The split can therefore be built safely, on the same pattern as the other two: s
 +$199,997,722 recurring on a Medicaid rebase decision, and reduce the Health Benefits aggregate to
 −$28,195,759 so the two sum back to +$171,801,963.
 
-**Not implemented, per the instruction to audit only.** Two points would need carrying onto the
-cards if it goes ahead:
+**Implemented on this basis.** Two points identified here as needing to reach the cards, and where
+they went:
 
-1. **The aggregate option would become negative** — the Governor recommending $28,195,759 less than
-   enacted for everything other than the rebase. That reads oddly beside a rebase increase of
-   $200m unless the card says why, so it should name the three enacted items the Governor does not
-   carry.
+1. **The aggregate option is negative** — the Governor recommending $28,195,759 less than enacted
+   for everything other than the rebase. That reads oddly beside a rebase increase of $200m unless
+   the card says why, so the aggregate card now names the three enacted items the Governor does not
+   carry, the two the Governor funds and the enacted budget does not, and the single explicit
+   reduction, and states that this is not one policy proposal. A test enforces each of those.
 2. **The federal match caveat matters more here than anywhere else.** Both figures are General Fund
    appropriations with receipts netted out, so the card shows the state's share only. A change in
-   the state share moves considerably more total health spending, and the existing Medicaid card
-   already says so; the split would need to keep that.
+   the state share moves considerably more total health spending. Both the new rebase card and the
+   aggregate card carry that caveat.
+
+Two further constraints were applied in implementing it. The rebase is described as funding the
+projected cost of the existing programme, never as Medicaid expansion or a new benefit, and a test
+rejects any sentence that says otherwise without a negation. And neither amount is said to create or
+prevent a shortfall, because no source in this project establishes that.

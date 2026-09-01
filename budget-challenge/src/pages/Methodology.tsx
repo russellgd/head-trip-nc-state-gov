@@ -9,6 +9,18 @@ import { formatDollars } from '../lib/format'
 /** Version history. Add a row whenever any figure in the dataset changes. */
 const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = [
   {
+    version: '0.7.0',
+    date: '2026-09-01',
+    note:
+      'The Medicaid rebase split out of the Health Benefits aggregate. A rebase funds the ' +
+      'projected cost of continuing the existing programme, and the two budgets price the same ' +
+      'obligation differently; the enacted and recommended amounts are recurring in both ' +
+      'documents and are stored that way. What is left in the aggregate afterwards is negative, ' +
+      'and the card says why: it is the net of items each budget funds and the other does not, ' +
+      'not a Medicaid reduction anyone proposed. Every item behind it is named on the card and ' +
+      'reconciled in MEDICAID_AUDIT.md.',
+  },
+  {
     version: '0.6.0',
     date: '2026-08-31',
     note:

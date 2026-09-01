@@ -5,6 +5,8 @@ import { GOVERNOR_RECOMMENDATIONS } from './governor'
 import { MORATORIUM } from './decisions/schoolChoice'
 import {
   CORRECTIONAL_OFFICER_BRIDGE,
+  HEALTH_BENEFITS_RESIDUAL_ITEMS,
+  MEDICAID_REBASE_BRIDGE,
   TEACHER_COMPENSATION_BRIDGE,
 } from './decisions/programLevel'
 import { resolveChoice } from '../engine/budget'
@@ -96,6 +98,14 @@ const SPLITS = [
     // Enacted 2,207,589,642; Governor recommended 2,301,698,762.
     aggregateBridge: 2_301_698_762 - 2_207_589_642,
     programAmount: CORRECTIONAL_OFFICER_BRIDGE,
+  },
+  {
+    name: 'Medicaid rebase',
+    aggregateId: 'medicaid-health-benefits',
+    programId: 'medicaid-rebase',
+    // Enacted 7,455,886,869; Governor recommended 7,627,688,832.
+    aggregateBridge: 7_627_688_832 - 7_455_886_869,
+    programAmount: MEDICAID_REBASE_BRIDGE,
   },
 ] as const
 
@@ -259,5 +269,134 @@ describe('teacher and instructional support pay', () => {
     // bonuses", which is not what the documents say.
     expect(proposal.verification.note).toMatch(/separate item/i)
     expect(proposal.verification.note).toMatch(/not that the Governor proposes no bonus/i)
+  })
+})
+
+describe('the Medicaid rebase', () => {
+  const decision = DATASET.decisions.find((d) => d.id === 'medicaid-rebase')!
+  const proposal = decision.choices.find((c) => c.provenance === 'proposal')!
+  const enacted = decision.choices.find((c) => c.isEnactedBaseline)!
+  const aggregate = DATASET.decisions.find((d) => d.id === 'medicaid-health-benefits')!
+  const residual = aggregate.choices.find((c) => c.provenance === 'proposal')!
+
+  const allText = (d: (typeof DATASET)['decisions'][number]) =>
+    [
+      d.title,
+      d.question,
+      d.enactedBaseline,
+      d.background,
+      ...d.choices.flatMap((c) => [
+        c.label,
+        c.description,
+        ...c.affects,
+        ...c.benefits,
+        ...c.tradeoffs,
+        c.verification.note ?? '',
+        c.verification.derivation ?? '',
+      ]),
+    ].join(' ')
+
+  it('sums with the residual to the original Health Benefits agency bridge', () => {
+    expect(MEDICAID_REBASE_BRIDGE).toBe(1_047_197_722 - 847_200_000)
+    expect(MEDICAID_REBASE_BRIDGE).toBe(199_997_722)
+
+    const residualAmount = residual.spending.recurring + residual.spending.nonrecurring
+    expect(residualAmount).toBe(-28_195_759)
+    expect(MEDICAID_REBASE_BRIDGE + residualAmount).toBe(7_627_688_832 - 7_455_886_869)
+    expect(MEDICAID_REBASE_BRIDGE + residualAmount).toBe(171_801_963)
+  })
+
+  it('is scored by one decision only', () => {
+    // Nothing else in the dataset may move the rebase amount, and no other card
+    // may claim to be scoring it.
+    const scoringIt = DATASET.decisions.filter((d) =>
+      d.choices.some(
+        (c) =>
+          c.verification.scored &&
+          c.spending.recurring + c.spending.nonrecurring === MEDICAID_REBASE_BRIDGE,
+      ),
+    )
+    expect(scoringIt.map((d) => d.id)).toEqual(['medicaid-rebase'])
+
+    const claimingIt = DATASET.decisions.filter(
+      (d) => d.id !== 'medicaid-rebase' && /Medicaid [Rr]ebase/.test(allText(d)),
+    )
+    for (const d of claimingIt) {
+      // Mentioning it is allowed only to say it is scored somewhere else.
+      expect(allText(d), `${d.id} mentions the rebase without backing it out`).toMatch(
+        /backed out/i,
+      )
+    }
+  })
+
+  it('is entirely recurring on both options', () => {
+    expect(proposal.spending.recurring).toBe(199_997_722)
+    expect(proposal.spending.nonrecurring).toBe(0)
+    expect(proposal.spending.recurring + proposal.spending.nonrecurring).toBe(
+      proposal.spending.recurring,
+    )
+    expect(enacted.spending.nonrecurring).toBe(0)
+  })
+
+  it('gives the enacted option a complete verification record at zero', () => {
+    expect(enacted.verification.status).toBe('verified')
+    expect(enacted.verification.scored).toBe(true)
+    expect(enacted.verification.note).toBeTruthy()
+    expect(enacted.verification.note).toMatch(/measured as a change from the enacted budget/i)
+    expect(resolveChoice(decision, {}).id).toBe(enacted.id)
+    for (const bucket of [enacted.spending, enacted.revenue, enacted.reserve]) {
+      expect(bucket.recurring).toBe(0)
+      expect(bucket.nonrecurring).toBe(0)
+    }
+    // "Continue the enacted policy", never "amount unknown": the card states
+    // the enacted amount even though the scored impact is zero.
+    expect(enacted.label).toMatch(/\$847,200,000/)
+    expect(decision.enactedBaseline).toMatch(/\$847,200,000/)
+  })
+
+  it('never describes the rebase as an expansion or a new benefit', () => {
+    // The words may appear, but only to deny that this is one. Any sentence
+    // using them without a negation would be asserting the opposite.
+    const sentences = allText(decision).split(/(?<=[.?!])\s+/)
+    const claims = sentences.filter(
+      (sentence) =>
+        /expansion|expand(s|ed|ing)?\b|new benefit/i.test(sentence) &&
+        !/\b(not|nothing|neither|nor|never|does not|without)\b/i.test(sentence),
+    )
+    expect(claims, claims.join('\n')).toEqual([])
+    expect(decision.background).toMatch(/existing Medicaid programme/i)
+    expect(decision.background).toMatch(/enrollment/i)
+    expect(decision.background).toMatch(/capitation/i)
+    expect(decision.background).toMatch(/federal match/i)
+  })
+
+  it('claims no shortfall outcome for either amount', () => {
+    const text = allText(decision)
+    expect(text).not.toMatch(/will (create|cause|prevent|avoid) a shortfall/i)
+    expect(proposal.verification.note).toMatch(
+      /neither document states that either amount would create or prevent a shortfall/i,
+    )
+  })
+
+  it('does not present the residual as one policy proposal', () => {
+    const note = residual.verification.note ?? ''
+    expect(note).toMatch(/not a Medicaid reduction that anyone proposed/i)
+    expect(note).toMatch(/net of items each budget funds and the other does not/i)
+    expect(residual.tradeoffs.join(' ')).toMatch(/not one policy/i)
+
+    // Every item the audit identifies has to reach the card by name.
+    for (const item of [
+      ...HEALTH_BENEFITS_RESIDUAL_ITEMS.enactedOnly,
+      ...HEALTH_BENEFITS_RESIDUAL_ITEMS.governorOnly,
+      ...HEALTH_BENEFITS_RESIDUAL_ITEMS.explicitGovernorReductions,
+    ]) {
+      expect(note, `residual note omits "${item.title}"`).toContain(item.title)
+    }
+  })
+
+  it('drops the rebase from the items the residual says it is built from', () => {
+    // A residual described as built from an item scored on another card is the
+    // double count this split exists to prevent, in prose rather than in maths.
+    expect(residual.description).not.toMatch(/Medicaid Rebase/)
   })
 })

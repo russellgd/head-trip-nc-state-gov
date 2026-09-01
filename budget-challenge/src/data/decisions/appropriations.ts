@@ -27,7 +27,12 @@ import type { CategoryId, Decision } from '../types'
 import { AGENCY_APPROPRIATIONS } from '../enacted'
 import { GOVERNOR_BY_DECISION } from '../governor'
 import { MORATORIUM } from './schoolChoice'
-import { CORRECTIONAL_OFFICER_BRIDGE, TEACHER_COMPENSATION_BRIDGE } from './programLevel'
+import {
+  CORRECTIONAL_OFFICER_BRIDGE,
+  HEALTH_BENEFITS_RESIDUAL_ITEMS,
+  MEDICAID_REBASE_BRIDGE,
+  TEACHER_COMPENSATION_BRIDGE,
+} from './programLevel'
 import { cite } from '../sources'
 import { enactedOption, illustrativeOption, percentOf, proposalOption, usd } from './helpers'
 
@@ -83,6 +88,23 @@ function appropriationDecision(input: {
     recurring: number
     nonrecurring: number
     scoredBy: string
+    /**
+     * Items in the Governor's published list that this decision no longer
+     * scores. They are dropped from the list of items shown on the card,
+     * because a residual described as being "built from" an item scored on a
+     * different card invites exactly the double count the split prevents.
+     */
+    omitItems?: Array<{ page: string; item: number }>
+    /**
+     * What the residual actually consists of, in the documents' own terms.
+     * Needed wherever the residual is not a proportionate change to the whole
+     * agency but the net of specific items each budget funds and the other
+     * does not.
+     */
+    residualNote?: string
+    /** Arguments for the residual, where the generic ones would misdescribe it. */
+    residualBenefits?: string[]
+    residualTradeoffs?: string[]
   }
 }): Decision {
   const base = sumAppropriations(input.agencies)
@@ -111,6 +133,11 @@ function appropriationDecision(input: {
   // Backing out a component scored elsewhere leaves the residual this decision
   // may score. The subtraction is shown to the reader in the derivation.
   const governorDelta = aggregateDelta - excludedTotal
+  const listedItems = governor
+    ? governor.topItems.filter(
+        (i) => !excluded?.omitItems?.some((o) => o.page === i.page && o.item === i.item),
+      )
+    : []
 
   /**
    * The Governor's recommended level, offered as a published proposal.
@@ -136,8 +163,8 @@ function appropriationDecision(input: {
             : `Fund ${input.baseLabel} at ${usd(governor.recommended)}, the level recommended in ` +
               `Governor Stein's Recommended Budget for FY 2026-27, rather than the ${usd(base)} ` +
               `the General Assembly enacted. `) +
-          `That recommendation is built from items including ` +
-          governor.topItems
+          (excluded ? `What remains is built from items including ` : `That recommendation is built from items including `) +
+          listedItems
             .map(
               (i) =>
                 `"${i.title}" (p. ${i.page}, item ${i.item}; ${usd(i.recurring)} recurring, ${usd(
@@ -148,8 +175,12 @@ function appropriationDecision(input: {
           '.',
         spending: { recurring: governorDelta },
         affects: input.affects,
-        benefits: governorDelta >= 0 ? input.increaseBenefits : input.reduceBenefits,
-        tradeoffs: governorDelta >= 0 ? input.increaseTradeoffs : input.reduceTradeoffs,
+        benefits:
+          excluded?.residualBenefits ??
+          (governorDelta >= 0 ? input.increaseBenefits : input.reduceBenefits),
+        tradeoffs:
+          excluded?.residualTradeoffs ??
+          (governorDelta >= 0 ? input.increaseTradeoffs : input.reduceTradeoffs),
         derivation:
           `The Governor's recommended FY 2026-27 net appropriation of ${usd(governor.recommended)} ` +
           `less the enacted ${usd(base)} is ${usd(Math.abs(aggregateDelta))} ` +
@@ -173,7 +204,8 @@ function appropriationDecision(input: {
             governor.changeFromCertified.nonrecurring,
           )} nonrecurring. Those are changes from that base, not from the budget the General ` +
           `Assembly later enacted, so the figure scored here is the difference between the two ` +
-          `published levels instead.`,
+          `published levels instead.` +
+          (excluded?.residualNote ? ` ${excluded.residualNote}` : ''),
         sources: [
           cite(
             'governorRecommendation',
@@ -239,6 +271,13 @@ function appropriationDecision(input: {
  * Recorded as data rather than inferred from the prose, so the no-double-count
  * test compares the actual bases instead of matching names in a sentence.
  */
+/** "A ($1), B ($2) and C ($3)" — item names with their own documents' figures. */
+const namedItems = (items: ReadonlyArray<{ title: string; amount: number }>): string => {
+  const parts = items.map((i) => `${i.title} (${usd(Math.abs(i.amount))})`)
+  if (parts.length < 2) return parts.join('')
+  return `${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}`
+}
+
 export const APPROPRIATION_BASES: Array<{ decisionId: string; agencies: string[] }> = []
 
 export const APPROPRIATION_DECISIONS: Decision[] = [
@@ -458,6 +497,40 @@ export const APPROPRIATION_DECISIONS: Decision[] = [
     category: 'health-human-services',
     title: 'Medicaid and Health Benefits',
     question: 'Should the state change the General Fund share of Medicaid and health benefits?',
+    // The Medicaid rebase is nearly the whole of the Governor's recommendation
+    // for this budget code and has its own decision. It is backed out here, and
+    // what remains is not a proposed Medicaid reduction: it is the net of items
+    // each budget funds and the other does not. MEDICAID_AUDIT.md has every one.
+    governorExcludes: {
+      label: 'the Medicaid rebase',
+      recurring: MEDICAID_REBASE_BRIDGE,
+      nonrecurring: 0,
+      scoredBy: 'Fund Projected Medicaid Costs',
+      omitItems: [{ page: '174', item: 7 }],
+      residualNote:
+        `What remains once the rebase is backed out is not a Medicaid reduction that anyone proposed, and it must not be read as one. It is the arithmetic net of items each budget funds and the other does not. The enacted budget funds three the Governor's recommendation does not carry — ${namedItems(
+          HEALTH_BENEFITS_RESIDUAL_ITEMS.enactedOnly,
+        )} — while the Governor funds two the enacted budget does not: ${namedItems(
+          HEALTH_BENEFITS_RESIDUAL_ITEMS.governorOnly,
+        )}. Reductions the Governor's recommendation states explicitly for this budget code come to ${usd(
+          Math.abs(
+            HEALTH_BENEFITS_RESIDUAL_ITEMS.explicitGovernorReductions.reduce(
+              (n, i) => n + i.amount,
+              0,
+            ),
+          ),
+        )} in total, a single item — ${namedItems(
+          HEALTH_BENEFITS_RESIDUAL_ITEMS.explicitGovernorReductions,
+        )} — and account for only a fortieth of the residual. Both sides sum exactly to the change each document states for budget code 14445, so nothing is missing to another code; the difference is one of scope. The item-by-item reconciliation is in MEDICAID_AUDIT.md.`,
+      residualBenefits: [
+        'Every item behind this figure is identified, and the reconciliation naming all of them is published with the project.',
+        'Adopting it would fund managed care oversight and additional Innovations Waiver slots, neither of which the enacted budget funds.',
+      ],
+      residualTradeoffs: [
+        'This is not one policy and there is no coherent case for or against it as a whole. It is the net of several unrelated items, and they are better weighed one at a time than together.',
+        'Adopting it would drop three items the enacted budget funds: personal care service rates, Innovations Waiver direct care worker wages, and the Healthy Opportunities Pilot.',
+      ],
+    },
     agencies: ['Health Benefits'],
     baseLabel: 'the Division of Health Benefits',
     enactedNote:
