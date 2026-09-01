@@ -15,7 +15,7 @@ export const DATASET: Dataset = {
    * Data version. Bump when any figure changes, and add a row to the version
    * history on the methodology page.
    */
-  version: '0.4.1',
+  version: '0.5.0',
   baseline: BASELINE,
   categories: CATEGORIES,
   decisions: DECISIONS,

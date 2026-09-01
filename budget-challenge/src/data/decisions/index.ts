@@ -4,6 +4,7 @@ import { RESERVATION_DECISIONS } from './reservations'
 import { REVENUE_DECISIONS } from './revenue'
 import { RESERVE_DECISIONS } from './reserves'
 import { SCHOOL_CHOICE_DECISIONS } from './schoolChoice'
+import { PROGRAM_LEVEL_DECISIONS } from './programLevel'
 
 /**
  * Every decision in the challenge, ordered by budget area.
@@ -30,6 +31,7 @@ const CATEGORY_ORDER = [
 const ALL = [
   ...APPROPRIATION_DECISIONS,
   ...SCHOOL_CHOICE_DECISIONS,
+  ...PROGRAM_LEVEL_DECISIONS,
   ...RESERVATION_DECISIONS,
   ...REVENUE_DECISIONS,
   ...RESERVE_DECISIONS,

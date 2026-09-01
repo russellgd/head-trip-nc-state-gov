@@ -27,6 +27,7 @@ import type { CategoryId, Decision } from '../types'
 import { AGENCY_APPROPRIATIONS } from '../enacted'
 import { GOVERNOR_BY_DECISION } from '../governor'
 import { MORATORIUM } from './schoolChoice'
+import { CORRECTIONAL_OFFICER_BRIDGE } from './programLevel'
 import { cite } from '../sources'
 import { enactedOption, illustrativeOption, percentOf, proposalOption, usd } from './helpers'
 
@@ -626,6 +627,14 @@ export const APPROPRIATION_DECISIONS: Decision[] = [
     id: 'adult-correction',
     category: 'justice-public-safety',
     title: 'Adult Correction',
+    // Correctional officer pay has its own decision; its bridge is backed out
+    // here so the two cannot score the same money.
+    governorExcludes: {
+      label: 'the correctional officer salary increase',
+      recurring: CORRECTIONAL_OFFICER_BRIDGE,
+      nonrecurring: 0,
+      scoredBy: 'Correctional Officer Pay',
+    },
     question: 'Should the state change what it spends on the prison and community supervision system?',
     agencies: ['Department of Adult Correction'],
     baseLabel: 'the Department of Adult Correction',

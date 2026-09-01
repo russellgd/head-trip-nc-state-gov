@@ -9,15 +9,26 @@ import { formatDollars } from '../lib/format'
 /** Version history. Add a row whenever any figure in the dataset changes. */
 const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = [
   {
+    version: '0.5.0',
+    date: '2026-08-31',
+    note:
+      'Correctional officer pay split out of the Adult Correction aggregate. The enacted budget ' +
+      'raises each step of the schedule by 13%; the Governor recommends 15%, made up of 10% in ' +
+      'the first year of the biennium and 5% in the second. Only the incremental appropriation is ' +
+      'scored, and the aggregate is reduced by the same amount so the two sum back to the original ' +
+      'agency bridge. The card states both percentages and warns that the two documents cost a ' +
+      'percentage point differently, so the difference must not be read as the price of two points.',
+  },
+  {
     version: '0.4.1',
     date: '2026-08-31',
     note:
       'Correction. The Opportunity Scholarship decision previously said the programme\u2019s funding ' +
-      'level was unpublished. It is published: G.S. 115C-562.8(b) appropriates $675,000,000 in ' +
-      'recurring funds to the Grant Fund Reserve for FY 2026-27. That statutory recurring ' +
-      'appropriation is distinguished here from total funds available, which may also include ' +
-      'nonrecurring appropriations, reserve balances and carryforward that these documents do not ' +
-      'establish, and no recommended total is calculated from it. No scored amount changes.',
+      'level was unpublished. It is published, in G.S. 115C-562.8(b) rather than in the ' +
+      'appropriations act, which is why the act carries no line item for it. That statutory ' +
+      'recurring appropriation is now distinguished from total funds available, which may also ' +
+      'include nonrecurring appropriations, reserve balances and carryforward that these documents ' +
+      'do not establish, and no recommended total is calculated from it. No scored amount changes.',
   },
   {
     version: '0.4.0',

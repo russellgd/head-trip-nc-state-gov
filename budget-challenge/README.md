@@ -35,7 +35,7 @@ The three baseline anchors were confirmed against the act, unchanged:
 | --- | ---: | --- |
 | Enacted policy | 30 | What S.L. 2026-41 actually does |
 | Documented alternative | 12 | The dollar impact equals an amount an official document states |
-| Published proposal | 15 | From Governor Stein's Recommended Budget for FY 2026-27, with page and item citations |
+| Published proposal | 16 | From Governor Stein's Recommended Budget for FY 2026-27, with page and item citations |
 | Illustrative allocation scenario | 32 | Constructed for this exercise; **not proposed by any North Carolina official or institution** |
 
 An appropriations act establishes what an agency receives; it does not publish a costed alternative

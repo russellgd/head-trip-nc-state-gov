@@ -70,7 +70,7 @@ is a proposal somebody made.
 | --- | ---: | --- |
 | **Enacted policy** | 30 | What S.L. 2026-41 actually does. The reference point. |
 | **Documented alternative** | 12 | The dollar impact equals an amount an official document states. Not making a reservation the act makes frees exactly what the act reserves: "reserve nothing for the Medicaid Contingency Reserve" frees exactly $333,000,000. The magnitude is documented; this does not assert that anyone proposed it. |
-| **Published proposal** | 15 | An alternative from Governor Stein's Recommended Budget for FY 2026-27 (April 2026), citing the page and the constituent recommendations behind it. |
+| **Published proposal** | 16 | An alternative from Governor Stein's Recommended Budget for FY 2026-27 (April 2026), citing the page and the constituent recommendations behind it. |
 | **Illustrative allocation scenario** | 32 | A percentage change constructed for this exercise — 3%, 5%, 10%, or 20% depending on the size of the line. The arithmetic is exact and shown. **No North Carolina official or institution proposed it**, and it must never be described as a policy proposal. |
 
 Every illustrative option also carries, on its own card, a note on what a change of that shape would
@@ -140,7 +140,28 @@ The statute itself was not among the documents available to this build. The FY 2
 supplied by the project owner and is recorded as such in the source ledger; it should be confirmed
 against G.S. 115C-562.8(b) before publication.
 
-### Not double-counting the split
+### Correctional officer pay, split from Adult Correction
+
+| | |
+| --- | --- |
+| Enacted | Committee Report item 40, "Correctional Officers – Salary Adjustments": **$47,429,250 recurring**, raising each step of the schedule by **13%** in FY 2026-27 |
+| Governor | Budget Book p. 203 item 5: **$82,554,010 recurring**, funding **15%** in total — 10% in the first year of the biennium and 5% in the second |
+| Scored | **+$35,124,760 recurring**, the incremental appropriation only |
+| Residual left with the aggregate | $94,109,120 − $35,124,760 = **+$58,984,360** |
+
+Probation and parole officers are funded separately on both sides — item 41 in the act
+($4,900,952) and p. 203 item 6 in the Budget Book ($16,458,017) — and neither figure folds the
+other group in.
+
+**A caveat carried on the card.** The two documents do not cost a percentage point the same way:
+13% costs $3,648,404 a point in the act, and 15% costs $5,503,601 a point in the Governor's book,
+half as much again. The Governor's figures are internally consistent — the first year's 10% is
+costed at $55,035,673 and the second year's 15% at exactly one and a half times that — so this is
+not an extraction error. The two costings evidently cover different components or populations, and
+these documents do not resolve which. The appropriation difference is exact; it is not the price of
+two percentage points, and the card says so.
+
+### Not double-counting the splits
 
 The UNC aggregate decision previously scored the whole 16011 + 16012 difference, which included the
 moratorium. It now scores only the residual:
@@ -151,9 +172,11 @@ moratorium. It now scores only the residual:
 | less the Opportunity Scholarship moratorium | −$1,042,000,000 |
 | **Residual scored by the aggregate decision** | **+$170,415,138** |
 
-`src/data/nodoublecount.test.ts` enforces this: no two decisions may anchor the same agency line or
-the same Governor budget code, the two options must sum back to the unsplit aggregate, and no
-decision may offer more than one scored proposal.
+`src/data/nodoublecount.test.ts` enforces this for every split, from a table: no two decisions may
+anchor the same agency line or the same Governor budget code, each programme option and its reduced
+aggregate must sum back to the bridge that existed before the split, each programme decision must
+offer continuation of enacted policy as a verified zero option, and no decision may offer more than
+one scored proposal.
 
 If you use this in a course, that distinction is worth ten minutes of discussion on its own: the
 difference between a number that is *sourced* and a scenario that is *plausible*.

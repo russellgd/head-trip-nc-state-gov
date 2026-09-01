@@ -3,6 +3,7 @@ import { DATASET } from './index'
 import { APPROPRIATION_BASES } from './decisions/appropriations'
 import { GOVERNOR_RECOMMENDATIONS } from './governor'
 import { MORATORIUM } from './decisions/schoolChoice'
+import { CORRECTIONAL_OFFICER_BRIDGE } from './decisions/programLevel'
 import { resolveChoice } from '../engine/budget'
 
 /**
@@ -62,6 +63,102 @@ describe('no two decisions score the same Governor recommendation', () => {
   })
 })
 
+/**
+ * Every programme split out of an agency aggregate, with the aggregate bridge it
+ * came from. The rule each must satisfy is the same: the programme option and
+ * the reduced aggregate option must sum back to the bridge that existed before
+ * the split, so no money is gained or lost by splitting.
+ */
+const SPLITS = [
+  {
+    name: 'Opportunity Scholarships',
+    aggregateId: 'unc-need-based-aid',
+    programId: 'opportunity-scholarships',
+    // Enacted 443,721,892 + 933,333,505; recommended 620,191,944 + (114,721,409).
+    aggregateBridge: 620_191_944 + -114_721_409 - (443_721_892 + 933_333_505),
+    programAmount: MORATORIUM.recurring + MORATORIUM.nonrecurring,
+  },
+  {
+    name: 'Correctional officer pay',
+    aggregateId: 'adult-correction',
+    programId: 'correctional-officer-pay',
+    // Enacted 2,207,589,642; Governor recommended 2,301,698,762.
+    aggregateBridge: 2_301_698_762 - 2_207_589_642,
+    programAmount: CORRECTIONAL_OFFICER_BRIDGE,
+  },
+] as const
+
+const scoredProposal = (decisionId: string) => {
+  const decision = DATASET.decisions.find((d) => d.id === decisionId)
+  if (!decision) throw new Error(`no decision "${decisionId}"`)
+  const choice = decision.choices.find((c) => c.provenance === 'proposal')
+  if (!choice) throw new Error(`no proposal option on "${decisionId}"`)
+  return choice.spending.recurring + choice.spending.nonrecurring
+}
+
+describe.each(SPLITS)('the $name split does not double-count', (split) => {
+  it('sums the programme and the residual back to the unsplit aggregate bridge', () => {
+    const program = scoredProposal(split.programId)
+    const residual = scoredProposal(split.aggregateId)
+
+    expect(program).toBe(split.programAmount)
+    expect(program + residual).toBe(split.aggregateBridge)
+  })
+
+  it('says in the aggregate’s derivation that the programme was backed out', () => {
+    const aggregate = DATASET.decisions.find((d) => d.id === split.aggregateId)!
+    const proposal = aggregate.choices.find((c) => c.provenance === 'proposal')!
+
+    expect(proposal.verification.derivation).toMatch(/backed out/i)
+    expect(proposal.verification.derivation).toMatch(/twice/i)
+  })
+
+  it('offers continuation of enacted policy as a verified zero option', () => {
+    const program = DATASET.decisions.find((d) => d.id === split.programId)!
+    const enacted = program.choices.find((c) => c.isEnactedBaseline)!
+
+    expect(enacted.verification.status).toBe('verified')
+    expect(enacted.verification.scored).toBe(true)
+    expect(resolveChoice(program, {}).id).toBe(enacted.id)
+    for (const bucket of [enacted.spending, enacted.revenue, enacted.reserve]) {
+      expect(bucket.recurring).toBe(0)
+      expect(bucket.nonrecurring).toBe(0)
+    }
+  })
+})
+
+describe('correctional officer pay', () => {
+  const decision = DATASET.decisions.find((d) => d.id === 'correctional-officer-pay')!
+  const proposal = decision.choices.find((c) => c.provenance === 'proposal')!
+
+  it('scores only the incremental difference', () => {
+    expect(CORRECTIONAL_OFFICER_BRIDGE).toBe(82_554_010 - 47_429_250)
+    expect(CORRECTIONAL_OFFICER_BRIDGE).toBe(35_124_760)
+    expect(proposal.spending.recurring).toBe(35_124_760)
+    expect(proposal.spending.nonrecurring).toBe(0)
+  })
+
+  it('states both compensation percentages', () => {
+    const text = `${decision.enactedBaseline} ${proposal.description}`
+    expect(text).toMatch(/13%/)
+    expect(text).toMatch(/15%/)
+    expect(proposal.description).toMatch(/10%/)
+    expect(proposal.description).toMatch(/5%/)
+  })
+
+  it('warns that the two documents cost a percentage point differently', () => {
+    // 13% at $47,429,250 is $3,648,404 a point; 15% at $82,554,010 is
+    // $5,503,601. Presenting the difference as the price of two points would
+    // mislead, so the card has to say otherwise.
+    expect(proposal.verification.note).toMatch(/per percentage point|per point/i)
+    expect(proposal.verification.note).toMatch(/not be read as the price of two percentage points/i)
+  })
+
+  it('keeps probation and parole officers out of it', () => {
+    expect(decision.enactedBaseline).toMatch(/Probation and parole officers are funded separately/i)
+  })
+})
+
 describe('the Opportunity Scholarship split does not double-count', () => {
   const aggregate = DATASET.decisions.find((d) => d.id === 'unc-need-based-aid')!
   const program = DATASET.decisions.find((d) => d.id === 'opportunity-scholarships')!
@@ -92,22 +189,6 @@ describe('the Opportunity Scholarship split does not double-count', () => {
     const scored =
       aggregateProposal.spending.recurring + aggregateProposal.spending.nonrecurring
     expect(scored).toBe(residual)
-  })
-
-  it('sums the two decisions back to the unsplit aggregate bridge', () => {
-    // Choosing both options must equal the aggregate, not exceed it.
-    const both =
-      aggregateProposal.spending.recurring +
-      aggregateProposal.spending.nonrecurring +
-      programProposal.spending.recurring +
-      programProposal.spending.nonrecurring
-
-    expect(both).toBe(-871_584_862)
-  })
-
-  it('says in the aggregate’s own derivation that the moratorium was backed out', () => {
-    expect(aggregateProposal.verification.derivation).toMatch(/backed out/i)
-    expect(aggregateProposal.verification.derivation).toMatch(/twice/i)
   })
 
   it('classifies the programme as K-12 rather than by its budget code', () => {
