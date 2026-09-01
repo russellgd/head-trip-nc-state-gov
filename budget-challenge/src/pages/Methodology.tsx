@@ -13,8 +13,8 @@ const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = 
     date: '2026-08-31',
     note:
       'Teacher and instructional support pay split out of the Public Schools aggregate. The ' +
-      'enacted budget sets starting base pay at $48,000 with an average increase of 8%, part of ' +
-      'it funded as a one-time bonus; the Governor funds an 11% average raise entirely as ' +
+      'enacted budget raises the starting base salary and grants an average increase of 8%, part ' +
+      'of it funded as a one-time bonus; the Governor funds an 11% average raise entirely as ' +
       'recurring salary. The option is stored with its real recurring and nonrecurring split, ' +
       'which move in opposite directions, because the shift from one-time money into recurring ' +
       'salary is the substance of the choice rather than an accounting detail.',
