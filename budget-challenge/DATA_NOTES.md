@@ -313,6 +313,36 @@ These are design decisions, not gaps.
 
 ---
 
+## 5a. What may be collapsed, and what may not
+
+The card shows a reader what a choice is, what it costs, and what it gives up. It does not make
+them open anything to find out whether a policy was ever proposed.
+
+**Always visible, whatever the reader opens:** the policy question, the enacted baseline, every
+option's label and description, its fiscal impact, its provenance badge, whether the money is
+recurring or one-time, the strongest concern about it, and — for an illustrative scenario — the
+complete caveat that the arithmetic is exact but no North Carolina official or institution proposed
+the policy. The recurring/one-time table is on the card wherever the split is *material*, meaning
+the option carries both kinds of money and a single net figure would hide a shift between them.
+
+**Behind "Sources and calculation":** the verification note, the arithmetic derivation, the
+implementation note, the note on what would replace an illustrative scenario, the recurring table
+where the split is not material, and the citations.
+
+**Behind "Who this affects, and the arguments":** the full lists of who is affected, the arguments
+in favour, and the remaining concerns beyond the first.
+
+Nothing is removed by this. Every disclosure is a button with `aria-expanded` and `aria-controls`
+over a panel that is genuinely `hidden` while closed, so a screen reader and a sighted reader get
+the same page; every panel prints open, because a reader holding paper cannot expand anything; and
+the CSV and JSON exports carry the verification note, derivation, implementation note, replacement
+note and full citations as columns, so the record a reader takes away is complete whether or not
+they opened anything on screen.
+
+The rule behind all of it: **"Sources and calculation" may be collapsed. Provenance may not.**
+
+---
+
 ## 6. Editorial rules applied to the content
 
 - Each decision offers the enacted policy plus alternatives, and the enacted option is always

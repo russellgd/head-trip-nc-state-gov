@@ -50,7 +50,18 @@
  */
 import type { Decision } from '../types'
 import { cite } from '../sources'
-import { enactedOption, proposalOption, usd } from './helpers'
+import { enactedOption, proposalOption, usd, usdMillions } from './helpers'
+
+/**
+ * The recurring appropriation G.S. 115C-562.8(b) makes to the Opportunity
+ * Scholarship Grant Fund Reserve for FY 2026-27.
+ *
+ * This is the statutory recurring appropriation and not the programme's total
+ * funds available, which may also include nonrecurring appropriations, balances
+ * already in the Reserve, and carryforward from prior years. The qualification
+ * travels with the figure everywhere it is shown.
+ */
+export const OPPORTUNITY_SCHOLARSHIP_STATUTORY = 675_000_000
 
 /** Governor's Recommended Budget, p. 91, item 3, FY 2026-27 columns. */
 export const MORATORIUM = {
@@ -68,14 +79,19 @@ export const SCHOOL_CHOICE_DECISIONS: Decision[] = [
     question:
       'Should the state continue the Opportunity Scholarship programme as enacted, or adopt the Governor’s recommended moratorium on new awards?',
     enactedBaseline:
-      'The Opportunity Scholarship programme continues under S.L. 2026-41 at the level set by statute. G.S. 115C-562.8(b) appropriates $675,000,000 in recurring funds to the Opportunity Scholarship Grant Fund Reserve for FY 2026-27; the programme’s total funds available may be larger, since it can also draw on nonrecurring appropriations, balances already in the Reserve, and carryforward, none of which these documents establish. The act makes no change to its funding: none of the nine line items for this budget code in the incorporated Committee Report adjusts the programme, and the two technical corrections acts touch it only on administrative points such as testing records, residency, and application dates.',
+      `The Opportunity Scholarship programme continues under S.L. 2026-41 at the level set by statute. G.S. 115C-562.8(b) appropriates ${usd(
+        OPPORTUNITY_SCHOLARSHIP_STATUTORY,
+      )} in recurring funds to the Opportunity Scholarship Grant Fund Reserve for FY 2026-27; the programme’s total funds available may be larger, since it can also draw on nonrecurring appropriations, balances already in the Reserve, and carryforward, none of which these documents establish. The act makes no change to its funding: none of the nine line items for this budget code in the incorporated Committee Report adjusts the programme, and the two technical corrections acts touch it only on administrative points such as testing records, residency, and application dates.`,
     background:
       'The Opportunity Scholarship programme provides state-funded scholarships for children to attend K-12 private schools. It is administered by the State Education Assistance Authority, which reports through a University of North Carolina budget code, so it appears in the UNC section of budget documents. It is nonetheless a K-12 school choice policy rather than university financial aid, and it is placed here on that basis. Eligibility was expanded in recent years to remove the income limit, which is what made the programme large enough to matter at the scale it now does.',
     choices: [
       enactedOption({
-        label: 'Continue the programme as enacted',
-        description:
-          'Leave the Opportunity Scholarship programme funded at its statutory level, with eligibility as current law provides.',
+        label: `Continue enacted policy: ${usdMillions(
+          OPPORTUNITY_SCHOLARSHIP_STATUTORY,
+        )} recurring appropriation`,
+        description: `Leave the Opportunity Scholarship programme funded at its statutory level, with eligibility as current law provides. G.S. 115C-562.8(b) sets the recurring appropriation to the Grant Fund Reserve at ${usd(
+          OPPORTUNITY_SCHOLARSHIP_STATUTORY,
+        )} for FY 2026-27; the programme's total funds available may be larger, because it can also draw on nonrecurring appropriations, balances already in the Reserve, and carryforward, none of which these documents establish.`,
         affects: [
           'Families receiving or applying for scholarships',
           'Nonpublic schools enrolling scholarship students',

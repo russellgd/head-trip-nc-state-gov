@@ -143,6 +143,15 @@
     break-inside: avoid;
   }
 
+  /*
+   * Every disclosure prints open. A reader holding the paper cannot expand
+   * anything, so the sources, the arithmetic and the illustrative caveats have
+   * to be on the page or they are gone.
+   */
+  .disclosure-panel[hidden] {
+    display: block !important;
+  }
+
   a[href^='http']::after {
     content: ' (' attr(href) ')';
     font-size: 0.75em;

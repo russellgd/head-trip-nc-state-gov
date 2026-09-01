@@ -23,6 +23,15 @@ for (const [path, name] of pages) {
     const page = await context.newPage()
     await page.goto(`http://localhost:4173/#${path}`, { waitUntil: 'networkidle' })
     await page.waitForTimeout(250)
+    // Expand every disclosure first. A panel that is hidden is out of the
+    // accessibility tree, so scanning only the collapsed state would audit the
+    // part of the page nobody has questions about and skip the rest.
+    await page.evaluate(() => {
+      for (const button of document.querySelectorAll('button[aria-expanded="false"][aria-controls]')) {
+        button.click()
+      }
+    })
+    await page.waitForTimeout(250)
     await page.addScriptTag({ path: axePath })
     const results = await page.evaluate(async () =>
       await window.axe.run(document, {

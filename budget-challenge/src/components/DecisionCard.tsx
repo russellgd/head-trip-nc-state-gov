@@ -4,7 +4,8 @@ import { choiceBalanceEffect, choiceMovesMoney } from '../engine/budget'
 import { describeDelta, formatDelta, formatDollars } from '../lib/format'
 import { SourceList } from './SourceList'
 import { TableScroll } from './TableScroll'
-import { PROVENANCE, ProvenanceBadge, UnsourcedBadge } from './ProvenanceBadge'
+import { PROVENANCE, PROVENANCE_MEANING, ProvenanceBadge, UnsourcedBadge } from './ProvenanceBadge'
+import { Disclosure } from './Disclosure'
 
 /** What to print where the dollar impact goes. */
 function ImpactLine({ choice }: { choice: Choice }) {
@@ -33,15 +34,51 @@ function ImpactLine({ choice }: { choice: Choice }) {
   )
 }
 
+/** The buckets an option moves, as [label, recurring, one-time] rows. */
+function moneyRows(choice: Choice): Array<[string, number, number]> {
+  return (
+    [
+      ['Spending', choice.spending.recurring, choice.spending.nonrecurring],
+      ['Revenue', choice.revenue.recurring, choice.revenue.nonrecurring],
+      ['Reserves', choice.reserve.recurring, choice.reserve.nonrecurring],
+    ] as Array<[string, number, number]>
+  ).filter(([, r, n]) => r !== 0 || n !== 0)
+}
+
+/**
+ * Whether the recurring split is *material* to the choice in front of the
+ * reader, meaning the option carries both recurring and one-time money.
+ *
+ * That is the case worth the space of a table: a change that shifts money
+ * between the two, or commits recurring money while spending one-time money,
+ * leaves the state somewhere different next year than the single net figure
+ * suggests. Where an option is wholly one or the other, a word says it.
+ */
+function splitIsMaterial(choice: Choice): boolean {
+  const rows = moneyRows(choice)
+  const recurring = rows.some(([, r]) => r !== 0)
+  const nonrecurring = rows.some(([, , n]) => n !== 0)
+  return recurring && nonrecurring
+}
+
+/** "Recurring" or "One-time" — the shape of the money, in one word. */
+function TimingTag({ choice }: { choice: Choice }) {
+  if (!choice.verification.scored || !choiceMovesMoney(choice)) return null
+  const rows = moneyRows(choice)
+  const recurring = rows.some(([, r]) => r !== 0)
+  const nonrecurring = rows.some(([, , n]) => n !== 0)
+  const text = recurring && nonrecurring ? 'Recurring and one-time' : recurring ? 'Recurring' : 'One-time'
+  return (
+    <span className="rounded-full bg-canvas px-2.5 py-0.5 text-xs font-medium text-ink ring-1 ring-line">
+      {text}
+    </span>
+  )
+}
+
 function RecurringSplit({ choice }: { choice: Choice }) {
   if (!choice.verification.scored || !choiceMovesMoney(choice)) return null
 
-  const rows: Array<[string, number, number]> = [
-    ['Spending', choice.spending.recurring, choice.spending.nonrecurring],
-    ['Revenue', choice.revenue.recurring, choice.revenue.nonrecurring],
-    ['Reserves', choice.reserve.recurring, choice.reserve.nonrecurring],
-  ]
-  const shown = rows.filter(([, r, n]) => r !== 0 || n !== 0)
+  const shown = moneyRows(choice)
   if (shown.length === 0) return null
 
   return (
@@ -90,6 +127,24 @@ function Bullets({ title, items }: { title: string; items: string[] }) {
         ))}
       </ul>
     </div>
+  )
+}
+
+/**
+ * The single strongest concern about an option, shown without being asked for.
+ *
+ * A budget exercise that puts the costs behind a disclosure teaches that
+ * choices are free. The rest of the arguments can wait; one line of what this
+ * gives up cannot.
+ */
+function MainConcern({ choice }: { choice: Choice }) {
+  const concern = choice.tradeoffs[0]
+  if (!concern) return null
+  return (
+    <p className="mt-3 text-sm leading-relaxed text-ink">
+      <span className="font-semibold text-navy-900">The strongest concern: </span>
+      {concern}
+    </p>
   )
 }
 
@@ -165,53 +220,71 @@ export function DecisionCard({
                       <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-2">
                         <ImpactLine choice={choice} />
                         <ProvenanceBadge provenance={choice.provenance} />
+                        <TimingTag choice={choice} />
                         {choice.verification.scored ? null : <UnsourcedBadge />}
                       </div>
 
-                      <p className="mt-2 text-xs leading-relaxed text-muted">
-                        {choice.verification.note}
-                      </p>
-                      {choice.verification.derivation ? (
-                        <p className="mt-1 text-xs leading-relaxed text-muted">
-                          <span className="font-semibold">How it is calculated: </span>
-                          {choice.verification.derivation}
-                        </p>
-                      ) : null}
+                      {/*
+                        The recurring split earns its table only where the option
+                        carries both kinds of money. Everywhere else the tag above
+                        says which it is, and the table waits in the panel below.
+                      */}
+                      {splitIsMaterial(choice) ? <RecurringSplit choice={choice} /> : null}
 
-                      {choice.implementationNote ? (
+                      {/*
+                        Never collapsed. A reader must not have to open anything
+                        to learn that nobody proposed this.
+                      */}
+                      {choice.provenance === 'illustrative' ? (
                         <p className="mt-3 rounded-md bg-gold-100 p-3 text-xs leading-relaxed text-gold-700 ring-1 ring-gold-500">
-                          <span className="font-semibold">
-                            What this would run into in practice:{' '}
-                          </span>
-                          {choice.implementationNote}
+                          <span className="font-semibold">Illustrative allocation scenario. </span>
+                          {PROVENANCE_MEANING.illustrative}
                         </p>
                       ) : null}
 
-                      <RecurringSplit choice={choice} />
+                      <MainConcern choice={choice} />
 
                       {choice.benefits.length > 0 ||
                       choice.tradeoffs.length > 0 ||
                       choice.affects.length > 0 ? (
-                        <details className="group mt-3">
-                          <summary className="cursor-pointer text-sm font-medium text-carolina-600 underline underline-offset-2 hover:text-navy-800">
-                            Learn more about this option
-                          </summary>
-                          <div className="mt-3 space-y-3 border-l-2 border-carolina-100 pl-4">
-                            <Bullets title="Who or what this affects" items={choice.affects} />
-                            <Bullets title="The strongest argument in favour" items={choice.benefits} />
-                            <Bullets title="The strongest concern" items={choice.tradeoffs} />
-                          </div>
-                        </details>
+                        <Disclosure label="Who this affects, and the arguments">
+                          <Bullets title="Who or what this affects" items={choice.affects} />
+                          <Bullets title="The strongest argument in favour" items={choice.benefits} />
+                          <Bullets title="The strongest concern" items={choice.tradeoffs} />
+                        </Disclosure>
                       ) : null}
 
-                      <details className="mt-2">
-                        <summary className="cursor-pointer text-sm font-medium text-carolina-600 underline underline-offset-2 hover:text-navy-800">
-                          View sources
-                        </summary>
-                        <div className="mt-3 border-l-2 border-carolina-100 pl-4">
-                          <SourceList sources={choice.sources} />
-                        </div>
-                      </details>
+                      <Disclosure label="Sources and calculation" tone="quiet">
+                        {choice.verification.note ? (
+                          <p className="text-xs leading-relaxed text-ink">
+                            {choice.verification.note}
+                          </p>
+                        ) : null}
+                        {choice.verification.derivation ? (
+                          <p className="text-xs leading-relaxed text-ink">
+                            <span className="font-semibold">How it is calculated: </span>
+                            {choice.verification.derivation}
+                          </p>
+                        ) : null}
+                        {choice.implementationNote ? (
+                          <p className="rounded-md bg-gold-100 p-3 text-xs leading-relaxed text-gold-700 ring-1 ring-gold-500">
+                            <span className="font-semibold">
+                              What this would run into in practice:{' '}
+                            </span>
+                            {choice.implementationNote}
+                          </p>
+                        ) : null}
+                        {choice.replacementNeeded ? (
+                          <p className="text-xs leading-relaxed text-muted">
+                            <span className="font-semibold">
+                              What would replace this scenario:{' '}
+                            </span>
+                            {choice.replacementNeeded}
+                          </p>
+                        ) : null}
+                        {splitIsMaterial(choice) ? null : <RecurringSplit choice={choice} />}
+                        <SourceList sources={choice.sources} />
+                      </Disclosure>
                     </div>
                   </div>
                 </div>
@@ -221,12 +294,11 @@ export function DecisionCard({
         </fieldset>
 
         {decision.background ? (
-          <details className="mt-5 rounded-md bg-canvas p-4 ring-1 ring-line">
-            <summary className="cursor-pointer font-medium text-navy-900">
-              Background on this decision
-            </summary>
-            <p className="mt-2 text-sm leading-relaxed text-ink">{decision.background}</p>
-          </details>
+          <div className="mt-5 rounded-md bg-canvas p-4 ring-1 ring-line">
+            <Disclosure label="Background on this decision">
+              <p className="text-sm leading-relaxed text-ink">{decision.background}</p>
+            </Disclosure>
+          </div>
         ) : null}
       </div>
     </article>

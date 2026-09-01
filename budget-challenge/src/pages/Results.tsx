@@ -7,6 +7,8 @@ import { buildCsv, buildJson, downloadFile } from '../lib/export'
 import { describeDelta, formatDelta, formatDollars } from '../lib/format'
 import { Callout } from '../components/Callout'
 import { TableScroll } from '../components/TableScroll'
+import { Disclosure } from '../components/Disclosure'
+import { SourceList } from '../components/SourceList'
 import {
   PROVENANCE,
   PROVENANCE_MEANING,
@@ -394,12 +396,43 @@ export function Results() {
                     <span className="text-sm text-gold-700">Not counted in the balance</span>
                   )}
                 </div>
-                {choice.implementationNote ? (
+                {choice.provenance === 'illustrative' ? (
                   <p className="mt-2 text-xs leading-relaxed text-gold-700">
-                    <span className="font-semibold">Illustrative scenario. </span>
-                    {choice.implementationNote}
+                    <span className="font-semibold">Illustrative allocation scenario. </span>
+                    {PROVENANCE_MEANING.illustrative}
                   </p>
                 ) : null}
+
+                {/*
+                  Collapsed on screen, open on paper: the printed report is the
+                  record a reader keeps, and it has to carry the working.
+                */}
+                <Disclosure label="Sources and calculation" tone="quiet">
+                  {choice.verification.note ? (
+                    <p className="text-xs leading-relaxed text-ink">{choice.verification.note}</p>
+                  ) : null}
+                  {choice.verification.derivation ? (
+                    <p className="text-xs leading-relaxed text-ink">
+                      <span className="font-semibold">How it is calculated: </span>
+                      {choice.verification.derivation}
+                    </p>
+                  ) : null}
+                  {choice.implementationNote ? (
+                    <p className="text-xs leading-relaxed text-gold-700">
+                      <span className="font-semibold">
+                        What this would run into in practice:{' '}
+                      </span>
+                      {choice.implementationNote}
+                    </p>
+                  ) : null}
+                  {choice.replacementNeeded ? (
+                    <p className="text-xs leading-relaxed text-muted">
+                      <span className="font-semibold">What would replace this scenario: </span>
+                      {choice.replacementNeeded}
+                    </p>
+                  ) : null}
+                  <SourceList sources={choice.sources} />
+                </Disclosure>
               </li>
             )
           })}

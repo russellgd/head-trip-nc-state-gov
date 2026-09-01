@@ -9,6 +9,20 @@ import { formatDollars } from '../lib/format'
 /** Version history. Add a row whenever any figure in the dataset changes. */
 const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = [
   {
+    version: '0.8.0',
+    date: '2026-09-01',
+    note:
+      'Presentation only; no figure changes. Verification notes, arithmetic derivations, ' +
+      'implementation notes and source citations moved behind a "Sources and calculation" ' +
+      'disclosure on every option, cutting always-visible reading roughly in half. What an ' +
+      'option costs, whether its money is recurring, what it gives up, and above all whether ' +
+      'anybody proposed it are never collapsed: the illustrative caveat is stated in full on ' +
+      'the card. Every disclosure prints open, and the CSV and JSON exports now carry the ' +
+      'verification note, derivation, implementation note, replacement note and full citations ' +
+      'so nothing is lost by collapsing it on screen. The Opportunity Scholarship enacted ' +
+      'option now names its statutory recurring appropriation in the label.',
+  },
+  {
     version: '0.7.0',
     date: '2026-09-01',
     note:

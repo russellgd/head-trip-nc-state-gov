@@ -34,6 +34,20 @@ export interface ExportRow {
   /** Plain-language form of the same thing, for a reader of the CSV. */
   provenanceLabel: string
   verificationStatus: string
+  /**
+   * Everything the card keeps behind the "Sources and calculation" disclosure.
+   * The interface may collapse it; an export may not omit it, or the record a
+   * reader takes away would be weaker than the one they were shown.
+   */
+  verificationNote: string
+  derivation: string
+  implementationNote: string
+  replacementNeeded: string
+  sources: string
+  policyDescription: string
+  affects: string
+  benefits: string
+  tradeoffs: string
   spendingRecurring: number
   spendingNonrecurring: number
   revenueRecurring: number
@@ -56,6 +70,21 @@ export function buildRows(dataset: Dataset, selections: Selections): ExportRow[]
       provenance: choice.provenance,
       provenanceLabel: PROVENANCE_LABELS[choice.provenance],
       verificationStatus: choice.verification.status,
+      verificationNote: choice.verification.note ?? '',
+      derivation: choice.verification.derivation ?? '',
+      implementationNote: choice.implementationNote ?? '',
+      replacementNeeded: choice.replacementNeeded ?? '',
+      sources: choice.sources
+        .map((source) =>
+          [source.title, source.section, source.url, `verified ${source.verifiedDate}`]
+            .filter(Boolean)
+            .join(' — '),
+        )
+        .join(' | '),
+      policyDescription: choice.description,
+      affects: choice.affects.join(' | '),
+      benefits: choice.benefits.join(' | '),
+      tradeoffs: choice.tradeoffs.join(' | '),
       spendingRecurring: choice.spending.recurring,
       spendingNonrecurring: choice.spending.nonrecurring,
       revenueRecurring: choice.revenue.recurring,
@@ -147,6 +176,15 @@ const CSV_HEADERS: Array<[keyof ExportRow, string]> = [
   ['provenance', 'Provenance'],
   ['provenanceLabel', 'What that means'],
   ['verificationStatus', 'Arithmetic status'],
+  ['policyDescription', 'What the option does'],
+  ['verificationNote', 'Verification note'],
+  ['derivation', 'How it is calculated'],
+  ['implementationNote', 'What this would run into in practice'],
+  ['replacementNeeded', 'What would replace this scenario'],
+  ['affects', 'Who or what this affects'],
+  ['benefits', 'Strongest argument in favour'],
+  ['tradeoffs', 'Strongest concerns'],
+  ['sources', 'Sources'],
   ['spendingRecurring', 'Spending change, recurring'],
   ['spendingNonrecurring', 'Spending change, one-time'],
   ['revenueRecurring', 'Revenue change, recurring'],

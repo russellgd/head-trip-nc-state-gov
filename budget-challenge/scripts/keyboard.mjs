@@ -73,7 +73,42 @@ await page.waitForTimeout(250)
 const focusedAfterNext = await page.evaluate(() => document.activeElement?.tagName)
 if (focusedAfterNext === 'BODY') problems.push('focus was dropped to <body> after moving to the next decision')
 
-// 5. Reduced motion must actually remove transitions.
+// 5. Every disclosure must work by keyboard and say what state it is in.
+await page.goto('http://localhost:4173/#/challenge', { waitUntil: 'networkidle' })
+await page.waitForTimeout(200)
+const disclosure = await page.evaluate(() => {
+  const buttons = [...document.querySelectorAll('button[aria-controls][aria-expanded]')]
+  const bad = []
+  for (const button of buttons) {
+    const panel = document.getElementById(button.getAttribute('aria-controls'))
+    if (!panel) { bad.push(`${button.textContent.trim()}: aria-controls points at nothing`); continue }
+    if (button.getAttribute('aria-expanded') !== 'false') bad.push(`${button.textContent.trim()}: starts expanded`)
+    if (!panel.hasAttribute('hidden')) bad.push(`${button.textContent.trim()}: panel is not hidden while collapsed`)
+  }
+  return { count: buttons.length, bad }
+})
+if (disclosure.count === 0) problems.push('no disclosure buttons found on the challenge page')
+if (disclosure.bad.length) problems.push(`disclosure state: ${disclosure.bad.join('; ')}`)
+
+const firstDisclosure = page.locator('button[aria-controls][aria-expanded]').first()
+await firstDisclosure.focus()
+await page.keyboard.press('Enter')
+await page.waitForTimeout(150)
+const opened = await page.evaluate(() => {
+  const button = document.querySelector('button[aria-controls][aria-expanded]')
+  const panel = document.getElementById(button.getAttribute('aria-controls'))
+  return {
+    expanded: button.getAttribute('aria-expanded'),
+    hidden: panel.hasAttribute('hidden'),
+    visible: panel.getBoundingClientRect().height > 0,
+    keptFocus: document.activeElement === button,
+  }
+})
+if (opened.expanded !== 'true') problems.push('Enter did not set aria-expanded="true" on a disclosure')
+if (opened.hidden || !opened.visible) problems.push('a disclosure reported expanded but its panel stayed hidden')
+if (!opened.keptFocus) problems.push('focus was lost when a disclosure was opened by keyboard')
+
+// 6. Reduced motion must actually remove transitions.
 const reduced = await browser.newContext({ reducedMotion: 'reduce', viewport: { width: 1280, height: 900 } })
 const rp = await reduced.newPage()
 await rp.goto('http://localhost:4173/#/challenge', { waitUntil: 'networkidle' })

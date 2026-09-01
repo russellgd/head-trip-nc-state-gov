@@ -85,6 +85,15 @@ describe('CSV export', () => {
     expect(csv).toContain('Counted in the balance')
     expect(csv).toContain('Arithmetic status')
     expect(csv).toContain('Provenance')
+
+    // The interface collapses these behind a disclosure. The export may not
+    // drop them, or the record a reader takes away is thinner than the card.
+    expect(csv).toContain('Verification note')
+    expect(csv).toContain('How it is calculated')
+    expect(csv).toContain('What this would run into in practice')
+    expect(csv).toContain('What would replace this scenario')
+    expect(csv).toContain('Strongest concerns')
+    expect(csv).toContain('Sources')
   })
 
   it('keeps every data row on the same number of columns', () => {
@@ -94,7 +103,7 @@ describe('CSV export', () => {
     const headerIndex = lines.findIndex((l) => l.startsWith('Decision ID'))
     const columns = countFields(lines[headerIndex]!)
 
-    expect(columns).toBe(16)
+    expect(columns).toBe(25)
     for (const line of lines.slice(headerIndex + 1)) {
       expect(countFields(line), line).toBe(columns)
     }

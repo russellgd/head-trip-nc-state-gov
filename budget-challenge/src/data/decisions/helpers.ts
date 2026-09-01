@@ -175,6 +175,15 @@ export const usd = (amount: number): string =>
   }).format(amount)
 
 /**
+ * A round dollar amount at the scale a reader holds in their head.
+ *
+ * Used only where the exact figure is stated nearby, so the short form
+ * summarises rather than replaces it.
+ */
+export const usdMillions = (amount: number): string =>
+  `$${(amount / 1_000_000).toLocaleString('en-US', { maximumFractionDigits: 1 })} million`
+
+/**
  * A percentage of a verified enacted appropriation.
  *
  * Used for spending decisions, where the act establishes what an agency

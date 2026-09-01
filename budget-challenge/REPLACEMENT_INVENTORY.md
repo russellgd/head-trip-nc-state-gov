@@ -8,7 +8,7 @@ scenario has exact arithmetic on a sourced figure, but the change itself was con
 for this exercise: **no North Carolina official or institution proposed it**, and it must
 never be described as a policy proposal.
 
-- **Dataset version:** 0.7.0
+- **Dataset version:** 0.8.0
 - **Illustrative options to replace:** 32
 - **Options already documented:** 46
 - **Published proposals in the dataset:** 18
