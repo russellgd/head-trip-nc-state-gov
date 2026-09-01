@@ -9,6 +9,17 @@ import { formatDollars } from '../lib/format'
 /** Version history. Add a row whenever any figure in the dataset changes. */
 const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = [
   {
+    version: '0.3.0',
+    date: '2026-08-31',
+    note:
+      'Fourteen illustrative allocation scenarios replaced with published proposals from ' +
+      'Governor Stein\u2019s Recommended Budget for FY 2026-27, each citing its page and the ' +
+      'constituent recommendations behind it. Because the Governor measures changes from the ' +
+      'November 2025 certified budget rather than from the enacted act, the scored figure is ' +
+      'the difference between the two published levels. Thirty-two illustrative scenarios ' +
+      'remain where no comparable recommendation exists. The enacted baseline is unchanged.',
+  },
+  {
     version: '0.2.0',
     date: '2026-08-31',
     note:

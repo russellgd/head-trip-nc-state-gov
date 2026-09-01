@@ -35,15 +35,19 @@ The three baseline anchors were confirmed against the act, unchanged:
 | --- | ---: | --- |
 | Enacted policy | 30 | What S.L. 2026-41 actually does |
 | Documented alternative | 12 | The dollar impact equals an amount an official document states |
-| Published proposal | 0 | Published in an official document with a fiscal estimate behind it |
-| Illustrative allocation scenario | 46 | Constructed for this exercise; **not proposed by any North Carolina official or institution** |
+| Published proposal | 14 | From Governor Stein's Recommended Budget for FY 2026-27, with page and item citations |
+| Illustrative allocation scenario | 32 | Constructed for this exercise; **not proposed by any North Carolina official or institution** |
 
 An appropriations act establishes what an agency receives; it does not publish a costed alternative
 to itself. So options that change an agency's funding are illustrative allocation scenarios: the
 arithmetic is exact and shown, but the percentage is this project's choice. They must never be
 described as policy proposals, and each carries a note on what a change of that shape would actually
 run into — a uniform percentage is an arithmetic device, not an implementable plan.
-`REPLACEMENT_INVENTORY.md` lists all 46 with the document that would replace each.
+`REPLACEMENT_INVENTORY.md` lists the 32 remaining ones with the document that would replace each.
+
+Published proposals score the difference between the Governor's recommended level and the enacted
+level, because the Governor's own change columns are measured from the November 2025 certified
+budget and adding them to an enacted figure would double-count.
 
 Neither the technical corrections acts (S.L. 2026-42, S.L. 2026-61) nor the certified budget had
 been applied at this version, so the baseline is still marked provisional in the app.

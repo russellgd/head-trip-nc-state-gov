@@ -186,3 +186,49 @@ export const usd = (amount: number): string =>
 export function percentOf(base: number, percent: number): number {
   return Math.round((base * percent) / 100)
 }
+
+/**
+ * An alternative published in an official document that both proposes the
+ * change and prices it.
+ *
+ * The arithmetic status stays `derived` where the scored figure is the
+ * difference between two published levels rather than a number lifted straight
+ * off the page: the levels are verified, the subtraction is this project's, and
+ * the working is shown. What makes it a `proposal` rather than an illustrative
+ * scenario is that somebody actually proposed it.
+ */
+export function proposalOption(input: {
+  id: string
+  label: string
+  description: string
+  spending?: Partial<Money>
+  revenue?: Partial<Money>
+  reserve?: Partial<Money>
+  affects: string[]
+  benefits: string[]
+  tradeoffs: string[]
+  derivation: string
+  /** How the proposal's own published figures relate to the scored amount. */
+  note: string
+  sources: Source[]
+}): Choice {
+  return {
+    id: input.id,
+    label: input.label,
+    description: input.description,
+    spending: { ...zero(), ...input.spending },
+    revenue: { ...zero(), ...input.revenue },
+    reserve: { ...zero(), ...input.reserve },
+    affects: input.affects,
+    benefits: input.benefits,
+    tradeoffs: input.tradeoffs,
+    provenance: 'proposal',
+    sources: input.sources,
+    verification: {
+      status: 'derived',
+      scored: true,
+      note: input.note,
+      derivation: input.derivation,
+    },
+  }
+}

@@ -81,13 +81,25 @@ describe('the challenge page', () => {
     const user = userEvent.setup()
     renderWithProviders(<Challenge />)
 
-    await user.click(screen.getByRole('radio', { name: /increase by 3%/i }))
+    await user.click(screen.getByRole('radio', { name: /reduce by 3%/i }))
 
     // A derived figure has to show its arithmetic, not just assert a number.
     expect(screen.getAllByText(/how it is calculated/i).length).toBeGreaterThan(0)
     expect(screen.getAllByText(/\$12,500,361,218/).length).toBeGreaterThan(0)
 
-    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$624,989,163')
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$1,375,010,837')
+  })
+
+  it('offers the Governor’s recommended level as a published proposal', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Challenge />)
+
+    const governor = screen.getByRole('radio', { name: /adopt the governor.s recommendation/i })
+    await user.click(governor)
+
+    expect(screen.getAllByText('Published proposal').length).toBeGreaterThan(0)
+    // The Governor recommends more than the enacted level, so the balance falls.
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('-$104,216,185')
   })
 })
 
@@ -160,9 +172,9 @@ describe('keyboard use', () => {
     // Arrow keys move within a radio group and select as they go.
     await user.keyboard('{ArrowDown}')
 
-    const increase = screen.getByRole('radio', { name: /increase by 3%/i })
-    expect(increase).toHaveFocus()
-    expect(increase).toBeChecked()
+    const governor = screen.getByRole('radio', { name: /adopt the governor.s recommendation/i })
+    expect(governor).toHaveFocus()
+    expect(governor).toBeChecked()
   })
 
   it('labels every option so a screen reader announces what it is', () => {

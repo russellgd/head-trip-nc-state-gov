@@ -38,7 +38,8 @@ const DOCUMENTS = {
     url: 'https://www.osbm.nc.gov/budget/certified-budget',
   },
   governorRecommendation: {
-    title: "Governor's Recommended Budget, FY 2026-27",
+    title:
+      "Governor Stein's Recommended Short Session Budget, FY 2026-27 (Office of State Budget and Management, April 2026)",
     url: 'https://www.osbm.nc.gov/budget/governors-budget-recommendations',
   },
 } as const satisfies Record<string, SourceTemplate>
@@ -90,6 +91,6 @@ export const SOURCE_LEDGER: Array<SourceTemplate & { key: DocumentKey; role: str
   {
     key: 'governorRecommendation',
     ...DOCUMENTS.governorRecommendation,
-    role: "The Governor's recommended budget. The main published source of alternatives that carry an official fiscal estimate, which is what makes them usable as scored options here.",
+    role: "The Governor's recommended budget, published April 2026. The source of every published proposal in this project: it both proposes changes and prices them. Note that it measures its own changes from the November 2025 certified budget, not from the budget the General Assembly later enacted, so its published change columns cannot be added to an enacted figure. Options built from it compare the recommended level with the enacted level instead.",
   },
 ]

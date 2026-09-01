@@ -70,8 +70,8 @@ is a proposal somebody made.
 | --- | ---: | --- |
 | **Enacted policy** | 30 | What S.L. 2026-41 actually does. The reference point. |
 | **Documented alternative** | 12 | The dollar impact equals an amount an official document states. Not making a reservation the act makes frees exactly what the act reserves: "reserve nothing for the Medicaid Contingency Reserve" frees exactly $333,000,000. The magnitude is documented; this does not assert that anyone proposed it. |
-| **Published proposal** | 0 | An alternative published in an official document with an official fiscal estimate behind it. None yet. |
-| **Illustrative allocation scenario** | 46 | A percentage change constructed for this exercise — 3%, 5%, 10%, or 20% depending on the size of the line. The arithmetic is exact and shown. **No North Carolina official or institution proposed it**, and it must never be described as a policy proposal. |
+| **Published proposal** | 14 | An alternative from Governor Stein's Recommended Budget for FY 2026-27 (April 2026), citing the page and the constituent recommendations behind it. |
+| **Illustrative allocation scenario** | 32 | A percentage change constructed for this exercise — 3%, 5%, 10%, or 20% depending on the size of the line. The arithmetic is exact and shown. **No North Carolina official or institution proposed it**, and it must never be described as a policy proposal. |
 
 Every illustrative option also carries, on its own card, a note on what a change of that shape would
 actually run into: appropriations are distributed by statutory formulas and allotments, parts are
@@ -79,8 +79,24 @@ committed to entitlements, contracts, debt, or federally required matching, and 
 changed without amending statute. **A uniform percentage is an arithmetic device, not an
 implementable plan**, and nothing in the application implies otherwise.
 
-`REPLACEMENT_INVENTORY.md` lists all 46 illustrative options and the official proposal or fiscal
-estimate that would replace each.
+`REPLACEMENT_INVENTORY.md` lists the 32 remaining illustrative options and the official proposal or
+fiscal estimate that would replace each.
+
+### How the Governor's figures are used, and why not directly
+
+The Governor's Recommended Budget measures its own changes from the **November 2025 certified
+budget**, not from what the General Assembly later enacted in S.L. 2026-41. Its published change
+columns therefore cannot be added to an enacted figure: doing so would double-count everything the
+act itself added.
+
+What is comparable is the **level**. For each budget code the Governor publishes a recommended
+FY 2026-27 net appropriation, and the act publishes an enacted one. The difference between two
+published levels for the same code and year is exact, and that is what these options score. The
+Governor's own recurring and nonrecurring figures are shown to the reader on the option regardless,
+so nothing is hidden.
+
+Fourteen decisions had a comparable recommendation. Sixteen did not, and kept their illustrative
+scenarios rather than have a proposal forced into place.
 
 If you use this in a course, that distinction is worth ten minutes of discussion on its own: the
 difference between a number that is *sourced* and a scenario that is *plausible*.
@@ -109,7 +125,10 @@ difference between a number that is *sourced* and a scenario that is *plausible*
 
 - **Agency appropriation changes are treated as recurring.** The act's schedule does not split
   agency totals into recurring and nonrecurring parts. An operating budget continues from year to
-  year, so a change to one is counted as recurring throughout. Where the act does state a split it
+  year, so a change to one is counted as recurring throughout. This applies to the published
+  proposals as well: the difference between the Governor's recommended level and the enacted level
+  has no published recurring split, because the Governor's own split is measured from a different
+  base, so the same rule is applied and stated on the option. Where the act does state a split it
   is followed: Section 2.2(b) says the $450,000,000 Savings Reserve transfer is nonrecurring, and it
   is stored that way.
 - **Reservation changes are treated as nonrecurring.** They are reservations of a single year's

@@ -7,7 +7,16 @@
  * this build, so the alternatives here are expressed as percentages of the
  * enacted appropriation.
  *
- * Every alternative here is therefore an ILLUSTRATIVE ALLOCATION SCENARIO: the
+ * Where the Governor's Recommended Budget states a recommended FY 2026-27 net
+ * appropriation for the same budget code, that level is offered as a PUBLISHED
+ * PROPOSAL. The scored amount is the difference between two published levels —
+ * the Governor's and the one the General Assembly enacted — because the
+ * Governor's own change columns are measured from the November 2025 certified
+ * budget and would double-count if added to an enacted figure. The Governor's
+ * published recurring and nonrecurring figures are shown to the reader on the
+ * option regardless.
+ *
+ * Every other alternative here is an ILLUSTRATIVE ALLOCATION SCENARIO: the
  * percentage is this project's, chosen to give a sense of scale, while the
  * dollar figure is exact arithmetic on a sourced number. None of them is a
  * policy proposal, and none may be described as one. Each carries a note on
@@ -16,8 +25,9 @@
  */
 import type { CategoryId, Decision } from '../types'
 import { AGENCY_APPROPRIATIONS } from '../enacted'
+import { GOVERNOR_BY_DECISION } from '../governor'
 import { cite } from '../sources'
-import { enactedOption, illustrativeOption, percentOf, usd } from './helpers'
+import { enactedOption, illustrativeOption, percentOf, proposalOption, usd } from './helpers'
 
 /** Look up one agency's enacted net appropriation by its name in the schedule. */
 function netAppropriation(agency: string): number {
@@ -80,6 +90,68 @@ function appropriationDecision(input: {
   const replacementNeeded =
     `A costed alternative for ${input.baseLabel} from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.`
 
+  const governor = GOVERNOR_BY_DECISION.get(input.id)
+  const governorDelta = governor ? governor.recommended - base : 0
+
+  /**
+   * The Governor's recommended level, offered as a published proposal.
+   *
+   * The level difference is treated as recurring, consistently with how every
+   * other change to an agency's operating appropriation is treated in this
+   * project, and for the same reason: an operating budget continues from year
+   * to year. The act's schedule publishes no recurring split to follow, and the
+   * Governor's own split is measured from a different base, so neither can be
+   * used directly. This is recorded as a simplification in DATA_NOTES.md.
+   */
+  const governorChoice = governor
+    ? proposalOption({
+        id: 'governor',
+        label: `Adopt the Governor's recommendation: ${usd(governor.recommended)}`,
+        description:
+          `Fund ${input.baseLabel} at ${usd(governor.recommended)}, the level recommended in ` +
+          `Governor Stein's Recommended Budget for FY 2026-27, rather than the ${usd(base)} ` +
+          `the General Assembly enacted. That recommendation is built from items including ` +
+          governor.topItems
+            .map(
+              (i) =>
+                `"${i.title}" (p. ${i.page}, item ${i.item}; ${usd(i.recurring)} recurring, ${usd(
+                  i.nonrecurring,
+                )} nonrecurring)`,
+            )
+            .join('; ') +
+          '.',
+        spending: { recurring: governorDelta },
+        affects: input.affects,
+        benefits: governorDelta >= 0 ? input.increaseBenefits : input.reduceBenefits,
+        tradeoffs: governorDelta >= 0 ? input.increaseTradeoffs : input.reduceTradeoffs,
+        derivation:
+          `The Governor's recommended FY 2026-27 net appropriation of ${usd(governor.recommended)} ` +
+          `less the enacted ${usd(base)} is ${usd(Math.abs(governorDelta))} ` +
+          `${governorDelta >= 0 ? 'more' : 'less'}. Both figures are published levels for the same ` +
+          `budget code and fiscal year.`,
+        note:
+          `The Governor's document measures its own changes from the November 2025 certified ` +
+          `budget of ${usd(governor.certified)}, publishing ${usd(
+            governor.changeFromCertified.recurring,
+          )} recurring and ${usd(
+            governor.changeFromCertified.nonrecurring,
+          )} nonrecurring. Those are changes from that base, not from the budget the General ` +
+          `Assembly later enacted, so the figure scored here is the difference between the two ` +
+          `published levels instead.`,
+        sources: [
+          cite(
+            'governorRecommendation',
+            `${governor.names.join('; ')} — recommended FY 2026-27 net appropriation, p. ${governor.pages.join(', p. ')}`,
+          ),
+        ],
+      })
+    : null
+
+  // Where the Governor's recommendation already points one way, the remaining
+  // illustrative option points the other, so both directions stay available.
+  const wantIncrease = !governor || governorDelta < 0
+  const wantReduce = !governor || governorDelta >= 0
+
   return {
     id: input.id,
     category: input.category,
@@ -93,7 +165,8 @@ function appropriationDecision(input: {
         description: `Leave the appropriation for ${input.baseLabel} where the enacted budget sets it.`,
         affects: input.affects,
       }),
-      illustrativeOption({
+      ...(governorChoice ? [governorChoice] : []),
+      ...(!wantIncrease ? [] : [illustrativeOption({
         id: 'increase',
         label: `Increase by ${input.percent}%: ${usd(delta)} more`,
         description: `Add ${usd(delta)} in recurring funds to ${input.baseLabel}, ${input.percent}% above the enacted level.`,
@@ -105,8 +178,8 @@ function appropriationDecision(input: {
         implementationNote,
         replacementNeeded,
         sources,
-      }),
-      illustrativeOption({
+      })]),
+      ...(!wantReduce ? [] : [illustrativeOption({
         id: 'reduce',
         label: `Reduce by ${input.percent}%: ${usd(delta)} less`,
         description: `Cut ${usd(delta)} in recurring funds from ${input.baseLabel}, ${input.percent}% below the enacted level.`,
@@ -118,7 +191,7 @@ function appropriationDecision(input: {
         implementationNote,
         replacementNeeded,
         sources,
-      }),
+      })]),
     ],
   }
 }

@@ -22,21 +22,28 @@ describe('provenance is recorded on every option', () => {
     }
   })
 
-  it('counts 30 enacted, 12 documented and 46 illustrative options', () => {
+  it('counts the four provenance classes', () => {
     const counts = provenanceSummary(DATASET)
 
     expect(counts.enacted).toBe(DATASET.decisions.length)
-    expect(counts.illustrative).toBe(46)
     expect(counts.documented).toBe(12)
-    expect(counts.proposal).toBe(0)
+    expect(counts.proposal).toBe(14)
+    expect(counts.illustrative).toBe(32)
+  })
+
+  it('accounts for every option', () => {
+    const counts = provenanceSummary(DATASET)
+    const total = DATASET.decisions.reduce((n, d) => n + d.choices.length, 0)
+
+    expect(Object.values(counts).reduce((a, b) => a + b, 0)).toBe(total)
   })
 })
 
 describe('illustrative allocation scenarios', () => {
   const illustrative = illustrativeOptions(DATASET)
 
-  it('are the 46 the replacement inventory tracks', () => {
-    expect(illustrative).toHaveLength(46)
+  it('are the ones the replacement inventory tracks', () => {
+    expect(illustrative).toHaveLength(32)
   })
 
   it('each show the arithmetic behind the figure', () => {
@@ -105,5 +112,58 @@ describe('the labels shown to a reader', () => {
       (p) => PROVENANCE[p].label,
     )
     expect(new Set(labels).size).toBe(3)
+  })
+})
+
+describe('published proposals', () => {
+  const proposals = DATASET.decisions.flatMap((d) =>
+    d.choices.filter((c) => c.provenance === 'proposal').map((c) => ({ decision: d, choice: c })),
+  )
+
+  it('cite the Governor’s Recommended Budget with a page reference', () => {
+    for (const { decision, choice } of proposals) {
+      expect(choice.sources.length, `${decision.id}/${choice.id}`).toBeGreaterThan(0)
+      expect(choice.sources[0]!.title, `${decision.id}/${choice.id}`).toMatch(/Governor/i)
+      expect(choice.sources[0]!.section, `${decision.id}/${choice.id}`).toMatch(/p\. \d+/)
+    }
+  })
+
+  it('show the subtraction of the two published levels', () => {
+    for (const { decision, choice } of proposals) {
+      expect(choice.verification.derivation, `${decision.id}/${choice.id}`).toMatch(
+        /less the enacted/i,
+      )
+    }
+  })
+
+  it('warn that the Governor’s own change columns use a different base', () => {
+    // Adding the Governor's published change to an enacted figure would
+    // double-count, and the option has to say so where a reader will see it.
+    for (const { decision, choice } of proposals) {
+      expect(choice.verification.note, `${decision.id}/${choice.id}`).toMatch(
+        /certified budget|not from the budget the General Assembly/i,
+      )
+    }
+  })
+
+  it('carry no implementation note or replacement statement', () => {
+    // Those belong to illustrative scenarios. A real proposal needs neither.
+    for (const { decision, choice } of proposals) {
+      expect(choice.implementationNote, `${decision.id}/${choice.id}`).toBeUndefined()
+      expect(choice.replacementNeeded, `${decision.id}/${choice.id}`).toBeUndefined()
+    }
+  })
+
+  it('leave every decision with both an increase and a reduction available', () => {
+    // Replacing an illustrative option must not remove a direction, or the
+    // exercise loses the ability to reach one side of the balance.
+    for (const decision of DATASET.decisions) {
+      const effects = decision.choices
+        .filter((c) => !c.isEnactedBaseline)
+        .map((c) => c.spending.recurring + c.spending.nonrecurring)
+      if (effects.every((e) => e === 0)) continue
+      expect(effects.some((e) => e > 0), `${decision.id} has no option that spends more`).toBe(true)
+      expect(effects.some((e) => e < 0), `${decision.id} has no option that spends less`).toBe(true)
+    }
   })
 })

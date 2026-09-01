@@ -8,38 +8,14 @@ scenario has exact arithmetic on a sourced figure, but the change itself was con
 for this exercise: **no North Carolina official or institution proposed it**, and it must
 never be described as a policy proposal.
 
-- **Dataset version:** 0.2.0
-- **Illustrative options to replace:** 46
+- **Dataset version:** 0.3.0
+- **Illustrative options to replace:** 32
 - **Options already documented:** 42
-- **Published proposals in the dataset:** 0
+- **Published proposals in the dataset:** 14
 
 ## What would clear the most at once
 
 Grouped by the document needed, most impactful first.
-
-### 2 options
-
-**Needed:** A costed alternative for the Department of Public Instruction from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `public-instruction/increase`, `public-instruction/reduce`
-
-### 2 options
-
-**Needed:** A costed alternative for the three state residential schools from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `residential-schools/increase`, `residential-schools/reduce`
-
-### 2 options
-
-**Needed:** A costed alternative for the North Carolina Community College System from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `community-college-system/increase`, `community-college-system/reduce`
-
-### 2 options
-
-**Needed:** A costed alternative for UNC Board of Governors related and institutional programmes from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `unc-need-based-aid/increase`, `unc-need-based-aid/reduce`
 
 ### 2 options
 
@@ -49,57 +25,9 @@ Clears: `unc-campus-operations/increase`, `unc-campus-operations/reduce`
 
 ### 2 options
 
-**Needed:** A costed alternative for the Division of Health Benefits from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `medicaid-health-benefits/increase`, `medicaid-health-benefits/reduce`
-
-### 2 options
-
-**Needed:** A costed alternative for the Division of Mental Health, Developmental Disabilities, and Substance Use Services from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `behavioral-health/increase`, `behavioral-health/reduce`
-
-### 2 options
-
-**Needed:** A costed alternative for the Division of Child Development and Early Education from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `child-development/increase`, `child-development/reduce`
-
-### 2 options
-
-**Needed:** A costed alternative for the Department of Environmental Quality from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `environmental-quality/increase`, `environmental-quality/reduce`
-
-### 2 options
-
-**Needed:** A costed alternative for the Department of Natural and Cultural Resources from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `natural-cultural-resources/increase`, `natural-cultural-resources/reduce`
-
-### 2 options
-
 **Needed:** A costed alternative for the Department of Commerce from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
 
 Clears: `commerce/increase`, `commerce/reduce`
-
-### 2 options
-
-**Needed:** A costed alternative for the Department of Adult Correction from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `adult-correction/increase`, `adult-correction/reduce`
-
-### 2 options
-
-**Needed:** A costed alternative for the Administrative Office of the Courts from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `courts/increase`, `courts/reduce`
-
-### 2 options
-
-**Needed:** A costed alternative for Indigent Defense Services from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `indigent-defense/increase`, `indigent-defense/reduce`
 
 ### 2 options
 
@@ -109,27 +37,69 @@ Clears: `state-employee-pay/increase`, `state-employee-pay/reduce`
 
 ### 2 options
 
-**Needed:** A costed alternative for the State Board of Elections from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `elections/increase`, `elections/reduce`
-
-### 2 options
-
-**Needed:** A costed alternative for the Department of Information Technology from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
-
-Clears: `information-technology-operations/increase`, `information-technology-operations/reduce`
-
-### 2 options
-
 **Needed:** An official fiscal estimate for a specific tax change: a fiscal note prepared by the Fiscal Research Division on a bill amending a rate, base, credit or exemption, or the revenue provisions of the Governor’s Recommended Budget for FY 2026-27.
 
 Clears: `tax-revenue-level/increase-one-percent`, `tax-revenue-level/reduce-one-percent`
 
 ### 1 option
 
+**Needed:** A costed alternative for the Department of Public Instruction from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `public-instruction/reduce`
+
+### 1 option
+
+**Needed:** A costed alternative for the three state residential schools from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `residential-schools/reduce`
+
+### 1 option
+
+**Needed:** A costed alternative for the North Carolina Community College System from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `community-college-system/reduce`
+
+### 1 option
+
+**Needed:** A costed alternative for UNC Board of Governors related and institutional programmes from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `unc-need-based-aid/increase`
+
+### 1 option
+
+**Needed:** A costed alternative for the Division of Health Benefits from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `medicaid-health-benefits/reduce`
+
+### 1 option
+
+**Needed:** A costed alternative for the Division of Mental Health, Developmental Disabilities, and Substance Use Services from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `behavioral-health/reduce`
+
+### 1 option
+
+**Needed:** A costed alternative for the Division of Child Development and Early Education from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `child-development/reduce`
+
+### 1 option
+
 **Needed:** A costed alternative to the Medicaid Contingency Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation.
 
 Clears: `reservation-medicaid-contingency/halve`
+
+### 1 option
+
+**Needed:** A costed alternative for the Department of Environmental Quality from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `environmental-quality/reduce`
+
+### 1 option
+
+**Needed:** A costed alternative for the Department of Natural and Cultural Resources from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `natural-cultural-resources/reduce`
 
 ### 1 option
 
@@ -148,6 +118,36 @@ Clears: `reservation-regional-econ-dev/halve`
 **Needed:** A costed alternative to the Housing Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation.
 
 Clears: `reservation-housing/halve`
+
+### 1 option
+
+**Needed:** A costed alternative for the Department of Adult Correction from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `adult-correction/reduce`
+
+### 1 option
+
+**Needed:** A costed alternative for the Administrative Office of the Courts from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `courts/reduce`
+
+### 1 option
+
+**Needed:** A costed alternative for Indigent Defense Services from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `indigent-defense/increase`
+
+### 1 option
+
+**Needed:** A costed alternative for the State Board of Elections from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `elections/increase`
+
+### 1 option
+
+**Needed:** A costed alternative for the Department of Information Technology from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.
+
+Clears: `information-technology-operations/reduce`
 
 ### 1 option
 
@@ -189,95 +189,67 @@ Clears: `reservation-stabilization-inflation/halve`
 
 | # | Budget area | Decision | Option | Effect on balance | Replaced by |
 | ---: | --- | --- | --- | ---: | --- |
-| 1 | K-12 Public Education | `public-instruction` — Public Schools | `increase` — Increase by 3%: $375,010,837 more | -$375,010,837 | A costed alternative for the Department of Public Instruction from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 2 | K-12 Public Education | `public-instruction` — Public Schools | `reduce` — Reduce by 3%: $375,010,837 less | +$375,010,837 | A costed alternative for the Department of Public Instruction from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 3 | K-12 Public Education | `residential-schools` — Residential Schools for Deaf and Blind Students | `increase` — Increase by 10%: $3,582,039 more | -$3,582,039 | A costed alternative for the three state residential schools from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 4 | K-12 Public Education | `residential-schools` — Residential Schools for Deaf and Blind Students | `reduce` — Reduce by 10%: $3,582,039 less | +$3,582,039 | A costed alternative for the three state residential schools from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 5 | Community Colleges | `community-college-system` — Community College System | `increase` — Increase by 5%: $92,981,155 more | -$92,981,155 | A costed alternative for the North Carolina Community College System from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 6 | Community Colleges | `community-college-system` — Community College System | `reduce` — Reduce by 5%: $92,981,155 less | +$92,981,155 | A costed alternative for the North Carolina Community College System from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 7 | UNC System | `unc-need-based-aid` — University Aid and System-Wide Programmes | `increase` — Increase by 5%: $68,852,770 more | -$68,852,770 | A costed alternative for UNC Board of Governors related and institutional programmes from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 8 | UNC System | `unc-need-based-aid` — University Aid and System-Wide Programmes | `reduce` — Reduce by 5%: $68,852,770 less | +$68,852,770 | A costed alternative for UNC Board of Governors related and institutional programmes from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 9 | UNC System | `unc-campus-operations` — University Campus Operations | `increase` — Increase by 3%: $89,968,058 more | -$89,968,058 | A costed alternative for the fifteen UNC campus academic affairs appropriations from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 10 | UNC System | `unc-campus-operations` — University Campus Operations | `reduce` — Reduce by 3%: $89,968,058 less | +$89,968,058 | A costed alternative for the fifteen UNC campus academic affairs appropriations from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 11 | Health and Human Services | `medicaid-health-benefits` — Medicaid and Health Benefits | `increase` — Increase by 3%: $223,676,606 more | -$223,676,606 | A costed alternative for the Division of Health Benefits from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 12 | Health and Human Services | `medicaid-health-benefits` — Medicaid and Health Benefits | `reduce` — Reduce by 3%: $223,676,606 less | +$223,676,606 | A costed alternative for the Division of Health Benefits from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 13 | Health and Human Services | `behavioral-health` — Mental Health, Developmental Disabilities, and Substance Use | `increase` — Increase by 5%: $40,838,362 more | -$40,838,362 | A costed alternative for the Division of Mental Health, Developmental Disabilities, and Substance Use Services from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 14 | Health and Human Services | `behavioral-health` — Mental Health, Developmental Disabilities, and Substance Use | `reduce` — Reduce by 5%: $40,838,362 less | +$40,838,362 | A costed alternative for the Division of Mental Health, Developmental Disabilities, and Substance Use Services from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 15 | Health and Human Services | `child-development` — Child Care Subsidy and Early Education | `increase` — Increase by 10%: $28,662,937 more | -$28,662,937 | A costed alternative for the Division of Child Development and Early Education from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 16 | Health and Human Services | `child-development` — Child Care Subsidy and Early Education | `reduce` — Reduce by 10%: $28,662,937 less | +$28,662,937 | A costed alternative for the Division of Child Development and Early Education from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 17 | Health and Human Services | `reservation-medicaid-contingency` — Medicaid Contingency Reserve | `halve` — Reserve half: $166,500,000 | +$166,500,000 | A costed alternative to the Medicaid Contingency Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
-| 18 | Agriculture, Natural Resources, and Environment | `environmental-quality` — Environmental Quality | `increase` — Increase by 10%: $11,193,288 more | -$11,193,288 | A costed alternative for the Department of Environmental Quality from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 19 | Agriculture, Natural Resources, and Environment | `environmental-quality` — Environmental Quality | `reduce` — Reduce by 10%: $11,193,288 less | +$11,193,288 | A costed alternative for the Department of Environmental Quality from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 20 | Agriculture, Natural Resources, and Environment | `natural-cultural-resources` — State Parks, Natural and Cultural Resources | `increase` — Increase by 10%: $32,779,603 more | -$32,779,603 | A costed alternative for the Department of Natural and Cultural Resources from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 21 | Agriculture, Natural Resources, and Environment | `natural-cultural-resources` — State Parks, Natural and Cultural Resources | `reduce` — Reduce by 10%: $32,779,603 less | +$32,779,603 | A costed alternative for the Department of Natural and Cultural Resources from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 22 | Economic and Community Development | `commerce` — Department of Commerce | `increase` — Increase by 10%: $14,049,313 more | -$14,049,313 | A costed alternative for the Department of Commerce from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 23 | Economic and Community Development | `commerce` — Department of Commerce | `reduce` — Reduce by 10%: $14,049,313 less | +$14,049,313 | A costed alternative for the Department of Commerce from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 24 | Economic and Community Development | `reservation-econ-dev-project` — Economic Development Project Reserve | `halve` — Reserve half: $85,450,000 | +$85,450,000 | A costed alternative to the Economic Development Project Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
-| 25 | Economic and Community Development | `reservation-regional-econ-dev` — Regional Economic Development Reserve | `halve` — Reserve half: $100,000,000 | +$100,000,000 | A costed alternative to the Regional Economic Development Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
-| 26 | Economic and Community Development | `reservation-housing` — Housing Reserve | `halve` — Reserve half: $17,500,000 | +$17,500,000 | A costed alternative to the Housing Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
-| 27 | Justice and Public Safety | `adult-correction` — Adult Correction | `increase` — Increase by 5%: $110,379,482 more | -$110,379,482 | A costed alternative for the Department of Adult Correction from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 28 | Justice and Public Safety | `adult-correction` — Adult Correction | `reduce` — Reduce by 5%: $110,379,482 less | +$110,379,482 | A costed alternative for the Department of Adult Correction from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 29 | Justice and Public Safety | `courts` — The Court System | `increase` — Increase by 5%: $42,685,549 more | -$42,685,549 | A costed alternative for the Administrative Office of the Courts from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 30 | Justice and Public Safety | `courts` — The Court System | `reduce` — Reduce by 5%: $42,685,549 less | +$42,685,549 | A costed alternative for the Administrative Office of the Courts from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 31 | Justice and Public Safety | `indigent-defense` — Indigent Defense | `increase` — Increase by 10%: $19,219,732 more | -$19,219,732 | A costed alternative for Indigent Defense Services from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 32 | Justice and Public Safety | `indigent-defense` — Indigent Defense | `reduce` — Reduce by 10%: $19,219,732 less | +$19,219,732 | A costed alternative for Indigent Defense Services from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 33 | General Government and State Workforce | `state-employee-pay` — State Employee Compensation Reserve | `increase` — Increase by 20%: $5,000,000 more | -$5,000,000 | A costed alternative for the General Fund Reserve for the pay plan from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 34 | General Government and State Workforce | `state-employee-pay` — State Employee Compensation Reserve | `reduce` — Reduce by 20%: $5,000,000 less | +$5,000,000 | A costed alternative for the General Fund Reserve for the pay plan from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 35 | General Government and State Workforce | `elections` — Elections Administration | `increase` — Increase by 10%: $1,465,391 more | -$1,465,391 | A costed alternative for the State Board of Elections from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 36 | General Government and State Workforce | `elections` — Elections Administration | `reduce` — Reduce by 10%: $1,465,391 less | +$1,465,391 | A costed alternative for the State Board of Elections from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 37 | Information Technology | `information-technology-operations` — Department of Information Technology | `increase` — Increase by 10%: $9,432,695 more | -$9,432,695 | A costed alternative for the Department of Information Technology from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 38 | Information Technology | `information-technology-operations` — Department of Information Technology | `reduce` — Reduce by 10%: $9,432,695 less | +$9,432,695 | A costed alternative for the Department of Information Technology from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
-| 39 | Information Technology | `reservation-it-reserve` — Information Technology Reserve | `halve` — Reserve half: $76,500,000 | +$76,500,000 | A costed alternative to the Information Technology Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
-| 40 | Disaster Recovery and Infrastructure | `reservation-serdrf` — Emergency Response and Disaster Relief | `halve` — Reserve half: $175,000,000 | +$175,000,000 | A costed alternative to the State Emergency Response and Disaster Relief Fund for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
-| 41 | Disaster Recovery and Infrastructure | `reservation-scif` — State Capital and Infrastructure Fund | `halve` — Reserve half: $569,600,000 | +$569,600,000 | A costed alternative to the State Capital and Infrastructure Fund for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
-| 42 | Taxes and Other General Fund Revenue | `tax-revenue-level` — The Level of Tax Revenue | `increase-one-percent` — Collect 1% more: $338,766,000 | +$338,766,000 | An official fiscal estimate for a specific tax change: a fiscal note prepared by the Fiscal Research Division on a bill amending a rate, base, credit or exemption, or the revenue provisions of the Governor’s Recommended Budget for FY 2026-27. |
-| 43 | Taxes and Other General Fund Revenue | `tax-revenue-level` — The Level of Tax Revenue | `reduce-one-percent` — Collect 1% less: $338,766,000 | -$338,766,000 | An official fiscal estimate for a specific tax change: a fiscal note prepared by the Fiscal Research Division on a bill amending a rate, base, credit or exemption, or the revenue provisions of the Governor’s Recommended Budget for FY 2026-27. |
-| 44 | Savings, Reserves, and Unappropriated Balance | `unappropriated-balance` — The Unappropriated Balance | `deposit-half` — Deposit half into the Savings Reserve: $500,000,000 | -$500,000,000 | A costed proposal for the disposition of the unappropriated balance from the Governor’s Recommended Budget, or a fiscal note on a bill directing a transfer. |
-| 45 | Savings, Reserves, and Unappropriated Balance | `reservation-savings-reserve-discretionary` — Savings Reserve Deposit | `halve` — Reserve half: $225,000,000 | +$225,000,000 | A costed alternative to the Savings Reserve, discretionary transfer for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
-| 46 | Savings, Reserves, and Unappropriated Balance | `reservation-stabilization-inflation` — Stabilization and Inflation Reserve | `halve` — Reserve half: $662,742,618 | +$662,742,618 | A costed alternative to the Stabilization and Inflation Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
+| 1 | K-12 Public Education | `public-instruction` — Public Schools | `reduce` — Reduce by 3%: $375,010,837 less | +$375,010,837 | A costed alternative for the Department of Public Instruction from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 2 | K-12 Public Education | `residential-schools` — Residential Schools for Deaf and Blind Students | `reduce` — Reduce by 10%: $3,582,039 less | +$3,582,039 | A costed alternative for the three state residential schools from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 3 | Community Colleges | `community-college-system` — Community College System | `reduce` — Reduce by 5%: $92,981,155 less | +$92,981,155 | A costed alternative for the North Carolina Community College System from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 4 | UNC System | `unc-need-based-aid` — University Aid and System-Wide Programmes | `increase` — Increase by 5%: $68,852,770 more | -$68,852,770 | A costed alternative for UNC Board of Governors related and institutional programmes from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 5 | UNC System | `unc-campus-operations` — University Campus Operations | `increase` — Increase by 3%: $89,968,058 more | -$89,968,058 | A costed alternative for the fifteen UNC campus academic affairs appropriations from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 6 | UNC System | `unc-campus-operations` — University Campus Operations | `reduce` — Reduce by 3%: $89,968,058 less | +$89,968,058 | A costed alternative for the fifteen UNC campus academic affairs appropriations from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 7 | Health and Human Services | `medicaid-health-benefits` — Medicaid and Health Benefits | `reduce` — Reduce by 3%: $223,676,606 less | +$223,676,606 | A costed alternative for the Division of Health Benefits from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 8 | Health and Human Services | `behavioral-health` — Mental Health, Developmental Disabilities, and Substance Use | `reduce` — Reduce by 5%: $40,838,362 less | +$40,838,362 | A costed alternative for the Division of Mental Health, Developmental Disabilities, and Substance Use Services from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 9 | Health and Human Services | `child-development` — Child Care Subsidy and Early Education | `reduce` — Reduce by 10%: $28,662,937 less | +$28,662,937 | A costed alternative for the Division of Child Development and Early Education from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 10 | Health and Human Services | `reservation-medicaid-contingency` — Medicaid Contingency Reserve | `halve` — Reserve half: $166,500,000 | +$166,500,000 | A costed alternative to the Medicaid Contingency Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
+| 11 | Agriculture, Natural Resources, and Environment | `environmental-quality` — Environmental Quality | `reduce` — Reduce by 10%: $11,193,288 less | +$11,193,288 | A costed alternative for the Department of Environmental Quality from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 12 | Agriculture, Natural Resources, and Environment | `natural-cultural-resources` — State Parks, Natural and Cultural Resources | `reduce` — Reduce by 10%: $32,779,603 less | +$32,779,603 | A costed alternative for the Department of Natural and Cultural Resources from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 13 | Economic and Community Development | `commerce` — Department of Commerce | `increase` — Increase by 10%: $14,049,313 more | -$14,049,313 | A costed alternative for the Department of Commerce from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 14 | Economic and Community Development | `commerce` — Department of Commerce | `reduce` — Reduce by 10%: $14,049,313 less | +$14,049,313 | A costed alternative for the Department of Commerce from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 15 | Economic and Community Development | `reservation-econ-dev-project` — Economic Development Project Reserve | `halve` — Reserve half: $85,450,000 | +$85,450,000 | A costed alternative to the Economic Development Project Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
+| 16 | Economic and Community Development | `reservation-regional-econ-dev` — Regional Economic Development Reserve | `halve` — Reserve half: $100,000,000 | +$100,000,000 | A costed alternative to the Regional Economic Development Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
+| 17 | Economic and Community Development | `reservation-housing` — Housing Reserve | `halve` — Reserve half: $17,500,000 | +$17,500,000 | A costed alternative to the Housing Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
+| 18 | Justice and Public Safety | `adult-correction` — Adult Correction | `reduce` — Reduce by 5%: $110,379,482 less | +$110,379,482 | A costed alternative for the Department of Adult Correction from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 19 | Justice and Public Safety | `courts` — The Court System | `reduce` — Reduce by 5%: $42,685,549 less | +$42,685,549 | A costed alternative for the Administrative Office of the Courts from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 20 | Justice and Public Safety | `indigent-defense` — Indigent Defense | `increase` — Increase by 10%: $19,219,732 more | -$19,219,732 | A costed alternative for Indigent Defense Services from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 21 | General Government and State Workforce | `state-employee-pay` — State Employee Compensation Reserve | `increase` — Increase by 20%: $5,000,000 more | -$5,000,000 | A costed alternative for the General Fund Reserve for the pay plan from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 22 | General Government and State Workforce | `state-employee-pay` — State Employee Compensation Reserve | `reduce` — Reduce by 20%: $5,000,000 less | +$5,000,000 | A costed alternative for the General Fund Reserve for the pay plan from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 23 | General Government and State Workforce | `elections` — Elections Administration | `increase` — Increase by 10%: $1,465,391 more | -$1,465,391 | A costed alternative for the State Board of Elections from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 24 | Information Technology | `information-technology-operations` — Department of Information Technology | `reduce` — Reduce by 10%: $9,432,695 less | +$9,432,695 | A costed alternative for the Department of Information Technology from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2. |
+| 25 | Information Technology | `reservation-it-reserve` — Information Technology Reserve | `halve` — Reserve half: $76,500,000 | +$76,500,000 | A costed alternative to the Information Technology Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
+| 26 | Disaster Recovery and Infrastructure | `reservation-serdrf` — Emergency Response and Disaster Relief | `halve` — Reserve half: $175,000,000 | +$175,000,000 | A costed alternative to the State Emergency Response and Disaster Relief Fund for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
+| 27 | Disaster Recovery and Infrastructure | `reservation-scif` — State Capital and Infrastructure Fund | `halve` — Reserve half: $569,600,000 | +$569,600,000 | A costed alternative to the State Capital and Infrastructure Fund for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
+| 28 | Taxes and Other General Fund Revenue | `tax-revenue-level` — The Level of Tax Revenue | `increase-one-percent` — Collect 1% more: $338,766,000 | +$338,766,000 | An official fiscal estimate for a specific tax change: a fiscal note prepared by the Fiscal Research Division on a bill amending a rate, base, credit or exemption, or the revenue provisions of the Governor’s Recommended Budget for FY 2026-27. |
+| 29 | Taxes and Other General Fund Revenue | `tax-revenue-level` — The Level of Tax Revenue | `reduce-one-percent` — Collect 1% less: $338,766,000 | -$338,766,000 | An official fiscal estimate for a specific tax change: a fiscal note prepared by the Fiscal Research Division on a bill amending a rate, base, credit or exemption, or the revenue provisions of the Governor’s Recommended Budget for FY 2026-27. |
+| 30 | Savings, Reserves, and Unappropriated Balance | `unappropriated-balance` — The Unappropriated Balance | `deposit-half` — Deposit half into the Savings Reserve: $500,000,000 | -$500,000,000 | A costed proposal for the disposition of the unappropriated balance from the Governor’s Recommended Budget, or a fiscal note on a bill directing a transfer. |
+| 31 | Savings, Reserves, and Unappropriated Balance | `reservation-savings-reserve-discretionary` — Savings Reserve Deposit | `halve` — Reserve half: $225,000,000 | +$225,000,000 | A costed alternative to the Savings Reserve, discretionary transfer for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
+| 32 | Savings, Reserves, and Unappropriated Balance | `reservation-stabilization-inflation` — Stabilization and Inflation Reserve | `halve` — Reserve half: $662,742,618 | +$662,742,618 | A costed alternative to the Stabilization and Inflation Reserve for FY 2026-27 from the Governor's Recommended Budget, or a fiscal note on a bill changing this reservation. |
 
 ## What each one would run into in practice
 
 Recorded so that no illustrative option is read as something that could be carried out
 uniformly as written.
 
-- **`public-instruction/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $375,010,837 to the Department of Public Instruction could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`public-instruction/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $375,010,837 to the Department of Public Instruction could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
-- **`residential-schools/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $3,582,039 to the three state residential schools could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`residential-schools/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $3,582,039 to the three state residential schools could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
-- **`community-college-system/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $92,981,155 to the North Carolina Community College System could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`community-college-system/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $92,981,155 to the North Carolina Community College System could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`unc-need-based-aid/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $68,852,770 to UNC Board of Governors related and institutional programmes could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
-- **`unc-need-based-aid/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $68,852,770 to UNC Board of Governors related and institutional programmes could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`unc-campus-operations/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $89,968,058 to the fifteen UNC campus academic affairs appropriations could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`unc-campus-operations/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $89,968,058 to the fifteen UNC campus academic affairs appropriations could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
-- **`medicaid-health-benefits/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $223,676,606 to the Division of Health Benefits could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`medicaid-health-benefits/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $223,676,606 to the Division of Health Benefits could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
-- **`behavioral-health/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $40,838,362 to the Division of Mental Health, Developmental Disabilities, and Substance Use Services could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`behavioral-health/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $40,838,362 to the Division of Mental Health, Developmental Disabilities, and Substance Use Services could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
-- **`child-development/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $28,662,937 to the Division of Child Development and Early Education could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`child-development/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $28,662,937 to the Division of Child Development and Early Education could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`reservation-medicaid-contingency/halve`** — Reserving half would leave the purpose this fund exists for only partly covered. What the shortfall meant in practice would depend on what the fund was called on to do during the year, and the reserve's governing subsection sets conditions on how the money may be released.
-- **`environmental-quality/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $11,193,288 to the Department of Environmental Quality could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`environmental-quality/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $11,193,288 to the Department of Environmental Quality could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
-- **`natural-cultural-resources/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $32,779,603 to the Department of Natural and Cultural Resources could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`natural-cultural-resources/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $32,779,603 to the Department of Natural and Cultural Resources could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`commerce/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $14,049,313 to the Department of Commerce could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`commerce/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $14,049,313 to the Department of Commerce could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`reservation-econ-dev-project/halve`** — Reserving half would leave the purpose this fund exists for only partly covered. What the shortfall meant in practice would depend on what the fund was called on to do during the year, and the reserve's governing subsection sets conditions on how the money may be released.
 - **`reservation-regional-econ-dev/halve`** — Reserving half would leave the purpose this fund exists for only partly covered. What the shortfall meant in practice would depend on what the fund was called on to do during the year, and the reserve's governing subsection sets conditions on how the money may be released.
 - **`reservation-housing/halve`** — Reserving half would leave the purpose this fund exists for only partly covered. What the shortfall meant in practice would depend on what the fund was called on to do during the year, and the reserve's governing subsection sets conditions on how the money may be released.
-- **`adult-correction/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $110,379,482 to the Department of Adult Correction could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`adult-correction/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $110,379,482 to the Department of Adult Correction could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
-- **`courts/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $42,685,549 to the Administrative Office of the Courts could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`courts/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $42,685,549 to the Administrative Office of the Courts could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`indigent-defense/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $19,219,732 to Indigent Defense Services could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
-- **`indigent-defense/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $19,219,732 to Indigent Defense Services could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`state-employee-pay/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $5,000,000 to the General Fund Reserve for the pay plan could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`state-employee-pay/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $5,000,000 to the General Fund Reserve for the pay plan could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`elections/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $1,465,391 to the State Board of Elections could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
-- **`elections/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $1,465,391 to the State Board of Elections could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
-- **`information-technology-operations/increase`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $9,432,695 to the Department of Information Technology could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`information-technology-operations/reduce`** — An across-the-board percentage is an arithmetic device, not an implementable plan. A real change of $9,432,695 to the Department of Information Technology could not simply be applied uniformly: the appropriation is distributed by statutory formulas and allotments, parts of it are committed to entitlements, contracts, debt, or federally required matching and maintenance-of-effort obligations, and some line items cannot be reduced at all without amending statute. Deciding which programmes absorbed the change, and whether the law allowed it, would be most of the real work.
 - **`reservation-it-reserve/halve`** — Reserving half would leave the purpose this fund exists for only partly covered. What the shortfall meant in practice would depend on what the fund was called on to do during the year, and the reserve's governing subsection sets conditions on how the money may be released.
 - **`reservation-serdrf/halve`** — Reserving half would leave the purpose this fund exists for only partly covered. What the shortfall meant in practice would depend on what the fund was called on to do during the year, and the reserve's governing subsection sets conditions on how the money may be released.
