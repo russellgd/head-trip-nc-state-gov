@@ -27,7 +27,7 @@ describe('provenance is recorded on every option', () => {
 
     expect(counts.enacted).toBe(DATASET.decisions.length)
     expect(counts.documented).toBe(12)
-    expect(counts.proposal).toBe(14)
+    expect(counts.proposal).toBe(15)
     expect(counts.illustrative).toBe(32)
   })
 
@@ -154,10 +154,16 @@ describe('published proposals', () => {
     }
   })
 
-  it('leave every decision with both an increase and a reduction available', () => {
-    // Replacing an illustrative option must not remove a direction, or the
-    // exercise loses the ability to reach one side of the balance.
+  it('leave both directions available on every agency-funding decision', () => {
+    // Replacing an illustrative option must not remove a direction from the
+    // decisions built on a percentage of an agency appropriation. A decision
+    // built entirely from documented policy, such as the Opportunity
+    // Scholarship moratorium, legitimately offers only the direction that was
+    // actually proposed, and inventing an opposite would defeat the point.
     for (const decision of DATASET.decisions) {
+      const hasIllustrative = decision.choices.some((c) => c.provenance === 'illustrative')
+      if (!hasIllustrative) continue
+
       const effects = decision.choices
         .filter((c) => !c.isEnactedBaseline)
         .map((c) => c.spending.recurring + c.spending.nonrecurring)

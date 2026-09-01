@@ -9,6 +9,19 @@ import { formatDollars } from '../lib/format'
 /** Version history. Add a row whenever any figure in the dataset changes. */
 const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = [
   {
+    version: '0.4.0',
+    date: '2026-08-31',
+    note:
+      'Opportunity Scholarships split out of the UNC aggregate into their own K-12 decision. ' +
+      'The programme is administered through a UNC budget code but is a K-12 private school ' +
+      'scholarship, and it is classified by the policy rather than the accounting location. The ' +
+      'Governor\u2019s published moratorium figures are scored directly here because the enacted ' +
+      'budget changes the programme by nothing, so the enacted-to-recommended difference equals ' +
+      'the published change; that equality was checked against the Committee Report, not assumed. ' +
+      'The aggregate UNC decision now scores only the exactly recalculable residual, and a test ' +
+      'prevents any two options scoring the same money.',
+  },
+  {
     version: '0.3.0',
     date: '2026-08-31',
     note:

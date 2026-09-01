@@ -26,6 +26,7 @@
 import type { CategoryId, Decision } from '../types'
 import { AGENCY_APPROPRIATIONS } from '../enacted'
 import { GOVERNOR_BY_DECISION } from '../governor'
+import { MORATORIUM } from './schoolChoice'
 import { cite } from '../sources'
 import { enactedOption, illustrativeOption, percentOf, proposalOption, usd } from './helpers'
 
@@ -71,8 +72,20 @@ function appropriationDecision(input: {
   increaseTradeoffs: string[]
   reduceBenefits: string[]
   reduceTradeoffs: string[]
+  /**
+   * A component of the Governor's recommendation for these budget codes that is
+   * scored by its own decision elsewhere, and must therefore be backed out of
+   * this one so the same money is not counted twice.
+   */
+  governorExcludes?: {
+    label: string
+    recurring: number
+    nonrecurring: number
+    scoredBy: string
+  }
 }): Decision {
   const base = sumAppropriations(input.agencies)
+  APPROPRIATION_BASES.push({ decisionId: input.id, agencies: input.agencies })
   const delta = percentOf(base, input.percent)
   const sources = [cite('sl2026_41', SCHEDULE_SECTION)]
 
@@ -91,7 +104,12 @@ function appropriationDecision(input: {
     `A costed alternative for ${input.baseLabel} from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.`
 
   const governor = GOVERNOR_BY_DECISION.get(input.id)
-  const governorDelta = governor ? governor.recommended - base : 0
+  const excluded = input.governorExcludes
+  const excludedTotal = excluded ? excluded.recurring + excluded.nonrecurring : 0
+  const aggregateDelta = governor ? governor.recommended - base : 0
+  // Backing out a component scored elsewhere leaves the residual this decision
+  // may score. The subtraction is shown to the reader in the derivation.
+  const governorDelta = aggregateDelta - excludedTotal
 
   /**
    * The Governor's recommended level, offered as a published proposal.
@@ -106,11 +124,18 @@ function appropriationDecision(input: {
   const governorChoice = governor
     ? proposalOption({
         id: 'governor',
-        label: `Adopt the Governor's recommendation: ${usd(governor.recommended)}`,
+        label: excluded
+          ? `Adopt the Governor's other recommendations for this area: ${usd(
+              Math.abs(governorDelta),
+            )} ${governorDelta >= 0 ? 'more' : 'less'}`
+          : `Adopt the Governor's recommendation: ${usd(governor.recommended)}`,
         description:
-          `Fund ${input.baseLabel} at ${usd(governor.recommended)}, the level recommended in ` +
-          `Governor Stein's Recommended Budget for FY 2026-27, rather than the ${usd(base)} ` +
-          `the General Assembly enacted. That recommendation is built from items including ` +
+          (excluded
+            ? `Adopt the Governor's recommendations for ${input.baseLabel} apart from ${excluded.label}, which is a separate decision in this challenge. `
+            : `Fund ${input.baseLabel} at ${usd(governor.recommended)}, the level recommended in ` +
+              `Governor Stein's Recommended Budget for FY 2026-27, rather than the ${usd(base)} ` +
+              `the General Assembly enacted. `) +
+          `That recommendation is built from items including ` +
           governor.topItems
             .map(
               (i) =>
@@ -126,9 +151,19 @@ function appropriationDecision(input: {
         tradeoffs: governorDelta >= 0 ? input.increaseTradeoffs : input.reduceTradeoffs,
         derivation:
           `The Governor's recommended FY 2026-27 net appropriation of ${usd(governor.recommended)} ` +
-          `less the enacted ${usd(base)} is ${usd(Math.abs(governorDelta))} ` +
-          `${governorDelta >= 0 ? 'more' : 'less'}. Both figures are published levels for the same ` +
-          `budget code and fiscal year.`,
+          `less the enacted ${usd(base)} is ${usd(Math.abs(aggregateDelta))} ` +
+          `${aggregateDelta >= 0 ? 'more' : 'less'}. Both figures are published levels for the same ` +
+          `budget code and fiscal year.` +
+          (excluded
+            ? ` From that, ${excluded.label} is backed out at ${usd(
+                Math.abs(excludedTotal),
+              )} (${usd(excluded.recurring)} recurring and ${usd(
+                excluded.nonrecurring,
+              )} nonrecurring), because it is scored by the "${excluded.scoredBy}" decision instead. ` +
+              `${usd(aggregateDelta)} less ${usd(excludedTotal)} leaves ${usd(
+                governorDelta,
+              )}, which is what this option scores. Counting both would count the same money twice.`
+            : ''),
         note:
           `The Governor's document measures its own changes from the November 2025 certified ` +
           `budget of ${usd(governor.certified)}, publishing ${usd(
@@ -151,6 +186,7 @@ function appropriationDecision(input: {
   // illustrative option points the other, so both directions stay available.
   const wantIncrease = !governor || governorDelta < 0
   const wantReduce = !governor || governorDelta >= 0
+  void aggregateDelta
 
   return {
     id: input.id,
@@ -195,6 +231,14 @@ function appropriationDecision(input: {
     ],
   }
 }
+
+/**
+ * Which agency lines from the act's schedule anchor which decision.
+ *
+ * Recorded as data rather than inferred from the prose, so the no-double-count
+ * test compares the actual bases instead of matching names in a sentence.
+ */
+export const APPROPRIATION_BASES: Array<{ decisionId: string; agencies: string[] }> = []
 
 export const APPROPRIATION_DECISIONS: Decision[] = [
   appropriationDecision({
@@ -309,12 +353,22 @@ export const APPROPRIATION_DECISIONS: Decision[] = [
     title: 'University Aid and System-Wide Programmes',
     question:
       'Should the state change its funding for university financial aid and system-wide programmes?',
+    // The Governor's recommendation for these two budget codes is dominated by
+    // the Opportunity Scholarship moratorium, which is a K-12 school choice
+    // policy and has its own decision. It is backed out here so that choosing
+    // both options does not score the same money twice.
+    governorExcludes: {
+      label: 'the Opportunity Scholarship moratorium',
+      recurring: MORATORIUM.recurring,
+      nonrecurring: MORATORIUM.nonrecurring,
+      scoredBy: 'Opportunity Scholarship Eligibility and Future Awards',
+    },
     agencies: ['UNC BOG - Related Ed. Programs', 'UNC BOG - Institutional Programs'],
     baseLabel: 'UNC Board of Governors related and institutional programmes',
     enactedNote:
       'These two lines carry system-wide programmes administered by the Board of Governors rather than by an individual campus, including student financial aid.',
     background:
-      'North Carolina’s constitution directs that higher education be provided free of expense "as far as practicable," and the state has long combined comparatively low tuition with need-based aid. Aid and tuition policy interact: holding tuition down and expanding aid reach overlapping students through different mechanisms and at different costs. Aid targets students by financial need rather than lowering the price for everyone, including those who can pay.',
+      'North Carolina’s constitution directs that higher education be provided free of expense "as far as practicable," and the state has long combined comparatively low tuition with need-based aid. Aid and tuition policy interact: holding tuition down and expanding aid reach overlapping students through different mechanisms and at different costs. Aid targets students by financial need rather than lowering the price for everyone, including those who can pay. One caution about these two budget codes: they also carry the Opportunity Scholarship programme, which is a K-12 private school scholarship administered by the State Education Assistance Authority rather than university aid. It has its own decision in the K-12 area, and its amount is excluded from the figures here.',
     percent: 5,
     affects: [
       'Lower- and middle-income university students',

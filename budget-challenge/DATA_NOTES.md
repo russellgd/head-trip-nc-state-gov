@@ -70,7 +70,7 @@ is a proposal somebody made.
 | --- | ---: | --- |
 | **Enacted policy** | 30 | What S.L. 2026-41 actually does. The reference point. |
 | **Documented alternative** | 12 | The dollar impact equals an amount an official document states. Not making a reservation the act makes frees exactly what the act reserves: "reserve nothing for the Medicaid Contingency Reserve" frees exactly $333,000,000. The magnitude is documented; this does not assert that anyone proposed it. |
-| **Published proposal** | 14 | An alternative from Governor Stein's Recommended Budget for FY 2026-27 (April 2026), citing the page and the constituent recommendations behind it. |
+| **Published proposal** | 15 | An alternative from Governor Stein's Recommended Budget for FY 2026-27 (April 2026), citing the page and the constituent recommendations behind it. |
 | **Illustrative allocation scenario** | 32 | A percentage change constructed for this exercise — 3%, 5%, 10%, or 20% depending on the size of the line. The arithmetic is exact and shown. **No North Carolina official or institution proposed it**, and it must never be described as a policy proposal. |
 
 Every illustrative option also carries, on its own card, a note on what a change of that shape would
@@ -95,8 +95,43 @@ published levels for the same code and year is exact, and that is what these opt
 Governor's own recurring and nonrecurring figures are shown to the reader on the option regardless,
 so nothing is hidden.
 
-Fourteen decisions had a comparable recommendation. Sixteen did not, and kept their illustrative
-scenarios rather than have a proposal forced into place.
+Fourteen agency decisions had a comparable recommendation. Sixteen did not, and kept their
+illustrative scenarios rather than have a proposal forced into place. A fifteenth proposal is the
+Opportunity Scholarship moratorium, described below.
+
+### The one place the Governor's published change figures are scored directly
+
+Every other proposal scores a difference of levels. The Opportunity Scholarship decision scores the
+Governor's own published change, and only because that change was shown to equal the
+enacted-to-recommended difference:
+
+| Step | Finding |
+| --- | --- |
+| Enacted FY 2026-27 level | S.L. 2026-41 makes **no change** to the programme. The Committee Report's items 168-176 for budget code 16012 contain no Opportunity Scholarship adjustment, and the programme is funded by the standing statutory schedule at G.S. 115C-562.8, which the act neither appropriates against nor amends. The corrections acts touch it only on administrative points. |
+| Governor's FY 2026-27 level | Reduced by **$454,500,000 recurring and $587,500,000 nonrecurring** (Budget Book p. 91, item 3). Both figures are in the FY 2026-27 columns; the page's item totals reconcile to its printed totals. |
+| Scored impact | Governor's level less enacted level. Since the enacted change is zero, this equals the published change. |
+
+The base alignment was verified rather than assumed: the Committee Report and the Budget Book both
+state a certified FY 2026-27 base of **$913,278,591** for budget code 16012, and the enacted changes
+of $20,054,914 reconcile to the $933,333,505 in the act's own schedule.
+
+**The absolute funding level of the programme is not published in any of these documents.** It lives
+in the statutory schedule. The difference is exact; the level is not stated, and none is invented.
+
+### Not double-counting the split
+
+The UNC aggregate decision previously scored the whole 16011 + 16012 difference, which included the
+moratorium. It now scores only the residual:
+
+| | |
+| --- | ---: |
+| Aggregate bridge (recommended $505,470,535 less enacted $1,377,055,397) | −$871,584,862 |
+| less the Opportunity Scholarship moratorium | −$1,042,000,000 |
+| **Residual scored by the aggregate decision** | **+$170,415,138** |
+
+`src/data/nodoublecount.test.ts` enforces this: no two decisions may anchor the same agency line or
+the same Governor budget code, the two options must sum back to the unsplit aggregate, and no
+decision may offer more than one scored proposal.
 
 If you use this in a course, that distinction is worth ten minutes of discussion on its own: the
 difference between a number that is *sourced* and a scenario that is *plausible*.
