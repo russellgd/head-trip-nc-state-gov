@@ -9,6 +9,17 @@ import { formatDollars } from '../lib/format'
 /** Version history. Add a row whenever any figure in the dataset changes. */
 const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = [
   {
+    version: '0.4.1',
+    date: '2026-08-31',
+    note:
+      'Correction. The Opportunity Scholarship decision previously said the programme\u2019s funding ' +
+      'level was unpublished. It is published: G.S. 115C-562.8(b) appropriates $675,000,000 in ' +
+      'recurring funds to the Grant Fund Reserve for FY 2026-27. That statutory recurring ' +
+      'appropriation is distinguished here from total funds available, which may also include ' +
+      'nonrecurring appropriations, reserve balances and carryforward that these documents do not ' +
+      'establish, and no recommended total is calculated from it. No scored amount changes.',
+  },
+  {
     version: '0.4.0',
     date: '2026-08-31',
     note:

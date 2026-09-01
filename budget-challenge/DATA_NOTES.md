@@ -115,8 +115,30 @@ The base alignment was verified rather than assumed: the Committee Report and th
 state a certified FY 2026-27 base of **$913,278,591** for budget code 16012, and the enacted changes
 of $20,054,914 reconcile to the $933,333,505 in the act's own schedule.
 
-**The absolute funding level of the programme is not published in any of these documents.** It lives
-in the statutory schedule. The difference is exact; the level is not stated, and none is invented.
+### The programme's funding level, and what it is not
+
+**G.S. 115C-562.8(b) appropriates $675,000,000 in recurring funds to the Opportunity Scholarship
+Grant Fund Reserve for FY 2026-27.** An earlier version of this file wrongly said the level was
+unpublished; it is published, in the statute rather than in the appropriations act, which is why the
+act carries no line item for it.
+
+That figure is the **statutory recurring appropriation**. It is not the programme's **total funds
+available**, which may also include nonrecurring appropriations, balances already held in the
+Reserve, and carryforward from prior years. None of those are established by the documents used
+here.
+
+**No total recommended funding level is calculated**, and none should be. The Governor's reduction
+has a nonrecurring component of $587,500,000 with no established nonrecurring base to subtract it
+from; subtracting only against the recurring figure would produce a number that reads like a
+programme level while being nothing of the kind. The components do not reconcile into a total, so
+no total is stated.
+
+None of this changes the scored impact. The bridge is a difference, and the enacted change is zero
+whatever the level turns out to be.
+
+The statute itself was not among the documents available to this build. The FY 2026-27 figure was
+supplied by the project owner and is recorded as such in the source ledger; it should be confirmed
+against G.S. 115C-562.8(b) before publication.
 
 ### Not double-counting the split
 

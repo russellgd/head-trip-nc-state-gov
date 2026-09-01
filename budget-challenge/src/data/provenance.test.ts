@@ -121,10 +121,12 @@ describe('published proposals', () => {
   )
 
   it('cite the Governor’s Recommended Budget with a page reference', () => {
+    // Searched rather than taken by position: a proposal may cite several
+    // documents, and which comes first is not meaningful.
     for (const { decision, choice } of proposals) {
-      expect(choice.sources.length, `${decision.id}/${choice.id}`).toBeGreaterThan(0)
-      expect(choice.sources[0]!.title, `${decision.id}/${choice.id}`).toMatch(/Governor/i)
-      expect(choice.sources[0]!.section, `${decision.id}/${choice.id}`).toMatch(/p\. \d+/)
+      const governorSource = choice.sources.find((s) => /Governor/i.test(s.title))
+      expect(governorSource, `${decision.id}/${choice.id} cites no Governor source`).toBeDefined()
+      expect(governorSource!.section, `${decision.id}/${choice.id}`).toMatch(/p\. \d+/)
     }
   })
 

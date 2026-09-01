@@ -33,6 +33,10 @@ const DOCUMENTS = {
     title: '2026 Budget Technical Corrections II, S.L. 2026-61 (House Bill 268)',
     url: 'https://www.ncleg.gov/EnactedLegislation/SessionLaws/HTML/2025-2026/SL2026-61.html',
   },
+  generalStatutes: {
+    title: 'North Carolina General Statutes, Chapter 115C, Article 39, Part 2A (Opportunity Scholarship Grant Fund Reserve)',
+    url: 'https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/ByArticle/Chapter_115C/Article_39.html',
+  },
   certifiedBudget: {
     title: 'OSBM Certified Budget, FY 2025-27',
     url: 'https://www.osbm.nc.gov/budget/certified-budget',
@@ -82,6 +86,11 @@ export const SOURCE_LEDGER: Array<SourceTemplate & { key: DocumentKey; role: str
     key: 'sl2026_61',
     ...DOCUMENTS.sl2026_61,
     role: 'A second round of technical corrections. Checked after S.L. 2026-42 for the same reason.',
+  },
+  {
+    key: 'generalStatutes',
+    ...DOCUMENTS.generalStatutes,
+    role: 'The statute that funds the Opportunity Scholarship programme. G.S. 115C-562.8(b) sets a recurring appropriation to the Grant Fund Reserve for each fiscal year, which is why the appropriations act contains no line item for the programme. The statute itself was not among the documents available to this build; the FY 2026-27 figure recorded here was supplied by the project owner and should be confirmed against the statute before publication.',
   },
   {
     key: 'certifiedBudget',

@@ -31,9 +31,22 @@
  * $913,278,591, and the enacted changes of $20,054,914 reconcile to the
  * $933,333,505 in the act's own schedule.
  *
- * The absolute dollar level of the programme is NOT stated in any of these
- * documents. It lives in the statutory schedule. The difference is exact; the
- * level is not published here, and this file does not invent one.
+ * ON THE PROGRAMME'S FUNDING LEVEL. G.S. 115C-562.8(b) establishes a recurring
+ * appropriation of $675,000,000 to the Opportunity Scholarship Grant Fund
+ * Reserve for FY 2026-27. That is a known, published figure, and an earlier
+ * version of this file wrongly said the level was unpublished.
+ *
+ * It is not, however, the programme's total funds available, and the two must
+ * not be conflated. Total funds available may also include nonrecurring
+ * appropriations, balances already in the Reserve, and carryforward from prior
+ * years, none of which these documents establish. So no total recommended
+ * funding level is computed here: the Governor's reduction has a nonrecurring
+ * component of $587,500,000 with no established nonrecurring base to subtract
+ * it from, and subtracting only the recurring figure would produce a number
+ * that looks like a programme level while being nothing of the kind.
+ *
+ * None of this changes the scored impact. The bridge is a difference, and the
+ * enacted change is zero whatever the level happens to be.
  */
 import type { Decision } from '../types'
 import { cite } from '../sources'
@@ -55,7 +68,7 @@ export const SCHOOL_CHOICE_DECISIONS: Decision[] = [
     question:
       'Should the state continue the Opportunity Scholarship programme as enacted, or adopt the Governor’s recommended moratorium on new awards?',
     enactedBaseline:
-      'The Opportunity Scholarship programme continues under S.L. 2026-41 at the level set by the standing statutory schedule in G.S. 115C-562.8. The act makes no change to its funding: none of the nine line items for this budget code in the incorporated Committee Report adjusts the programme, and the two technical corrections acts touch it only on administrative points such as testing records, residency, and application dates.',
+      'The Opportunity Scholarship programme continues under S.L. 2026-41 at the level set by statute. G.S. 115C-562.8(b) appropriates $675,000,000 in recurring funds to the Opportunity Scholarship Grant Fund Reserve for FY 2026-27; the programme’s total funds available may be larger, since it can also draw on nonrecurring appropriations, balances already in the Reserve, and carryforward, none of which these documents establish. The act makes no change to its funding: none of the nine line items for this budget code in the incorporated Committee Report adjusts the programme, and the two technical corrections acts touch it only on administrative points such as testing records, residency, and application dates.',
     background:
       'The Opportunity Scholarship programme provides state-funded scholarships for children to attend K-12 private schools. It is administered by the State Education Assistance Authority, which reports through a University of North Carolina budget code, so it appears in the UNC section of budget documents. It is nonetheless a K-12 school choice policy rather than university financial aid, and it is placed here on that basis. Eligibility was expanded in recent years to remove the income limit, which is what made the programme large enough to matter at the scale it now does.',
     choices: [
@@ -114,8 +127,12 @@ export const SCHOOL_CHOICE_DECISIONS: Decision[] = [
           'The enacted budget changes the programme by nothing: the Committee Report’s items 168 to 176 for this budget code contain no Opportunity Scholarship adjustment. ' +
           'The Governor’s recommended level less the enacted level therefore equals the Governor’s published change exactly, which is why it is scored here directly.',
         note:
-          'The Governor’s figures are normally changes from the November 2025 certified budget and cannot be scored against the enacted budget. They are scored here only because the enacted change is zero, so the two coincide. That was verified: the Committee Report and the Budget Book state the same certified base of $913,278,591 for this budget code, and the enacted changes of $20,054,914 reconcile to the $933,333,505 in the act’s schedule. The absolute funding level of the programme is not published in any of these documents; the difference is.',
+          'The Governor’s figures are normally changes from the November 2025 certified budget and cannot be scored against the enacted budget. They are scored here only because the enacted change is zero, so the two coincide. That was verified: the Committee Report and the Budget Book state the same certified base of $913,278,591 for this budget code, and the enacted changes of $20,054,914 reconcile to the $933,333,505 in the act’s schedule. On the programme’s size: G.S. 115C-562.8(b) sets a recurring appropriation of $675,000,000 to the Grant Fund Reserve for FY 2026-27. That is the statutory recurring appropriation, not the programme’s total funds available, which may also include nonrecurring appropriations, reserve balances, and carryforward that these documents do not establish. No recommended total is calculated from it here, because the components do not reconcile into one.',
         sources: [
+          cite(
+            'generalStatutes',
+            'G.S. 115C-562.8(b), recurring appropriation to the Opportunity Scholarship Grant Fund Reserve for FY 2026-27 ($675,000,000). Supplied by the project owner; not read from the statute in this build.',
+          ),
           cite(
             'governorRecommendation',
             'UNC Board of Governors — Related Educational Programs, item 3, Opportunity Scholarship Moratorium, p. 91',
