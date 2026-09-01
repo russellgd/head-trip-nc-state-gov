@@ -41,10 +41,20 @@ Both acts state that they adjust the Part II totals, and **neither states a revi
 > act." — S.L. 2026-42, Section 12.1, page 18
 
 So there is no consolidated post-corrections figure inside the legislation to check a ledger
-against. The OSBM certified budget would supply one, and it is not available to this build:
-`osbm.nc.gov` is blocked by the network policy, and the certified budget has not been uploaded as a
-file. **Until such a document is in hand, any reconciled total rests on this reading alone, and
-should be labelled as such.**
+against.
+
+**The certified budgets currently posted by OSBM cannot serve as that check.** They are dated
+November 2025 and cite the 2025 session laws, so they predate S.L. 2026-41 (July 2026), S.L.
+2026-42, and S.L. 2026-61 (ratified 6 August, approved 11 August 2026). A certified budget issued
+before the acts cannot reconcile them.
+
+Only one of two documents would close this:
+
+1. a **revised certified budget issued after 11 August 2026**, or
+2. a **Fiscal Research Division post-corrections summary**.
+
+**Until one is in hand, any reconciled total rests on this reading alone, and must be labelled as
+such.**
 
 ### Conventions used below
 
@@ -244,17 +254,25 @@ two cannot be resolved by reading the acts again.
 2. **S.L. 2026-42 §8.2**, the 13% SBI and ALE salary increase, with no amount stated.
 3. **A controlling post-corrections total.** Both acts say only that the Part II totals "are
    adjusted in accordance with the provisions of this act" and neither states a revised figure.
+   No document currently available postdates 11 August 2026.
 
 ### What would close it
 
-The **OSBM certified budget for FY 2026-27** would settle all three at once: it is produced after
-the corrections and states agency-level figures on a post-corrections basis. It is not available
-here — `osbm.nc.gov` is blocked by this environment's network policy, so it would need to be
-uploaded as a file. A **Fiscal Research Division post-corrections summary** would do the same.
+Exactly one of two documents:
 
-The Governor's Recommended Budget, now in hand, cannot serve this purpose: it is dated April 2026
-and predates both the enacted act and the corrections. Its role in this project is to supply
-costed alternatives, not a baseline.
+1. A **revised certified budget issued after 11 August 2026**, the date S.L. 2026-61 was approved.
+2. A **Fiscal Research Division post-corrections summary**.
+
+Two documents that might look like candidates and are not:
+
+- **The certified budgets currently posted on the OSBM website.** Dated November 2025 and citing
+  the 2025 session laws, they predate all three acts. They must not be used or requested as the
+  controlling reconciliation source.
+- **The Governor's Recommended Budget**, now in hand. Dated April 2026, it predates the enacted act
+  and both corrections. Its role in this project is to supply costed alternatives, not a baseline.
+
+Until one of the two qualifying documents is available, **both readings stand**. Neither is to be
+selected, and neither pair of anchors is to be presented as authoritative.
 
 ### Resolved since the first draft
 

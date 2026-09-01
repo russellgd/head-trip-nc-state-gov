@@ -144,6 +144,8 @@ for (const [label, net42] of [['A', readingA], ['B', readingB]] as Array<[string
   console.log(`             net appropriations   ${usd(ENACTED_NET_APPROPRIATIONS + combined)}`)
   console.log(`             unappropriated       ${usd(ENACTED_UNAPPROPRIATED - combined)}`)
 }
-console.log('\n  NOT AN ANCHOR. Two readings stand, and S.L. 2026-42 §8.2 grants a 13% salary')
-console.log('  increase to certain SBI and ALE officers with no amount stated. A controlling')
-console.log('  post-corrections total is required; neither act contains one.')
+console.log('\n  NOT AN ANCHOR. Both readings stand; neither is to be selected. S.L. 2026-42 §8.2')
+console.log('  also grants certain SBI and ALE officers a 13% salary increase with no amount')
+console.log('  stated. Closing this needs a revised certified budget issued after 11 August 2026')
+console.log('  or a Fiscal Research Division post-corrections summary. The certified budgets now')
+console.log('  posted by OSBM are dated November 2025 and predate all three acts.')
