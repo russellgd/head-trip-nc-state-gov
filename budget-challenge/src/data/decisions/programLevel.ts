@@ -47,7 +47,152 @@ const CORRECTIONAL_OFFICERS = {
 export const CORRECTIONAL_OFFICER_BRIDGE =
   CORRECTIONAL_OFFICERS.governor - CORRECTIONAL_OFFICERS.enacted
 
+/**
+ * Teacher and instructional support compensation.
+ *
+ * Enacted: Committee Report item 37, "Compensation Increase Reserve - Teachers
+ * and Instructional Support", $514,733,062 recurring plus $83,375,837
+ * nonrecurring, totalling $598,108,899. It sets starting base pay at $48,000
+ * with an average increase of 8%, and the nonrecurring part is one-time bonuses
+ * of $500 for staff with up to 15 years of experience and $1,000 for those with
+ * more.
+ *
+ * Governor: Budget Book p. 70 item 1, $734,368,000 recurring and nothing
+ * nonrecurring, raising starting salaries to the highest in the Southeast with
+ * an average raise of 11% and removing a ten-year pay plateau for experienced
+ * teachers and instructional support staff.
+ *
+ * The recurring and nonrecurring parts move in OPPOSITE directions, and that is
+ * the substance of the choice rather than a technicality: the Governor funds
+ * the whole increase as recurring salary where the enacted budget funds part of
+ * it as a bonus that does not repeat. Recurring money continues into every
+ * later year; a bonus does not. So this option is stored with its real split
+ * and is deliberately exempt from the recurring-by-convention treatment used
+ * where no published split exists.
+ *
+ * SCOPE, disclosed because it is not a clean like-for-like: the enacted item
+ * bundles the salary increase together with the one-time bonus, while the
+ * Governor's item covers salary only and a separate item at p. 71 funds a
+ * larger public school bonus of $253,737,000 nonrecurring. That separate item
+ * is not part of this bridge and is not scored anywhere in this project. The
+ * negative nonrecurring figure here therefore means the enacted bonus is not
+ * carried inside this item, not that the Governor proposes no bonus.
+ */
+const TEACHER_COMPENSATION = {
+  enactedRecurring: 514_733_062,
+  enactedNonrecurring: 83_375_837,
+  governorRecurring: 734_368_000,
+  governorNonrecurring: 0,
+  page: '70',
+  item: 1,
+}
+
+export const TEACHER_COMPENSATION_BRIDGE = {
+  recurring: TEACHER_COMPENSATION.governorRecurring - TEACHER_COMPENSATION.enactedRecurring,
+  nonrecurring:
+    TEACHER_COMPENSATION.governorNonrecurring - TEACHER_COMPENSATION.enactedNonrecurring,
+}
+
+const ENACTED_TEACHER_TOTAL =
+  TEACHER_COMPENSATION.enactedRecurring + TEACHER_COMPENSATION.enactedNonrecurring
+const GOVERNOR_TEACHER_TOTAL =
+  TEACHER_COMPENSATION.governorRecurring + TEACHER_COMPENSATION.governorNonrecurring
+
 export const PROGRAM_LEVEL_DECISIONS: Decision[] = [
+  {
+    id: 'teacher-compensation',
+    category: 'k12-education',
+    title: 'Teacher and Instructional Support Pay',
+    question:
+      'Should the state raise teacher pay further than the enacted budget does, and should the increase be recurring salary or a one-time bonus?',
+    enactedBaseline: `S.L. 2026-41 funds a new teacher salary schedule for FY 2026-27 setting starting base pay at $48,000 with an average increase of 8%, at ${usd(
+      ENACTED_TEACHER_TOTAL,
+    )}: ${usd(TEACHER_COMPENSATION.enactedRecurring)} recurring, plus ${usd(
+      TEACHER_COMPENSATION.enactedNonrecurring,
+    )} nonrecurring for one-time bonuses of $500 for staff with up to 15 years of experience and $1,000 for those with more (Committee Report item 37).`,
+    background:
+      'North Carolina sets a single statewide salary schedule, so a change reaches all 115 districts at once, though districts may supplement locally. The choice here is about size and about form. Recurring salary continues into every later year and compounds as staff move up the schedule; a one-time bonus is paid once and leaves the schedule where it was. A budget can spend the same money either way in a single year and leave the state in a very different position the year after, which is why this decision is stored with its real recurring split rather than the convention used elsewhere.',
+    choices: [
+      enactedOption({
+        label: 'Keep the enacted schedule and bonus',
+        description: `Fund the enacted salary schedule at ${usd(
+          TEACHER_COMPENSATION.enactedRecurring,
+        )} recurring and the one-time bonuses at ${usd(
+          TEACHER_COMPENSATION.enactedNonrecurring,
+        )} nonrecurring.`,
+        affects: [
+          'Teachers and instructional support staff',
+          'The 115 local school districts',
+          'Future budgets, through the recurring portion',
+        ],
+        benefits: [
+          'A substantial increase already funded, with part of it as a bonus that does not commit future budgets.',
+          'The bonus reaches staff immediately without raising the schedule permanently.',
+        ],
+        tradeoffs: [
+          'A bonus does not compound, so it does nothing for the salary a teacher earns in later years.',
+          'Starting pay set at $48,000 may still trail competing states, which is the gap the Governor’s alternative is aimed at.',
+        ],
+      }),
+      proposalOption({
+        id: 'governor-schedule',
+        label: `Adopt the Governor’s salary schedule: ${usd(
+          TEACHER_COMPENSATION_BRIDGE.recurring + TEACHER_COMPENSATION_BRIDGE.nonrecurring,
+        )} net`,
+        description: `Fund the Governor’s recommended schedule instead: ${usd(
+          GOVERNOR_TEACHER_TOTAL,
+        )}, all of it recurring, raising starting teacher salaries to the highest in the Southeast with an average raise of 11% and removing a ten-year pay plateau for experienced teachers, instructional support personnel, school psychologists, speech pathologists and audiologists. Against the enacted ${usd(
+          ENACTED_TEACHER_TOTAL,
+        )} this is ${usd(
+          TEACHER_COMPENSATION_BRIDGE.recurring,
+        )} more recurring and ${usd(
+          Math.abs(TEACHER_COMPENSATION_BRIDGE.nonrecurring),
+        )} less nonrecurring.`,
+        spending: {
+          recurring: TEACHER_COMPENSATION_BRIDGE.recurring,
+          nonrecurring: TEACHER_COMPENSATION_BRIDGE.nonrecurring,
+        },
+        affects: [
+          'Teachers and instructional support staff, and experienced staff most of all',
+          'Districts competing with other states for staff',
+          'Future budgets, which inherit the whole increase rather than part of it',
+        ],
+        benefits: [
+          'Puts the entire increase into the salary schedule, so it continues and compounds instead of being paid once.',
+          'The Governor’s budget places North Carolina 45th nationally and 11th of 12 in the Southeast for starting pay, which is the gap this is aimed at.',
+          'Removing a ten-year plateau targets mid-career staff, who leave at higher rates than the most experienced.',
+        ],
+        tradeoffs: [
+          'Converting one-time money into recurring salary commits every future budget, and this is the largest recurring commitment in the exercise.',
+          'Higher salaries also raise the state’s retirement and benefit obligations, which are budgeted separately and not counted here.',
+          'Staff lose the immediate one-time bonus this item funds, though the Governor funds a separate public school bonus elsewhere.',
+        ],
+        derivation: `Recurring: the Governor's ${usd(
+          TEACHER_COMPENSATION.governorRecurring,
+        )} less the enacted ${usd(TEACHER_COMPENSATION.enactedRecurring)} is ${usd(
+          TEACHER_COMPENSATION_BRIDGE.recurring,
+        )}. Nonrecurring: the Governor's ${usd(
+          TEACHER_COMPENSATION.governorNonrecurring,
+        )} less the enacted ${usd(TEACHER_COMPENSATION.enactedNonrecurring)} is ${usd(
+          TEACHER_COMPENSATION_BRIDGE.nonrecurring,
+        )}. Net ${usd(
+          TEACHER_COMPENSATION_BRIDGE.recurring + TEACHER_COMPENSATION_BRIDGE.nonrecurring,
+        )}. The two components are stored separately because they move in opposite directions, and combining them would hide the shift from one-time money into recurring salary that is the substance of this choice.`,
+        note:
+          `Both figures are FY 2026-27 appropriations measured from the same November 2025 certified budget, which is what makes subtracting them valid. One scope point to read carefully: the enacted item bundles the salary increase with the one-time bonus, while the Governor's item covers salary only and a separate item at p. 71 funds a larger public school bonus of $253,737,000 nonrecurring that is not part of this bridge and is not scored anywhere here. The negative nonrecurring figure therefore means the bonus is not carried inside this item, not that the Governor proposes no bonus.`,
+        sources: [
+          cite(
+            'governorRecommendation',
+            'Public Instruction, item 1, Compensation Increase – Teachers and Instructional Support, p. 70',
+          ),
+          cite(
+            'committeeReport',
+            'Department of Public Instruction, item 37, Compensation Increase Reserve - Teachers and Instructional Support ($514,733,062 recurring; $83,375,837 nonrecurring)',
+          ),
+        ],
+      }),
+    ],
+  },
   {
     id: 'correctional-officer-pay',
     category: 'justice-public-safety',

@@ -3,7 +3,10 @@ import { DATASET } from './index'
 import { APPROPRIATION_BASES } from './decisions/appropriations'
 import { GOVERNOR_RECOMMENDATIONS } from './governor'
 import { MORATORIUM } from './decisions/schoolChoice'
-import { CORRECTIONAL_OFFICER_BRIDGE } from './decisions/programLevel'
+import {
+  CORRECTIONAL_OFFICER_BRIDGE,
+  TEACHER_COMPENSATION_BRIDGE,
+} from './decisions/programLevel'
 import { resolveChoice } from '../engine/budget'
 
 /**
@@ -77,6 +80,14 @@ const SPLITS = [
     // Enacted 443,721,892 + 933,333,505; recommended 620,191,944 + (114,721,409).
     aggregateBridge: 620_191_944 + -114_721_409 - (443_721_892 + 933_333_505),
     programAmount: MORATORIUM.recurring + MORATORIUM.nonrecurring,
+  },
+  {
+    name: 'Teacher and instructional support pay',
+    aggregateId: 'public-instruction',
+    programId: 'teacher-compensation',
+    // Enacted 12,500,361,218; Governor recommended 13,604,577,403.
+    aggregateBridge: 13_604_577_403 - 12_500_361_218,
+    programAmount: TEACHER_COMPENSATION_BRIDGE.recurring + TEACHER_COMPENSATION_BRIDGE.nonrecurring,
   },
   {
     name: 'Correctional officer pay',
@@ -206,5 +217,47 @@ describe('the Opportunity Scholarship split does not double-count', () => {
       expect(bucket.recurring).toBe(0)
       expect(bucket.nonrecurring).toBe(0)
     }
+  })
+})
+
+describe('teacher and instructional support pay', () => {
+  const decision = DATASET.decisions.find((d) => d.id === 'teacher-compensation')!
+  const proposal = decision.choices.find((c) => c.provenance === 'proposal')!
+
+  it('carries the real recurring split rather than a convention', () => {
+    // 734,368,000 - 514,733,062 recurring; 0 - 83,375,837 nonrecurring.
+    expect(proposal.spending.recurring).toBe(219_634_938)
+    expect(proposal.spending.nonrecurring).toBe(-83_375_837)
+    expect(proposal.spending.recurring + proposal.spending.nonrecurring).toBe(136_259_101)
+  })
+
+  it('moves the two components in opposite directions', () => {
+    // The shift from one-time money into recurring salary is the substance of
+    // the choice. Collapsing it to a single net figure would hide it.
+    expect(Math.sign(proposal.spending.recurring)).toBe(1)
+    expect(Math.sign(proposal.spending.nonrecurring)).toBe(-1)
+  })
+
+  it('shows the shift in the structural position, not just the year', () => {
+    // A recurring increase larger than the net cost is exactly the case the
+    // structural measure exists to expose.
+    expect(proposal.spending.recurring).toBeGreaterThan(
+      proposal.spending.recurring + proposal.spending.nonrecurring,
+    )
+  })
+
+  it('states both salary policies and the bonus that explains the one-time money', () => {
+    const text = `${decision.enactedBaseline} ${proposal.description}`
+    expect(text).toMatch(/\$48,000/)
+    expect(text).toMatch(/8%/)
+    expect(text).toMatch(/11%/)
+    expect(decision.enactedBaseline).toMatch(/one-time bonus/i)
+  })
+
+  it('says the Governor funds a bonus in a separate item not scored here', () => {
+    // Otherwise the negative nonrecurring figure reads as "the Governor cuts
+    // bonuses", which is not what the documents say.
+    expect(proposal.verification.note).toMatch(/separate item/i)
+    expect(proposal.verification.note).toMatch(/not that the Governor proposes no bonus/i)
   })
 })

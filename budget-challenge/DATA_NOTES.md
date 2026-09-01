@@ -70,7 +70,7 @@ is a proposal somebody made.
 | --- | ---: | --- |
 | **Enacted policy** | 30 | What S.L. 2026-41 actually does. The reference point. |
 | **Documented alternative** | 12 | The dollar impact equals an amount an official document states. Not making a reservation the act makes frees exactly what the act reserves: "reserve nothing for the Medicaid Contingency Reserve" frees exactly $333,000,000. The magnitude is documented; this does not assert that anyone proposed it. |
-| **Published proposal** | 16 | An alternative from Governor Stein's Recommended Budget for FY 2026-27 (April 2026), citing the page and the constituent recommendations behind it. |
+| **Published proposal** | 17 | An alternative from Governor Stein's Recommended Budget for FY 2026-27 (April 2026), citing the page and the constituent recommendations behind it. |
 | **Illustrative allocation scenario** | 32 | A percentage change constructed for this exercise — 3%, 5%, 10%, or 20% depending on the size of the line. The arithmetic is exact and shown. **No North Carolina official or institution proposed it**, and it must never be described as a policy proposal. |
 
 Every illustrative option also carries, on its own card, a note on what a change of that shape would
@@ -139,6 +139,29 @@ whatever the level turns out to be.
 The statute itself was not among the documents available to this build. The FY 2026-27 figure was
 supplied by the project owner and is recorded as such in the source ledger; it should be confirmed
 against G.S. 115C-562.8(b) before publication.
+
+### Teacher and instructional support pay, split from Public Schools
+
+| | Recurring | Nonrecurring | Total |
+| --- | ---: | ---: | ---: |
+| Enacted (Committee Report item 37) | $514,733,062 | $83,375,837 | **$598,108,899** |
+| Governor (Budget Book p. 70 item 1) | $734,368,000 | $0 | **$734,368,000** |
+| **Scored** | **+$219,634,938** | **−$83,375,837** | **+$136,259,101** |
+
+Residual left with the aggregate: $1,104,216,185 − $136,259,101 = **+$967,957,084**.
+
+**This option is deliberately exempt from the recurring-by-convention treatment.** The two
+components move in opposite directions, and that is the substance of the choice: the enacted budget
+funds part of its increase as a one-time bonus of $500 or $1,000 depending on experience, while the
+Governor funds the whole increase as recurring salary. Recurring money continues into every later
+year and compounds as staff move up the schedule; a bonus does not. Collapsing the two into a single
+net figure would hide exactly the thing worth teaching, and the structural balance would not show it.
+
+**One scope point, disclosed on the card.** The enacted item bundles the salary increase with the
+bonus; the Governor's item covers salary only, and a separate item at p. 71 funds a larger public
+school bonus of $253,737,000 nonrecurring that is **not part of this bridge and is not scored
+anywhere in this project**. The negative nonrecurring figure therefore means the bonus is not
+carried inside this item, not that the Governor proposes no bonus.
 
 ### Correctional officer pay, split from Adult Correction
 

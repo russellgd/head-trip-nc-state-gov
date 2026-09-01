@@ -90,16 +90,18 @@ describe('the challenge page', () => {
     expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$1,375,010,837')
   })
 
-  it('offers the Governor’s recommended level as a published proposal', async () => {
+  it('offers the Governor’s recommendation as a published proposal', async () => {
     const user = userEvent.setup()
     renderWithProviders(<Challenge />)
 
-    const governor = screen.getByRole('radio', { name: /adopt the governor.s recommendation/i })
+    // Teacher pay is now its own decision, so the Public Schools card carries
+    // the residual of the Governor's recommendation for the department.
+    const governor = screen.getByRole('radio', { name: /adopt the governor.s other recommendations/i })
     await user.click(governor)
 
     expect(screen.getAllByText('Published proposal').length).toBeGreaterThan(0)
     // The Governor recommends more than the enacted level, so the balance falls.
-    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('-$104,216,185')
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$32,042,916')
   })
 })
 
@@ -172,7 +174,7 @@ describe('keyboard use', () => {
     // Arrow keys move within a radio group and select as they go.
     await user.keyboard('{ArrowDown}')
 
-    const governor = screen.getByRole('radio', { name: /adopt the governor.s recommendation/i })
+    const governor = screen.getByRole('radio', { name: /adopt the governor.s other recommendations/i })
     expect(governor).toHaveFocus()
     expect(governor).toBeChecked()
   })

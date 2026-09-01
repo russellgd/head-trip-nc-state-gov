@@ -27,7 +27,7 @@ import type { CategoryId, Decision } from '../types'
 import { AGENCY_APPROPRIATIONS } from '../enacted'
 import { GOVERNOR_BY_DECISION } from '../governor'
 import { MORATORIUM } from './schoolChoice'
-import { CORRECTIONAL_OFFICER_BRIDGE } from './programLevel'
+import { CORRECTIONAL_OFFICER_BRIDGE, TEACHER_COMPENSATION_BRIDGE } from './programLevel'
 import { cite } from '../sources'
 import { enactedOption, illustrativeOption, percentOf, proposalOption, usd } from './helpers'
 
@@ -246,6 +246,14 @@ export const APPROPRIATION_DECISIONS: Decision[] = [
     id: 'public-instruction',
     category: 'k12-education',
     title: 'Public Schools',
+    // Teacher and instructional support pay has its own decision; its bridge is
+    // backed out here so the two cannot score the same money.
+    governorExcludes: {
+      label: 'the teacher and instructional support salary increase',
+      recurring: TEACHER_COMPENSATION_BRIDGE.recurring,
+      nonrecurring: TEACHER_COMPENSATION_BRIDGE.nonrecurring,
+      scoredBy: 'Teacher and Instructional Support Pay',
+    },
     question: 'Should the state spend more or less on public schools than the enacted budget does?',
     agencies: ['Department of Public Instruction'],
     baseLabel: 'the Department of Public Instruction',
