@@ -13,7 +13,7 @@ Management, or any state agency, and it is not affiliated with or endorsed by an
 ## Read this first: the state of the data
 
 The application is populated from the text of **S.L. 2026-41**, the Current Operations
-Appropriations Act of 2026, read in full (634 pages). Thirty-four decisions span all twelve budget areas,
+Appropriations Act of 2026, read in full (634 pages). Thirty-five decisions span all twelve budget areas,
 and a surplus, a balanced budget, and a deficit are all reachable.
 
 Every enacted figure was checked by re-deriving a total the act itself prints — the 78 agency lines

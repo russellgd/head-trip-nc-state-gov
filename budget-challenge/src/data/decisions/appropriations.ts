@@ -32,6 +32,7 @@ import {
   HEALTH_BENEFITS_RESIDUAL_ITEMS,
   MEDICAID_REBASE_BRIDGE,
   TEACHER_COMPENSATION_BRIDGE,
+  UNC_ENROLLMENT_BRIDGE,
 } from './programLevel'
 import { cite } from '../sources'
 import { enactedOption, illustrativeOption, percentOf, proposalOption, usd } from './helpers'
@@ -79,11 +80,16 @@ function appropriationDecision(input: {
   reduceBenefits: string[]
   reduceTradeoffs: string[]
   /**
-   * A component of the Governor's recommendation for these budget codes that is
-   * scored by its own decision elsewhere, and must therefore be backed out of
-   * this one so the same money is not counted twice.
+   * Components of the Governor's recommendation for these budget codes that are
+   * scored by their own decisions elsewhere, and must therefore be backed out
+   * of this one so the same money is not counted twice.
+   *
+   * More than one programme can be split out of the same aggregate, so this is
+   * a list. The residual note and arguments, where given, describe what is left
+   * after all of them are removed, and so belong to the decision rather than to
+   * any single exclusion; the first entry that supplies them wins.
    */
-  governorExcludes?: {
+  governorExcludes?: Array<{
     label: string
     recurring: number
     nonrecurring: number
@@ -105,7 +111,7 @@ function appropriationDecision(input: {
     /** Arguments for the residual, where the generic ones would misdescribe it. */
     residualBenefits?: string[]
     residualTradeoffs?: string[]
-  }
+  }>
 }): Decision {
   const base = sumAppropriations(input.agencies)
   APPROPRIATION_BASES.push({ decisionId: input.id, agencies: input.agencies })
@@ -127,17 +133,27 @@ function appropriationDecision(input: {
     `A costed alternative for ${input.baseLabel} from the Governor's Recommended Budget for FY 2026-27, a fiscal note on a bill affecting this appropriation, or the line-item detail in the Joint Conference Committee Report incorporated into S.L. 2026-41 at Section 45.2.`
 
   const governor = GOVERNOR_BY_DECISION.get(input.id)
-  const excluded = input.governorExcludes
-  const excludedTotal = excluded ? excluded.recurring + excluded.nonrecurring : 0
+  const excludes = input.governorExcludes ?? []
+  const excluded = excludes.length > 0
+  const excludedTotal = excludes.reduce((n, e) => n + e.recurring + e.nonrecurring, 0)
   const aggregateDelta = governor ? governor.recommended - base : 0
-  // Backing out a component scored elsewhere leaves the residual this decision
-  // may score. The subtraction is shown to the reader in the derivation.
+  // Backing out the components scored elsewhere leaves the residual this
+  // decision may score. The subtraction is shown to the reader in the derivation.
   const governorDelta = aggregateDelta - excludedTotal
+  const omitted = excludes.flatMap((e) => e.omitItems ?? [])
   const listedItems = governor
     ? governor.topItems.filter(
-        (i) => !excluded?.omitItems?.some((o) => o.page === i.page && o.item === i.item),
+        (i) => !omitted.some((o) => o.page === i.page && o.item === i.item),
       )
     : []
+  /** "A and B" — the programmes this decision no longer scores. */
+  const excludedLabels =
+    excludes.length > 1
+      ? `${excludes.slice(0, -1).map((e) => e.label).join(', ')} and ${excludes[excludes.length - 1]!.label}`
+      : (excludes[0]?.label ?? '')
+  const residualNote = excludes.find((e) => e.residualNote)?.residualNote
+  const residualBenefits = excludes.find((e) => e.residualBenefits)?.residualBenefits
+  const residualTradeoffs = excludes.find((e) => e.residualTradeoffs)?.residualTradeoffs
 
   /**
    * The Governor's recommended level, offered as a published proposal.
@@ -159,7 +175,9 @@ function appropriationDecision(input: {
           : `Adopt the Governor's recommendation: ${usd(governor.recommended)}`,
         description:
           (excluded
-            ? `Adopt the Governor's recommendations for ${input.baseLabel} apart from ${excluded.label}, which is a separate decision in this challenge. `
+            ? `Adopt the Governor's recommendations for ${input.baseLabel} apart from ${excludedLabels}, ${
+                excludes.length > 1 ? 'which are separate decisions' : 'which is a separate decision'
+              } in this challenge. `
             : `Fund ${input.baseLabel} at ${usd(governor.recommended)}, the level recommended in ` +
               `Governor Stein's Recommended Budget for FY 2026-27, rather than the ${usd(base)} ` +
               `the General Assembly enacted. `) +
@@ -176,25 +194,28 @@ function appropriationDecision(input: {
         spending: { recurring: governorDelta },
         affects: input.affects,
         benefits:
-          excluded?.residualBenefits ??
-          (governorDelta >= 0 ? input.increaseBenefits : input.reduceBenefits),
+          residualBenefits ?? (governorDelta >= 0 ? input.increaseBenefits : input.reduceBenefits),
         tradeoffs:
-          excluded?.residualTradeoffs ??
-          (governorDelta >= 0 ? input.increaseTradeoffs : input.reduceTradeoffs),
+          residualTradeoffs ?? (governorDelta >= 0 ? input.increaseTradeoffs : input.reduceTradeoffs),
         derivation:
           `The Governor's recommended FY 2026-27 net appropriation of ${usd(governor.recommended)} ` +
           `less the enacted ${usd(base)} is ${usd(Math.abs(aggregateDelta))} ` +
           `${aggregateDelta >= 0 ? 'more' : 'less'}. Both figures are published levels for the same ` +
           `budget code and fiscal year.` +
           (excluded
-            ? ` From that, ${excluded.label} is backed out at ${usd(
-                Math.abs(excludedTotal),
-              )} (${usd(excluded.recurring)} recurring and ${usd(
-                excluded.nonrecurring,
-              )} nonrecurring), because it is scored by the "${excluded.scoredBy}" decision instead. ` +
+            ? ` From that, ${excludes
+                .map(
+                  (e) =>
+                    `${e.label} is backed out at ${usd(e.recurring + e.nonrecurring)} (${usd(
+                      e.recurring,
+                    )} recurring and ${usd(e.nonrecurring)} nonrecurring), because it is scored by the "${
+                      e.scoredBy
+                    }" decision instead`,
+                )
+                .join('; and ')}. ` +
               `${usd(aggregateDelta)} less ${usd(excludedTotal)} leaves ${usd(
                 governorDelta,
-              )}, which is what this option scores. Counting both would count the same money twice.`
+              )}, which is what this option scores. Counting them twice would count the same money twice.`
             : ''),
         note:
           `The Governor's document measures its own changes from the November 2025 certified ` +
@@ -205,7 +226,7 @@ function appropriationDecision(input: {
           )} nonrecurring. Those are changes from that base, not from the budget the General ` +
           `Assembly later enacted, so the figure scored here is the difference between the two ` +
           `published levels instead.` +
-          (excluded?.residualNote ? ` ${excluded.residualNote}` : ''),
+          (residualNote ? ` ${residualNote}` : ''),
         sources: [
           cite(
             'governorRecommendation',
@@ -287,12 +308,14 @@ export const APPROPRIATION_DECISIONS: Decision[] = [
     title: 'Public Schools',
     // Teacher and instructional support pay has its own decision; its bridge is
     // backed out here so the two cannot score the same money.
-    governorExcludes: {
-      label: 'the teacher and instructional support salary increase',
-      recurring: TEACHER_COMPENSATION_BRIDGE.recurring,
-      nonrecurring: TEACHER_COMPENSATION_BRIDGE.nonrecurring,
-      scoredBy: 'Teacher and Instructional Support Pay',
-    },
+    governorExcludes: [
+      {
+        label: 'the teacher and instructional support salary increase',
+        recurring: TEACHER_COMPENSATION_BRIDGE.recurring,
+        nonrecurring: TEACHER_COMPENSATION_BRIDGE.nonrecurring,
+        scoredBy: 'Teacher and Instructional Support Pay',
+      },
+    ],
     question: 'Should the state spend more or less on public schools than the enacted budget does?',
     agencies: ['Department of Public Instruction'],
     baseLabel: 'the Department of Public Instruction',
@@ -405,12 +428,21 @@ export const APPROPRIATION_DECISIONS: Decision[] = [
     // the Opportunity Scholarship moratorium, which is a K-12 school choice
     // policy and has its own decision. It is backed out here so that choosing
     // both options does not score the same money twice.
-    governorExcludes: {
-      label: 'the Opportunity Scholarship moratorium',
-      recurring: MORATORIUM.recurring,
-      nonrecurring: MORATORIUM.nonrecurring,
-      scoredBy: 'Opportunity Scholarship Eligibility and Future Awards',
-    },
+    governorExcludes: [
+      {
+        label: 'the Opportunity Scholarship moratorium',
+        recurring: MORATORIUM.recurring,
+        nonrecurring: MORATORIUM.nonrecurring,
+        scoredBy: 'Opportunity Scholarship Eligibility and Future Awards',
+      },
+      {
+        label: 'the UNC enrollment funding adjustment',
+        recurring: UNC_ENROLLMENT_BRIDGE.recurring,
+        nonrecurring: UNC_ENROLLMENT_BRIDGE.nonrecurring,
+        scoredBy: 'UNC Enrollment Funding: Recurring or One-Time',
+        omitItems: [{ page: '89', item: 6 }],
+      },
+    ],
     agencies: ['UNC BOG - Related Ed. Programs', 'UNC BOG - Institutional Programs'],
     baseLabel: 'UNC Board of Governors related and institutional programmes',
     enactedNote:
@@ -501,36 +533,38 @@ export const APPROPRIATION_DECISIONS: Decision[] = [
     // for this budget code and has its own decision. It is backed out here, and
     // what remains is not a proposed Medicaid reduction: it is the net of items
     // each budget funds and the other does not. MEDICAID_AUDIT.md has every one.
-    governorExcludes: {
-      label: 'the Medicaid rebase',
-      recurring: MEDICAID_REBASE_BRIDGE,
-      nonrecurring: 0,
-      scoredBy: 'Fund Projected Medicaid Costs',
-      omitItems: [{ page: '174', item: 7 }],
-      residualNote:
-        `What remains once the rebase is backed out is not a Medicaid reduction that anyone proposed, and it must not be read as one. It is the arithmetic net of items each budget funds and the other does not. The enacted budget funds three the Governor's recommendation does not carry — ${namedItems(
-          HEALTH_BENEFITS_RESIDUAL_ITEMS.enactedOnly,
-        )} — while the Governor funds two the enacted budget does not: ${namedItems(
-          HEALTH_BENEFITS_RESIDUAL_ITEMS.governorOnly,
-        )}. Reductions the Governor's recommendation states explicitly for this budget code come to ${usd(
-          Math.abs(
-            HEALTH_BENEFITS_RESIDUAL_ITEMS.explicitGovernorReductions.reduce(
-              (n, i) => n + i.amount,
-              0,
+    governorExcludes: [
+      {
+        label: 'the Medicaid rebase',
+        recurring: MEDICAID_REBASE_BRIDGE,
+        nonrecurring: 0,
+        scoredBy: 'Fund Projected Medicaid Costs',
+        omitItems: [{ page: '174', item: 7 }],
+        residualNote:
+          `What remains once the rebase is backed out is not a Medicaid reduction that anyone proposed, and it must not be read as one. It is the arithmetic net of items each budget funds and the other does not. The enacted budget funds three the Governor's recommendation does not carry — ${namedItems(
+            HEALTH_BENEFITS_RESIDUAL_ITEMS.enactedOnly,
+          )} — while the Governor funds two the enacted budget does not: ${namedItems(
+            HEALTH_BENEFITS_RESIDUAL_ITEMS.governorOnly,
+          )}. Reductions the Governor's recommendation states explicitly for this budget code come to ${usd(
+            Math.abs(
+              HEALTH_BENEFITS_RESIDUAL_ITEMS.explicitGovernorReductions.reduce(
+                (n, i) => n + i.amount,
+                0,
+              ),
             ),
-          ),
-        )} in total, a single item — ${namedItems(
-          HEALTH_BENEFITS_RESIDUAL_ITEMS.explicitGovernorReductions,
-        )} — and account for only a fortieth of the residual. Both sides sum exactly to the change each document states for budget code 14445, so nothing is missing to another code; the difference is one of scope. The item-by-item reconciliation is in MEDICAID_AUDIT.md.`,
-      residualBenefits: [
-        'Every item behind this figure is identified, and the reconciliation naming all of them is published with the project.',
-        'Adopting it would fund managed care oversight and additional Innovations Waiver slots, neither of which the enacted budget funds.',
-      ],
-      residualTradeoffs: [
-        'This is not one policy and there is no coherent case for or against it as a whole. It is the net of several unrelated items, and they are better weighed one at a time than together.',
-        'Adopting it would drop three items the enacted budget funds: personal care service rates, Innovations Waiver direct care worker wages, and the Healthy Opportunities Pilot.',
-      ],
-    },
+          )} in total, a single item — ${namedItems(
+            HEALTH_BENEFITS_RESIDUAL_ITEMS.explicitGovernorReductions,
+          )} — and account for only a fortieth of the residual. Both sides sum exactly to the change each document states for budget code 14445, so nothing is missing to another code; the difference is one of scope. The item-by-item reconciliation is in MEDICAID_AUDIT.md.`,
+        residualBenefits: [
+          'Every item behind this figure is identified, and the reconciliation naming all of them is published with the project.',
+          'Adopting it would fund managed care oversight and additional Innovations Waiver slots, neither of which the enacted budget funds.',
+        ],
+        residualTradeoffs: [
+          'This is not one policy and there is no coherent case for or against it as a whole. It is the net of several unrelated items, and they are better weighed one at a time than together.',
+          'Adopting it would drop three items the enacted budget funds: personal care service rates, Innovations Waiver direct care worker wages, and the Healthy Opportunities Pilot.',
+        ],
+      },
+    ],
     agencies: ['Health Benefits'],
     baseLabel: 'the Division of Health Benefits',
     enactedNote:
@@ -710,12 +744,14 @@ export const APPROPRIATION_DECISIONS: Decision[] = [
     title: 'Adult Correction',
     // Correctional officer pay has its own decision; its bridge is backed out
     // here so the two cannot score the same money.
-    governorExcludes: {
-      label: 'the correctional officer salary increase',
-      recurring: CORRECTIONAL_OFFICER_BRIDGE,
-      nonrecurring: 0,
-      scoredBy: 'Correctional Officer Pay',
-    },
+    governorExcludes: [
+      {
+        label: 'the correctional officer salary increase',
+        recurring: CORRECTIONAL_OFFICER_BRIDGE,
+        nonrecurring: 0,
+        scoredBy: 'Correctional Officer Pay',
+      },
+    ],
     question: 'Should the state change what it spends on the prison and community supervision system?',
     agencies: ['Department of Adult Correction'],
     baseLabel: 'the Department of Adult Correction',

@@ -153,6 +153,57 @@ export const HEALTH_BENEFITS_RESIDUAL_ITEMS = {
   explicitGovernorReductions: [{ title: 'Vacant Position Reductions', amount: -659_084 }],
 } as const
 
+/**
+ * The UNC system enrollment funding adjustment.
+ *
+ * Enacted: Committee Report item 159, "UNC Enrollment Funding Adjustment",
+ * $107,504,366 recurring plus $46,375,508 nonrecurring, requirements of
+ * $153,879,874 against no receipts.
+ *
+ * Governor: Budget Book p. 89 item 6, "UNC System Enrollment Growth
+ * Adjustment", $153,495,386 recurring and nothing nonrecurring, also against no
+ * receipts.
+ *
+ * Both are FY 2026-27 appropriations for budget code 16011, measured from the
+ * same certified base of $147,135,334, and both are net of receipts because
+ * neither carries any. The comparison is like for like.
+ *
+ * WHAT THIS DECISION IS ABOUT, AND WHAT IT IS NOT. The net difference is
+ * -$384,488, a quarter of one per cent. Read as a question of how much UNC
+ * receives, this card would be worth nobody's time. The substance is the
+ * composition: the enacted budget funds roughly $46 million of the adjustment
+ * with money that does not repeat, and the Governor funds the whole of it as
+ * recurring. That is a durability choice, and the card is written as one.
+ *
+ * SCOPE, disclosed on the card. The two documents describe the enrolment
+ * measure differently. The enacted item says the funding model "factors in the
+ * change in resident student credit hours"; the Governor's item says its
+ * funding "reflects the 3.7% increase in total student credit hours across the
+ * UNC System in the 2025 calendar year". Resident and total student credit
+ * hours are not the same measure, and neither document reconciles to the other.
+ * The two amounts differ by a quarter of one per cent, which is consistent with
+ * their pricing the same adjustment, but the difference in description is real
+ * and is stated rather than smoothed over.
+ */
+const UNC_ENROLLMENT = {
+  enactedRecurring: 107_504_366,
+  enactedNonrecurring: 46_375_508,
+  governorRecurring: 153_495_386,
+  governorNonrecurring: 0,
+  page: '89',
+  item: 6,
+}
+
+export const UNC_ENROLLMENT_BRIDGE = {
+  recurring: UNC_ENROLLMENT.governorRecurring - UNC_ENROLLMENT.enactedRecurring,
+  nonrecurring: UNC_ENROLLMENT.governorNonrecurring - UNC_ENROLLMENT.enactedNonrecurring,
+}
+
+const ENACTED_UNC_TOTAL =
+  UNC_ENROLLMENT.enactedRecurring + UNC_ENROLLMENT.enactedNonrecurring
+const GOVERNOR_UNC_TOTAL =
+  UNC_ENROLLMENT.governorRecurring + UNC_ENROLLMENT.governorNonrecurring
+
 export const PROGRAM_LEVEL_DECISIONS: Decision[] = [
   {
     id: 'teacher-compensation',
@@ -406,6 +457,101 @@ export const PROGRAM_LEVEL_DECISIONS: Decision[] = [
           cite(
             'committeeReport',
             'Department of Health and Human Services, Division of Health Benefits, item 99, Medicaid Rebase ($847,200,000 recurring; requirements $2,658,573,067 less receipts $1,811,373,067)',
+          ),
+        ],
+      }),
+    ],
+  },
+  {
+    id: 'unc-enrollment-growth',
+    category: 'unc-system',
+    title: 'UNC Enrollment Funding: Recurring or One-Time',
+    question: 'How should UNC fund its FY 2026-27 enrollment adjustment?',
+    enactedBaseline: `S.L. 2026-41 adjusts funding to the UNC constituent institutions by ${usd(
+      ENACTED_UNC_TOTAL,
+    )} for FY 2026-27 at the amount the enrollment funding model recommends for the biennium: ${usd(
+      UNC_ENROLLMENT.enactedRecurring,
+    )} recurring and ${usd(
+      UNC_ENROLLMENT.enactedNonrecurring,
+    )} in one-time funding, against no receipts (Committee Report item 159, "UNC Enrollment Funding Adjustment").`,
+    background:
+      'The UNC system funds its campuses partly through an enrollment model, which moves money between institutions as student credit hours shift. The two budgets before you arrive at almost the same total for FY 2026-27 and divide it very differently. That division is the decision. Recurring funds are built into the base and continue into every later year unless a future budget removes them; one-time funds are appropriated for a single year, so a later budget has to act for the same activity to continue. Enrollment-related instructional costs are generally ongoing, since teaching a larger number of students takes staff and space in each year it happens. Enrollment itself can change in either direction, and a fall in credit hours would reduce what the model recommends, which is part of why a budget may choose to fund some of the adjustment with money that does not commit future years.',
+    choices: [
+      enactedOption({
+        label: `Keep the enacted mix: ${usd(
+          UNC_ENROLLMENT.enactedRecurring,
+        )} recurring and ${usd(UNC_ENROLLMENT.enactedNonrecurring)} one-time`,
+        description: `Fund the enrollment adjustment as enacted, with about seven-tenths of it in the recurring base and the remainder as one-time funding for FY 2026-27.`,
+        affects: [
+          'UNC constituent institutions, and those with growing enrolments most of all',
+          'Students, through the instructional capacity the funding supports',
+          'Future budgets, which inherit the recurring portion but not the one-time portion',
+        ],
+        benefits: [
+          'Funds the adjustment the enrollment model recommends for this year in full.',
+          'Leaving part of it one-time keeps a future budget free to reduce the amount if credit hours fall, without having to remove money from the base.',
+        ],
+        tradeoffs: [
+          'Campuses cannot count on the one-time portion continuing, which makes it harder to commit to recurring costs such as permanent faculty positions.',
+          'If a later budget does not renew the one-time portion, the same activity has to be funded from somewhere else or reduced.',
+        ],
+      }),
+      proposalOption({
+        id: 'governor-recurring',
+        label: `Adopt the Governor's approach: ${usd(
+          GOVERNOR_UNC_TOTAL,
+        )}, all recurring`,
+        description: `Fund the enrollment adjustment at ${usd(
+          GOVERNOR_UNC_TOTAL,
+        )}, all of it recurring, as recommended in Governor Stein's Recommended Budget for FY 2026-27 (p. ${
+          UNC_ENROLLMENT.page
+        }, item ${
+          UNC_ENROLLMENT.item
+        }, "UNC System Enrollment Growth Adjustment"). Current-year spending changes by only ${usd(
+          UNC_ENROLLMENT_BRIDGE.recurring + UNC_ENROLLMENT_BRIDGE.nonrecurring,
+        )}, but about ${usd(
+          Math.abs(UNC_ENROLLMENT_BRIDGE.nonrecurring),
+        )} moves out of one-time funding and into the recurring base.`,
+        spending: {
+          recurring: UNC_ENROLLMENT_BRIDGE.recurring,
+          nonrecurring: UNC_ENROLLMENT_BRIDGE.nonrecurring,
+        },
+        affects: [
+          'UNC constituent institutions, through what they can plan on year to year',
+          'Students, through the instructional capacity the funding supports',
+          'Future budgets, which would inherit the whole adjustment rather than part of it',
+        ],
+        benefits: [
+          'Enrollment-related instructional costs are generally ongoing, and recurring funding matches money to a cost of that kind.',
+          'Campuses can commit to recurring costs, such as permanent faculty lines, against funding that continues.',
+          'It costs almost nothing in the current year: the change to this year\u2019s spending is under half a million dollars.',
+        ],
+        tradeoffs: [
+          'Moving money into the base commits future budgets to it, and removing base funding later is harder than declining to renew one-time funding.',
+          'Enrollment can fall as well as rise. If credit hours decline, the model would recommend less, and the money would already be in the base.',
+          'The current-year saving is negligible, so this option buys structural change rather than budget room.',
+        ],
+        derivation: `Recurring: the Governor's ${usd(
+          UNC_ENROLLMENT.governorRecurring,
+        )} less the enacted ${usd(UNC_ENROLLMENT.enactedRecurring)} is ${usd(
+          UNC_ENROLLMENT_BRIDGE.recurring,
+        )}. Nonrecurring: the Governor's ${usd(
+          UNC_ENROLLMENT.governorNonrecurring,
+        )} less the enacted ${usd(UNC_ENROLLMENT.enactedNonrecurring)} is ${usd(
+          UNC_ENROLLMENT_BRIDGE.nonrecurring,
+        )}. Net ${usd(
+          UNC_ENROLLMENT_BRIDGE.recurring + UNC_ENROLLMENT_BRIDGE.nonrecurring,
+        )}. The two components are stored separately and shown separately, because the shift between them is the whole of this decision and a single net figure would hide it.`,
+        note:
+          `Both figures are FY 2026-27 appropriations for budget code 16011 measured from the same November 2025 certified budget of $147,135,334, and neither carries receipts, so the comparison is like for like. One scope point to read carefully: the two documents describe the enrolment measure differently. The enacted item says the funding model "factors in the change in resident student credit hours"; the Governor's item says its funding "reflects the 3.7% increase in total student credit hours across the UNC System in the 2025 calendar year". Resident and total student credit hours are not the same measure, and neither document reconciles to the other. The amounts differ by a quarter of one per cent, which is consistent with the two pricing the same adjustment, but the difference in description is not resolved by these documents.`,
+        sources: [
+          cite(
+            'governorRecommendation',
+            'UNC Board of Governors \u2013 Institutional Programs, item 6, UNC System Enrollment Growth Adjustment, p. 89',
+          ),
+          cite(
+            'committeeReport',
+            'UNC BOG - Institutional Programs, item 159, UNC Enrollment Funding Adjustment ($107,504,366 recurring; $46,375,508 nonrecurring; no receipts)',
           ),
         ],
       }),

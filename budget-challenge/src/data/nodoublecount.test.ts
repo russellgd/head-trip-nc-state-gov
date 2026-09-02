@@ -8,6 +8,7 @@ import {
   HEALTH_BENEFITS_RESIDUAL_ITEMS,
   MEDICAID_REBASE_BRIDGE,
   TEACHER_COMPENSATION_BRIDGE,
+  UNC_ENROLLMENT_BRIDGE,
 } from './decisions/programLevel'
 import { resolveChoice } from '../engine/budget'
 
@@ -69,45 +70,76 @@ describe('no two decisions score the same Governor recommendation', () => {
 })
 
 /**
- * Every programme split out of an agency aggregate, with the aggregate bridge it
- * came from. The rule each must satisfy is the same: the programme option and
- * the reduced aggregate option must sum back to the bridge that existed before
- * the split, so no money is gained or lost by splitting.
+ * Every agency aggregate that has had programmes split out of it, with the
+ * bridge that existed before any split and the programmes taken from it.
+ *
+ * The rule is the same however many programmes come out of one aggregate: the
+ * programme options and the reduced aggregate option must sum back to the
+ * original bridge, so that splitting neither gains nor loses money. Grouping by
+ * aggregate rather than by programme is what makes that hold for the UNC codes,
+ * where two programmes are now scored separately.
  */
-const SPLITS = [
+const AGGREGATES = [
   {
-    name: 'Opportunity Scholarships',
+    name: 'UNC Board of Governors codes',
     aggregateId: 'unc-need-based-aid',
-    programId: 'opportunity-scholarships',
     // Enacted 443,721,892 + 933,333,505; recommended 620,191,944 + (114,721,409).
     aggregateBridge: 620_191_944 + -114_721_409 - (443_721_892 + 933_333_505),
-    programAmount: MORATORIUM.recurring + MORATORIUM.nonrecurring,
+    programs: [
+      {
+        name: 'Opportunity Scholarships',
+        programId: 'opportunity-scholarships',
+        amount: MORATORIUM.recurring + MORATORIUM.nonrecurring,
+      },
+      {
+        name: 'UNC enrollment funding',
+        programId: 'unc-enrollment-growth',
+        amount: UNC_ENROLLMENT_BRIDGE.recurring + UNC_ENROLLMENT_BRIDGE.nonrecurring,
+      },
+    ],
   },
   {
-    name: 'Teacher and instructional support pay',
+    name: 'Department of Public Instruction',
     aggregateId: 'public-instruction',
-    programId: 'teacher-compensation',
     // Enacted 12,500,361,218; Governor recommended 13,604,577,403.
     aggregateBridge: 13_604_577_403 - 12_500_361_218,
-    programAmount: TEACHER_COMPENSATION_BRIDGE.recurring + TEACHER_COMPENSATION_BRIDGE.nonrecurring,
+    programs: [
+      {
+        name: 'Teacher and instructional support pay',
+        programId: 'teacher-compensation',
+        amount:
+          TEACHER_COMPENSATION_BRIDGE.recurring + TEACHER_COMPENSATION_BRIDGE.nonrecurring,
+      },
+    ],
   },
   {
-    name: 'Correctional officer pay',
+    name: 'Department of Adult Correction',
     aggregateId: 'adult-correction',
-    programId: 'correctional-officer-pay',
     // Enacted 2,207,589,642; Governor recommended 2,301,698,762.
     aggregateBridge: 2_301_698_762 - 2_207_589_642,
-    programAmount: CORRECTIONAL_OFFICER_BRIDGE,
+    programs: [
+      {
+        name: 'Correctional officer pay',
+        programId: 'correctional-officer-pay',
+        amount: CORRECTIONAL_OFFICER_BRIDGE,
+      },
+    ],
   },
   {
-    name: 'Medicaid rebase',
+    name: 'DHHS Health Benefits',
     aggregateId: 'medicaid-health-benefits',
-    programId: 'medicaid-rebase',
     // Enacted 7,455,886,869; Governor recommended 7,627,688,832.
     aggregateBridge: 7_627_688_832 - 7_455_886_869,
-    programAmount: MEDICAID_REBASE_BRIDGE,
+    programs: [
+      { name: 'Medicaid rebase', programId: 'medicaid-rebase', amount: MEDICAID_REBASE_BRIDGE },
+    ],
   },
 ] as const
+
+const SPLITS = AGGREGATES.flatMap((a) =>
+  a.programs.map((p) => ({ name: p.name, aggregateId: a.aggregateId, programId: p.programId })),
+)
+
 
 const scoredProposal = (decisionId: string) => {
   const decision = DATASET.decisions.find((d) => d.id === decisionId)
@@ -117,15 +149,22 @@ const scoredProposal = (decisionId: string) => {
   return choice.spending.recurring + choice.spending.nonrecurring
 }
 
-describe.each(SPLITS)('the $name split does not double-count', (split) => {
-  it('sums the programme and the residual back to the unsplit aggregate bridge', () => {
-    const program = scoredProposal(split.programId)
-    const residual = scoredProposal(split.aggregateId)
+describe.each(AGGREGATES)('the $name aggregate does not double-count', (aggregate) => {
+  it('sums every programme split from it, plus the residual, back to the original bridge', () => {
+    const residual = scoredProposal(aggregate.aggregateId)
+    let total = residual
 
-    expect(program).toBe(split.programAmount)
-    expect(program + residual).toBe(split.aggregateBridge)
+    for (const program of aggregate.programs) {
+      const scored = scoredProposal(program.programId)
+      expect(scored, program.name).toBe(program.amount)
+      total += scored
+    }
+
+    expect(total).toBe(aggregate.aggregateBridge)
   })
+})
 
+describe.each(SPLITS)('the $name split does not double-count', (split) => {
   it('says in the aggregate’s derivation that the programme was backed out', () => {
     const aggregate = DATASET.decisions.find((d) => d.id === split.aggregateId)!
     const proposal = aggregate.choices.find((c) => c.provenance === 'proposal')!
@@ -196,16 +235,20 @@ describe('the Opportunity Scholarship split does not double-count', () => {
 
   it('leaves the aggregate holding only the exactly recalculable residual', () => {
     // Enacted 16011 + 16012 = 1,377,055,397; Governor recommended = 505,470,535.
+    // Two programmes are now scored separately out of these codes, so both come
+    // off the aggregate before the residual is what is left.
     const enacted = 443_721_892 + 933_333_505
     const recommended = 620_191_944 + -114_721_409
     const aggregateBridge = recommended - enacted
     const moratorium = MORATORIUM.recurring + MORATORIUM.nonrecurring
+    const enrollment = UNC_ENROLLMENT_BRIDGE.recurring + UNC_ENROLLMENT_BRIDGE.nonrecurring
 
     expect(aggregateBridge).toBe(-871_584_862)
     expect(moratorium).toBe(-1_042_000_000)
+    expect(enrollment).toBe(-384_488)
 
-    const residual = aggregateBridge - moratorium
-    expect(residual).toBe(170_415_138)
+    const residual = aggregateBridge - moratorium - enrollment
+    expect(residual).toBe(170_799_626)
 
     const scored =
       aggregateProposal.spending.recurring + aggregateProposal.spending.nonrecurring
@@ -398,5 +441,67 @@ describe('the Medicaid rebase', () => {
     // A residual described as built from an item scored on another card is the
     // double count this split exists to prevent, in prose rather than in maths.
     expect(residual.description).not.toMatch(/Medicaid Rebase/)
+  })
+})
+
+describe('UNC enrollment funding', () => {
+  const decision = DATASET.decisions.find((d) => d.id === 'unc-enrollment-growth')!
+  const proposal = decision.choices.find((c) => c.provenance === 'proposal')!
+  const enacted = decision.choices.find((c) => c.isEnactedBaseline)!
+
+  it('scores the difference in each component separately', () => {
+    // 153,495,386 - 107,504,366 recurring; 0 - 46,375,508 nonrecurring.
+    expect(proposal.spending.recurring).toBe(45_991_020)
+    expect(proposal.spending.nonrecurring).toBe(-46_375_508)
+    expect(proposal.spending.recurring + proposal.spending.nonrecurring).toBe(-384_488)
+  })
+
+  it('is a durability decision, not a level decision', () => {
+    // The whole point: the net is trivial and the shift between components is
+    // large. If those two ever came to resemble each other, the card's framing
+    // would be wrong and this test should fail.
+    const net = Math.abs(proposal.spending.recurring + proposal.spending.nonrecurring)
+    const shift = Math.abs(proposal.spending.nonrecurring)
+    expect(shift).toBeGreaterThan(net * 100)
+  })
+
+  it('shows the split rather than a single net figure', () => {
+    expect(Math.sign(proposal.spending.recurring)).toBe(1)
+    expect(Math.sign(proposal.spending.nonrecurring)).toBe(-1)
+  })
+
+  it('states both amounts on the enacted side so no figure is hidden', () => {
+    expect(decision.enactedBaseline).toMatch(/\$107,504,366/)
+    expect(decision.enactedBaseline).toMatch(/\$46,375,508/)
+    expect(enacted.label).toMatch(/\$107,504,366/)
+    expect(enacted.verification.status).toBe('verified')
+    expect(enacted.verification.scored).toBe(true)
+    expect(resolveChoice(decision, {}).id).toBe(enacted.id)
+  })
+
+  it('discloses that the two documents describe the enrolment measure differently', () => {
+    expect(proposal.verification.note).toMatch(/resident student credit hours/i)
+    expect(proposal.verification.note).toMatch(/total student credit hours/i)
+    expect(proposal.verification.note).toMatch(/not the same measure/i)
+  })
+
+  it('avoids claiming enrollment is permanent', () => {
+    const text = [
+      decision.background,
+      decision.enactedBaseline,
+      ...decision.choices.flatMap((c) => [
+        c.description,
+        ...c.benefits,
+        ...c.tradeoffs,
+        c.verification.note ?? '',
+      ]),
+    ].join(' ')
+
+    // Enrollment-related instructional costs are generally ongoing. Enrollment
+    // itself is not, and the card must not say otherwise.
+    expect(text).not.toMatch(/permanent enrollment|permanent enrolment/i)
+    expect(text).not.toMatch(/do not un-?enroll/i)
+    expect(decision.background).toMatch(/generally ongoing/i)
+    expect(decision.background).toMatch(/[Ee]nrollment itself can change/i)
   })
 })

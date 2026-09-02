@@ -225,6 +225,63 @@ document states for budget code 14445, so nothing has gone missing to another co
 is one of scope. `MEDICAID_AUDIT.md` carries the full item-by-item reconciliation, and the aggregate
 card is tested to state that this is not one policy and to name each item.
 
+### UNC enrollment funding, split from University aid
+
+| | Recurring | Nonrecurring | Total |
+| --- | ---: | ---: | ---: |
+| Enacted (Committee Report item 159) | $107,504,366 | $46,375,508 | **$153,879,874** |
+| Governor (Budget Book p. 89 item 6) | $153,495,386 | $0 | **$153,495,386** |
+| **Scored** | **+$45,991,020** | **−$46,375,508** | **−$384,488** |
+
+Both are FY 2026-27 appropriations for budget code 16011, measured from the same certified base of
+$147,135,334, and **neither carries receipts** — the enacted item shows "Less: Receipts —" and the
+Governor's Rec row is empty — so the comparison is like for like.
+
+**This is a durability decision, not a level decision, and the card says so.** The net difference is
+a quarter of one per cent. What actually changes is the composition: the enacted budget funds about
+$46 million of the adjustment with money that does not repeat, and the Governor funds the whole of
+it as recurring. A test asserts that the shift between components stays at least a hundred times the
+net, so that if the two ever came to resemble each other the framing would fail rather than quietly
+mislead.
+
+**Wording discipline on this card.** Enrollment-related instructional costs are generally ongoing;
+enrollment itself can change in either direction, and a fall in credit hours would reduce what the
+model recommends. The card is tested to say the first and never to claim the second.
+
+**One scope point, disclosed on the card.** The two documents describe the enrolment measure
+differently. The enacted item says the model "factors in the change in **resident** student credit
+hours"; the Governor's says its funding "reflects the 3.7% increase in **total** student credit
+hours across the UNC System in the 2025 calendar year". These are not the same measure and neither
+document reconciles to the other. The amounts differ by a quarter of one per cent, which is
+consistent with their pricing the same adjustment, but the difference in description is stated
+rather than smoothed over.
+
+### Exceptional Children: a known limitation, not a decision
+
+**The Governor proposed a new Exceptional Children funding formula. It could not be scored.**
+
+Budget Book p. 73 item 25, "Exceptional Children New Funding Formula", recommends $63,450,653
+recurring plus $33,434,785 nonrecurring. It replaces the allotment formula with one based on the
+frequency, intensity and duration of special education services, with the state funding 70% of the
+new model and the remainder split between the federal government and local school districts.
+
+The enacted budget contains no comparable amount. Its only Exceptional Children item is Committee
+Report item 53, "Special Population Headcount Adjustment", $4,980,728 recurring, which adjusts **the
+Exceptional Children preschool allotment, the Exceptional Children school-age allotment and the
+Limited English Proficient allotment together** to reflect actual headcount. The report publishes no
+breakout between those three populations.
+
+So there is no enacted Exceptional Children figure to bridge from. The two items are also different
+in kind — a headcount true-up of existing allotments against a replacement formula — and the
+Governor's own item is not self-contained either, since its description notes that the ADM Technical
+Adjustment carries a further $4.5 million supporting it. **Scoring the proposal would have required
+inventing a baseline, so it was not scored.** All eight parts of the Committee Report were searched;
+the only other mentions of Exceptional Children are a Davidson County directed grant.
+
+Special education therefore appears nowhere in the challenge as a scored decision. The residential
+schools decision covers two residential schools for deaf and blind students and **is not a substitute
+for special education generally**; it should not be presented as one.
+
 ### Not double-counting the splits
 
 The UNC aggregate decision previously scored the whole 16011 + 16012 difference, which included the

@@ -9,6 +9,24 @@ import { formatDollars } from '../lib/format'
 /** Version history. Add a row whenever any figure in the dataset changes. */
 const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = [
   {
+    version: '0.9.0',
+    date: '2026-09-02',
+    note:
+      'UNC enrollment funding split out of the University aid aggregate, the second programme ' +
+      'taken from those budget codes. Both budgets fund almost the same total and divide it very ' +
+      'differently: the enacted budget pays for about a third of the adjustment with money that ' +
+      'does not repeat, and the Governor funds all of it recurrently. The card is written as a ' +
+      'question about the durability of the funding rather than its size, because the net ' +
+      'difference is a quarter of one per cent while the shift between recurring and one-time ' +
+      'money is around forty-six million. The two documents describe the enrolment measure ' +
+      'differently, one citing resident and the other total student credit hours, and the card ' +
+      'says so. Separately, the Governor\u2019s proposed Exceptional Children funding formula was ' +
+      'examined and could not be scored: the enacted budget combines its Exceptional Children ' +
+      'headcount adjustment with two other student populations, so no comparable enacted amount ' +
+      'is published, and scoring it would have meant inventing a baseline. It is recorded as a ' +
+      'known limitation instead.',
+  },
+  {
     version: '0.8.0',
     date: '2026-09-01',
     note:

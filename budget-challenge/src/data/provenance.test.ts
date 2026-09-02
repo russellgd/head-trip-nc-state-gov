@@ -27,7 +27,7 @@ describe('provenance is recorded on every option', () => {
 
     expect(counts.enacted).toBe(DATASET.decisions.length)
     expect(counts.documented).toBe(12)
-    expect(counts.proposal).toBe(18)
+    expect(counts.proposal).toBe(19)
     expect(counts.illustrative).toBe(32)
   })
 

@@ -14,7 +14,7 @@ describe('dataset integrity', () => {
     // major policy inside an aggregate is a good reason to exceed that, and a
     // count is not a goal in itself.
     expect(DATASET.decisions.length).toBeGreaterThanOrEqual(20)
-    expect(DATASET.decisions.length).toBeLessThanOrEqual(34)
+    expect(DATASET.decisions.length).toBeLessThanOrEqual(35)
   })
 
   it('covers all twelve budget areas', () => {
