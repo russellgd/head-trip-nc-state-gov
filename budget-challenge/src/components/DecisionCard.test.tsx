@@ -75,6 +75,6 @@ describe('an option with no sourced figure', () => {
       />,
     )
 
-    expect(screen.getByText('No change from the enacted budget')).toBeInTheDocument()
+    expect(screen.getByText('No change from enacted budget')).toBeInTheDocument()
   })
 })

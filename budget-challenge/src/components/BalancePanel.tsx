@@ -1,17 +1,27 @@
 import { useEffect, useRef, useState } from 'react'
-import { budgetStatus, type BudgetTotals } from '../engine/budget'
-import { describeBalance, describeDelta, formatDelta, formatDollars } from '../lib/format'
+import { budgetOutcome, type BudgetTotals } from '../engine/budget'
+import {
+  describeChangeFromEnacted,
+  formatChangeFromEnacted,
+  describeDelta,
+  describeRemaining,
+  formatDelta,
+  formatDollars,
+} from '../lib/format'
+import { outcomeCopy } from '../lib/outcome'
 
-const STATUS_STYLES = {
-  balanced: { bar: 'bg-balanced', chip: 'bg-balanced-bg text-balanced ring-balanced', mark: '=' },
-  surplus: { bar: 'bg-surplus', chip: 'bg-surplus-bg text-surplus ring-surplus', mark: '+' },
-  deficit: { bar: 'bg-deficit', chip: 'bg-deficit-bg text-deficit ring-deficit', mark: '!' },
-} as const
-
-const STATUS_WORDS = {
-  balanced: 'Balanced',
-  surplus: 'Balanced, with a surplus',
-  deficit: 'Out of balance',
+/**
+ * Only `exceeds` carries the alarm styling, and only `exceeds` is a deficit.
+ * Using part of the balance the enacted budget left is an ordinary budgeting
+ * act, not a failure, so it is styled as neutrally as matching the enacted
+ * budget is. Every one of these is paired with a word and a mark, so none of
+ * the meaning rests on colour.
+ */
+const OUTCOME_STYLES = {
+  unchanged: { bar: 'bg-balanced', chip: 'bg-balanced-bg text-balanced ring-balanced', mark: '=' },
+  usesBalance: { bar: 'bg-navy-800', chip: 'bg-navy-100 text-navy-800 ring-navy-800', mark: '\u2212' },
+  leavesMore: { bar: 'bg-surplus', chip: 'bg-surplus-bg text-surplus ring-surplus', mark: '+' },
+  exceeds: { bar: 'bg-deficit', chip: 'bg-deficit-bg text-deficit ring-deficit', mark: '!' },
 } as const
 
 function Line({
@@ -50,23 +60,27 @@ function Line({
  * silently changing in the corner of the page.
  */
 export function BalancePanel({ totals, compact = false }: { totals: BudgetTotals; compact?: boolean }) {
-  const status = budgetStatus(totals.remainingBalance)
-  const styles = STATUS_STYLES[status]
+  const outcome = budgetOutcome(totals)
+  const styles = OUTCOME_STYLES[outcome]
+  const copy = outcomeCopy(totals)
 
   // Announce only after an actual change, so the region does not speak on load.
   const [announcement, setAnnouncement] = useState('')
   const previous = useRef<number | null>(null)
 
   useEffect(() => {
-    if (previous.current !== null && previous.current !== totals.remainingBalance) {
-      const structural =
-        totals.structuralChange === 0
-          ? 'The recurring position is unchanged.'
-          : `Recurring position: ${describeDelta(totals.structuralChange)}.`
-      setAnnouncement(`${describeBalance(totals.remainingBalance)} ${structural}`)
+    if (previous.current !== null && previous.current !== totals.changeFromEnacted) {
+      // Both measures, each named, then the sentence that interprets them. A
+      // screen reader user gets the same two figures in the same order as
+      // everyone else.
+      setAnnouncement(
+        `${describeChangeFromEnacted(totals.changeFromEnacted)} ${describeRemaining(
+          totals.remainingBalance,
+        )} ${copy.sentence}`,
+      )
     }
-    previous.current = totals.remainingBalance
-  }, [totals.remainingBalance, totals.structuralChange])
+    previous.current = totals.changeFromEnacted
+  }, [totals.changeFromEnacted, totals.remainingBalance, copy.sentence])
 
   return (
     <section
@@ -80,13 +94,30 @@ export function BalancePanel({ totals, compact = false }: { totals: BudgetTotals
           Your running balance
         </h2>
 
-        <p
-          data-testid="remaining-balance"
-          className="mt-3 text-3xl font-bold tabular text-navy-900"
-        >
-          {formatDollars(totals.remainingBalance)}
+        {/* The primary measure. What the visitor's own choices change. */}
+        <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted">
+          Change from enacted budget
         </p>
-        <p className="text-xs text-muted">remaining, FY 2026-27 General Fund</p>
+        <p
+          data-testid="change-from-enacted"
+          className="text-3xl font-bold tabular text-navy-900"
+        >
+          <span aria-hidden="true">{formatChangeFromEnacted(totals.changeFromEnacted)}</span>
+          <span className="sr-only">{describeChangeFromEnacted(totals.changeFromEnacted)}</span>
+        </p>
+
+        {/* The secondary measure. Same arithmetic, stated as a level. */}
+        <p className="mt-3 text-xs font-semibold uppercase tracking-wide text-muted">
+          Unappropriated balance remaining
+        </p>
+        <p data-testid="remaining-balance" className="tabular text-xl font-semibold text-ink">
+          <span aria-hidden="true">{formatDollars(totals.remainingBalance)}</span>
+          <span className="sr-only">{describeRemaining(totals.remainingBalance)}</span>
+        </p>
+        <p className="mt-1 text-xs leading-relaxed text-muted">
+          The enacted budget left {formatDollars(totals.startingBalance)} unappropriated. That
+          amount plus your change from the enacted budget is what remains.
+        </p>
 
         <p
           className={`mt-3 inline-flex items-center gap-2 rounded-full px-3 py-1 text-sm font-semibold ring-1 ${styles.chip}`}
@@ -94,14 +125,16 @@ export function BalancePanel({ totals, compact = false }: { totals: BudgetTotals
           <span aria-hidden="true" className="font-bold">
             {styles.mark}
           </span>
-          {STATUS_WORDS[status]}
+          {copy.short}
         </p>
 
-        {status === 'deficit' ? (
+        <p className="mt-2 text-sm leading-relaxed text-ink">{copy.sentence}</p>
+
+        {copy.isDeficit ? (
           <p className="mt-3 rounded-md bg-deficit-bg p-3 text-sm leading-relaxed text-deficit ring-1 ring-deficit">
-            Your choices commit more than is available. A budget in this position would require
-            further reductions, additional revenue, or a withdrawal from reserves. You can leave it
-            here and see the result, or revisit any decision.
+            A budget in this position would require further reductions, additional revenue, or a
+            withdrawal from reserves. You can leave it here and see the result, or revisit any
+            decision.
           </p>
         ) : null}
 

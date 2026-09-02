@@ -73,6 +73,23 @@ export interface BudgetTotals {
   remainingBalance: number
 
   /**
+   * What the visitor's choices change, measured against the enacted budget.
+   *
+   * Zero means the choices reproduce the enacted budget. Negative means they
+   * use some of the balance the enacted budget left unappropriated; positive
+   * means they leave more available than it did. Neither direction is good or
+   * bad on its own.
+   *
+   * This is derived, not separately computed: it is the remaining balance less
+   * the balance the enacted budget started from. There is one scoring engine,
+   * and this is a different view of its result rather than a second one.
+   *
+   *     changeFromEnacted   = remainingBalance - startingBalance
+   *     remainingBalance    = startingBalance + changeFromEnacted
+   */
+  changeFromEnacted: number
+
+  /**
    * Change in the recurring (structural) position against the enacted budget:
    * recurring revenue - recurring spending - recurring reserve. Negative means
    * the user has taken on more ongoing commitments than ongoing money.
@@ -249,6 +266,8 @@ export function computeTotals(dataset: Dataset, selections: Selections): BudgetT
     reserveDeposits +
     reserveWithdrawals
 
+  const changeFromEnacted = remainingBalance - startingBalance
+
   const structuralChange =
     revenue.recurring - spending.recurring - reserve.recurring
   const onetimeChange =
@@ -266,6 +285,7 @@ export function computeTotals(dataset: Dataset, selections: Selections): BudgetT
     reserveWithdrawals,
     netReserve,
     remainingBalance,
+    changeFromEnacted,
     structuralChange,
     onetimeChange,
     spending,
@@ -288,6 +308,26 @@ export function budgetStatus(remainingBalance: number): BudgetStatus {
 
 export function isBalanced(remainingBalance: number): boolean {
   return remainingBalance >= 0
+}
+
+/**
+ * How a result should be described to a visitor.
+ *
+ * Kept separate from `budgetStatus`, which classifies the remaining balance for
+ * the engine and its tests. This classifies the SITUATION, and the distinction
+ * it exists to protect is that spending some of the balance the enacted budget
+ * left is not a deficit. A visitor who uses $80 million of a $1 billion balance
+ * has not overspent; the state still has $920 million unappropriated. Only an
+ * exhausted balance is a deficit, and only `exceeds` is allowed to say so.
+ */
+export type BudgetOutcome = 'unchanged' | 'usesBalance' | 'leavesMore' | 'exceeds'
+
+export function budgetOutcome(totals: Pick<BudgetTotals, 'remainingBalance' | 'changeFromEnacted'>): BudgetOutcome {
+  // Checked first: an exhausted balance is the deficit condition whatever the
+  // direction of the change that got there.
+  if (totals.remainingBalance < 0) return 'exceeds'
+  if (totals.changeFromEnacted === 0) return 'unchanged'
+  return totals.changeFromEnacted > 0 ? 'leavesMore' : 'usesBalance'
 }
 
 /**

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { DATASET } from '../data'
-import { computeTotals, enactedSelections } from '../engine/budget'
+import { computeTotals, enactedSelections, type Selections } from '../engine/budget'
 import { buildCsv, buildJson, buildRows } from './export'
 
 /** Count CSV fields, respecting quoted fields and doubled quotes. */
@@ -94,6 +94,12 @@ describe('CSV export', () => {
     expect(csv).toContain('What would replace this scenario')
     expect(csv).toContain('Strongest concerns')
     expect(csv).toContain('Sources')
+
+    // The two running measures and the anchor they reconcile against, under
+    // the names the challenge shows them by.
+    expect(csv).toContain('Change from enacted budget')
+    expect(csv).toContain('Unappropriated balance remaining')
+    expect(csv).toContain('Enacted unappropriated balance')
   })
 
   it('keeps every data row on the same number of columns', () => {
@@ -126,5 +132,36 @@ describe('export rows', () => {
 
     expect(row.reserveNonrecurring).toBe(500_000_000)
     expect(row.reserveRecurring).toBe(0)
+  })
+})
+
+describe('both running measures reach every export', () => {
+  const totalsFor = (sel: Selections) => computeTotals(DATASET, sel)
+
+  it('carries all three figures in the JSON, and they reconcile', () => {
+    const t = totalsFor(selections)
+    const json = JSON.parse(buildJson(DATASET, selections, t))
+
+    expect(json.results.changeFromEnactedBudget).toBe(t.changeFromEnacted)
+    expect(json.results.unappropriatedBalanceRemaining).toBe(t.remainingBalance)
+    expect(json.results.enactedUnappropriatedBalance).toBe(t.startingBalance)
+    expect(
+      json.results.enactedUnappropriatedBalance + json.results.changeFromEnactedBudget,
+    ).toBe(json.results.unappropriatedBalanceRemaining)
+  })
+
+  it('keeps the original remainingBalance field so existing readers do not break', () => {
+    const t = totalsFor(selections)
+    const json = JSON.parse(buildJson(DATASET, selections, t))
+    expect(json.results.remainingBalance).toBe(json.results.unappropriatedBalanceRemaining)
+  })
+
+  it('carries all three figures in the CSV', () => {
+    const t = totalsFor(selections)
+    const csv = buildCsv(DATASET, selections, t)
+
+    expect(csv).toContain(`Change from enacted budget,${t.changeFromEnacted}`)
+    expect(csv).toContain(`Unappropriated balance remaining,${t.remainingBalance}`)
+    expect(csv).toContain(`Enacted unappropriated balance,${t.startingBalance}`)
   })
 })

@@ -126,6 +126,39 @@ export function Overview() {
             </p>
           </Section>
 
+          <Section id="measures" title="How the challenge keeps score">
+            <p>
+              The challenge shows two figures side by side, and understanding the difference between
+              them is most of what it teaches.
+            </p>
+            <ol className="list-decimal space-y-2 pl-5">
+              <li>
+                <strong>The enacted budget is the reference point.</strong> Every option is a change
+                from what the General Assembly actually enacted, never from zero spending.
+              </li>
+              <li>
+                <strong>You begin at $0 in policy changes.</strong> Leaving every decision alone
+                reproduces the enacted budget exactly, so the primary figure &mdash; change from
+                enacted budget &mdash; starts at nothing.
+              </li>
+              <li>
+                <strong>The enacted budget leaves a real unappropriated balance.</strong> For{' '}
+                {baseline.fiscalYear} that is{' '}
+                {formatDollars(baseline.unappropriatedBalance)}, shown as the second figure.
+              </li>
+              <li>
+                <strong>Each choice moves both figures by the same amount.</strong> The balance
+                remaining is always the enacted unappropriated balance plus your change from the
+                enacted budget.
+              </li>
+              <li>
+                <strong>A negative policy change is not a deficit.</strong> Spending part of the
+                balance the enacted budget left is ordinary budgeting. It becomes a deficit only when
+                the balance remaining falls below zero, meaning available resources are exhausted.
+              </li>
+            </ol>
+          </Section>
+
           <Section id="where" title="Where the money goes">
             <p>
               Net appropriations by budget area for {baseline.fiscalYear}, as enacted.

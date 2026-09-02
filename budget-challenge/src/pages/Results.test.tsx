@@ -6,6 +6,7 @@ import { Challenge } from './Challenge'
 import { renderWithProviders } from '../test/render'
 import { DATASET } from '../data'
 import { CLASSROOM_DECISION_IDS } from '../data/modes'
+import { formatDollars } from '../lib/format'
 
 beforeEach(() => {
   window.localStorage.clear()
@@ -15,10 +16,15 @@ describe('the results page', () => {
   it('reports the enacted budget when nothing has been changed', () => {
     renderWithProviders(<Results />)
 
+    // Leads with what the visitor changed, which is nothing.
     expect(
-      screen.getByRole('heading', { name: /balances, with money left over/i }),
+      screen.getByRole('heading', { name: /Your choices match the enacted budget/i }),
     ).toBeInTheDocument()
-    expect(screen.getAllByText('$1,000,000,000').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Change from enacted budget').length).toBeGreaterThan(0)
+    expect(screen.getAllByText('Unappropriated balance remaining').length).toBeGreaterThan(0)
+    expect(
+      screen.getAllByText(formatDollars(DATASET.baseline.unappropriatedBalance)).length,
+    ).toBeGreaterThan(0)
   })
 
   it('lists every decision, including the ones left at the enacted policy', () => {
@@ -65,7 +71,7 @@ describe('the results page', () => {
 })
 
 describe('a changed result', () => {
-  it('reports an exactly balanced budget as balanced', async () => {
+  it('reports a fully committed balance as using all of it, not as a deficit', async () => {
     const user = userEvent.setup()
 
     // Committing the whole unappropriated balance to reserves lands on zero.
@@ -75,9 +81,15 @@ describe('a changed result', () => {
     await user.click(screen.getByRole('radio', { name: /deposit the full balance/i }))
     challenge.unmount()
 
-    renderWithProviders(<Results />)
+    const { container } = renderWithProviders(<Results />)
 
-    expect(screen.getByRole('heading', { name: /balances exactly/i })).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', {
+        name: /Your choices use \$1,000,000,000 of the balance left by the enacted budget/i,
+      }),
+    ).toBeInTheDocument()
+    // Exhausted but not exceeded: zero remaining is not a deficit.
+    expect(container.textContent).not.toMatch(/exceed available General Fund resources/i)
     const section = screen.getByRole('region', { name: 'Compared with the enacted budget' })
     expect(within(section).getByText('$0')).toBeInTheDocument()
   })

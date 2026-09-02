@@ -37,6 +37,32 @@ async function shoot(name, path, viewport) {
     return moved
   })
   if (overflow > 1) problems.push(`${name}: page scrolls sideways by ${overflow}px`)
+
+  // Both running measures must be rendered and readable at this width. Checked
+  // against each figure's own box rather than the viewport, because the page
+  // already has its own sideways-scroll check above and this is about whether
+  // the numbers themselves are cut off.
+  if (path.includes('challenge')) {
+    const measures = await page.evaluate(() => {
+      const read = (id) => {
+        const el = document.querySelector(`[data-testid="${id}"]`)
+        if (!el) return null
+        const visual = el.querySelector('[aria-hidden="true"]') ?? el
+        const r = visual.getBoundingClientRect()
+        return {
+          rendered: r.width > 0 && r.height > 0,
+          clipped: el.scrollWidth > el.clientWidth + 1,
+          text: visual.textContent.trim(),
+        }
+      }
+      return { change: read('change-from-enacted'), remaining: read('remaining-balance') }
+    })
+    for (const [measure, state] of Object.entries(measures)) {
+      if (!state) problems.push(`${name}: the ${measure} measure is missing`)
+      else if (!state.rendered) problems.push(`${name}: the ${measure} measure has no visible box`)
+      else if (state.clipped) problems.push(`${name}: the ${measure} measure is cut off ("${state.text}")`)
+    }
+  }
   if (errors.length) problems.push(`${name}: console errors: ${errors.join(' | ')}`)
 
   await context.close()

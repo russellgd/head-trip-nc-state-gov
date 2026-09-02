@@ -138,6 +138,13 @@ export function buildJson(
         unappropriatedBalance: dataset.baseline.unappropriatedBalance,
       },
       results: {
+        // The two running measures the challenge shows, under the names it
+        // shows them by, plus the anchor they reconcile against:
+        //   unappropriatedBalanceRemaining = enactedUnappropriatedBalance + changeFromEnactedBudget
+        changeFromEnactedBudget: totals.changeFromEnacted,
+        unappropriatedBalanceRemaining: totals.remainingBalance,
+        enactedUnappropriatedBalance: totals.startingBalance,
+        /** Retained under its original name so existing readers keep working. Same value as unappropriatedBalanceRemaining. */
         remainingBalance: totals.remainingBalance,
         structuralChange: totals.structuralChange,
         onetimeChange: totals.onetimeChange,
@@ -227,8 +234,9 @@ export function buildCsv(
   lines.push(`Data verified through,${csvCell(dataset.baseline.verifiedThrough)}`)
   lines.push(`Dataset version,${csvCell(dataset.version)}`)
   lines.push(`Decisions presented,${dataset.decisions.length}`)
-  lines.push(`Starting unappropriated balance,${totals.startingBalance}`)
-  lines.push(`Remaining balance,${totals.remainingBalance}`)
+  lines.push(`Change from enacted budget,${totals.changeFromEnacted}`)
+  lines.push(`Unappropriated balance remaining,${totals.remainingBalance}`)
+  lines.push(`Enacted unappropriated balance,${totals.startingBalance}`)
   lines.push(`Change in recurring position,${totals.structuralChange}`)
   lines.push(`Change from one-time actions,${totals.onetimeChange}`)
   lines.push(

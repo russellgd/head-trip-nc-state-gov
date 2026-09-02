@@ -9,6 +9,20 @@ import { formatDollars } from '../lib/format'
 /** Version history. Add a row whenever any figure in the dataset changes. */
 const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = [
   {
+    version: '0.12.0',
+    date: '2026-09-02',
+    note:
+      'Presentation and learning design; no figure changes. The primary running measure is now ' +
+      'the change from the enacted budget, which starts at zero, with the unappropriated balance ' +
+      'remaining kept beside it as a second, less prominent figure. The two are one calculation ' +
+      'seen twice: the change is derived from the balance, so the enacted unappropriated balance ' +
+      'plus the change is always what remains. Options now say what they do against enacted ' +
+      'policy in words rather than as a bare signed number. A negative change is no longer called ' +
+      'a deficit: spending part of the balance the enacted budget left is ordinary budgeting, and ' +
+      'only an exhausted balance is a deficit. No dataset value, decision amount, recurring split, ' +
+      'provenance, citation or baseline figure changes.',
+  },
+  {
     version: '0.11.0',
     date: '2026-09-02',
     note:
@@ -292,15 +306,40 @@ export function Methodology() {
           Note what that figure is and is not. It is the <em>change</em> against the enacted budget,
           not the state&rsquo;s absolute structural balance. The enacted budget&rsquo;s own recurring
           position is not among the published anchors this project uses, so the simulation does not
-          state one. A budget can end this exercise in surplus while this figure is negative, which
-          means it balanced the year with one-time money and starts the next year behind.
+          state one. A budget can leave money unappropriated while this figure is negative, which
+          means the recurring commitments it takes on are larger than the recurring money it frees,
+          and part of the year was balanced with money that does not repeat. What that implies for
+          any later year cannot be read off this exercise, because the recurring-revenue baseline it
+          would have to be measured against is not published here.
         </p>
 
-        <h3 className="font-serif text-xl font-semibold">Balanced, surplus, and deficit</h3>
+        <h3 className="font-serif text-xl font-semibold">The two running measures</h3>
         <p>
-          A budget is treated as balanced when the remaining balance is zero or greater. A deficit
-          triggers a warning but is never blocked: seeing what a set of choices actually produces is
-          the point of the exercise.
+          The challenge shows two figures, and they are the same arithmetic seen twice:
+        </p>
+        <pre
+          tabIndex={0}
+          aria-label="The two running measures"
+          className="overflow-x-auto rounded-md bg-navy-900 p-4 text-sm text-white"
+        >
+{`change from enacted budget       = remaining balance - enacted unappropriated balance
+unappropriated balance remaining = enacted unappropriated balance + change from enacted budget`}
+        </pre>
+        <p>
+          The first is the primary measure and starts at zero, because the enacted budget is the
+          reference point and changing nothing changes nothing. The second starts at the amount the
+          act actually leaves unappropriated. There is one scoring engine; the change is derived from
+          the balance rather than computed separately, so the two can never disagree.
+        </p>
+
+        <h3 className="font-serif text-xl font-semibold">When a result is a deficit</h3>
+        <p>
+          A negative change from the enacted budget is <strong>not</strong> a deficit. The enacted
+          budget leaves money unappropriated, and spending part of it is ordinary budgeting: a
+          visitor who uses a fraction of that balance has not overspent, and the state still has an
+          unappropriated balance. A deficit is only a remaining balance below zero, meaning available
+          General Fund resources are exhausted. It triggers a warning but is never blocked: seeing
+          what a set of choices actually produces is the point of the exercise.
         </p>
       </Section>
 

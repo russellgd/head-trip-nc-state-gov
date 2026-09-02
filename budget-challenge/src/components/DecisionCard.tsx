@@ -1,19 +1,25 @@
 import { useId } from 'react'
 import type { Choice, Decision } from '../data/types'
 import { choiceBalanceEffect, choiceMovesMoney } from '../engine/budget'
-import { describeDelta, formatDelta, formatDollars } from '../lib/format'
+import { formatDollars } from '../lib/format'
+import { describeChoiceEffect } from '../lib/outcome'
 import { SourceList } from './SourceList'
 import { TableScroll } from './TableScroll'
 import { PROVENANCE, PROVENANCE_MEANING, ProvenanceBadge, UnsourcedBadge } from './ProvenanceBadge'
 import { Disclosure } from './Disclosure'
 
-/** What to print where the dollar impact goes. */
+/**
+ * What one option does, stated against the enacted policy.
+ *
+ * Every option is a comparison, so the wording says so in plain language rather
+ * than leaving a reader to interpret a signed number against an unstated
+ * reference. The same sentence serves sighted and screen-reader users, so there
+ * is no second phrasing to drift out of step.
+ */
 function ImpactLine({ choice }: { choice: Choice }) {
   if (choice.isEnactedBaseline) {
     return (
-      <p className="tabular text-sm font-semibold text-navy-800">
-        No change from the enacted budget
-      </p>
+      <p className="tabular text-sm font-semibold text-navy-800">No change from enacted budget</p>
     )
   }
 
@@ -25,11 +31,9 @@ function ImpactLine({ choice }: { choice: Choice }) {
     )
   }
 
-  const effect = choiceBalanceEffect(choice)
   return (
     <p className="tabular text-sm font-semibold text-navy-800">
-      <span aria-hidden="true">{formatDelta(effect)} to the balance</span>
-      <span className="sr-only">{describeDelta(effect, 'change to the remaining balance')}</span>
+      {describeChoiceEffect(choiceBalanceEffect(choice))}
     </p>
   )
 }

@@ -2,10 +2,18 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CATEGORIES, DATASET } from '../data'
 import { MODES } from '../data/modes'
-import { budgetStatus, resolveChoice } from '../engine/budget'
+import { budgetOutcome, resolveChoice } from '../engine/budget'
 import { useChallenge } from '../lib/challengeContext'
 import { buildCsv, buildJson, downloadFile } from '../lib/export'
-import { describeDelta, formatDelta, formatDollars } from '../lib/format'
+import {
+  describeChangeFromEnacted,
+  formatChangeFromEnacted,
+  describeDelta,
+  describeRemaining,
+  formatDelta,
+  formatDollars,
+} from '../lib/format'
+import { outcomeCopy } from '../lib/outcome'
 import { Callout } from '../components/Callout'
 import { TableScroll } from '../components/TableScroll'
 import { Disclosure } from '../components/Disclosure'
@@ -19,18 +27,21 @@ import {
 } from '../components/ProvenanceBadge'
 import type { Provenance } from '../data/types'
 
-const HEADLINE = {
-  balanced: 'Your budget balances exactly.',
-  surplus: 'Your budget balances, with money left over.',
-  deficit: 'Your budget does not balance.',
-} as const
-
+/**
+ * What each outcome means, beyond the sentence `outcomeCopy` supplies.
+ *
+ * Only `exceeds` describes a budget that does not balance. Using part of the
+ * balance the enacted budget left is ordinary budgeting, and this page does not
+ * call it a failure.
+ */
 const SUMMARY = {
-  balanced:
-    'Every dollar available for FY 2026-27 is committed, and nothing is left unappropriated.',
-  surplus:
-    'Your choices commit less than is available. The remainder would stay unappropriated, available for a later appropriation or to absorb a revenue shortfall.',
-  deficit:
+  unchanged:
+    'Every decision sits at the enacted policy, so the budget you built is the budget the General Assembly enacted, and the unappropriated balance is untouched.',
+  usesBalance:
+    'The enacted budget left money unappropriated, and your choices draw on part of it. What is left would stay unappropriated, available for a later appropriation or to absorb a revenue shortfall.',
+  leavesMore:
+    'Your choices commit less than the enacted budget did, so more is left unappropriated than the General Assembly left. That money would be available for a later appropriation or to absorb a revenue shortfall.',
+  exceeds:
     'Your choices commit more than is available. A budget in this position would have to be closed with further reductions, additional revenue, or a withdrawal from reserves before it could be enacted.',
 } as const
 
@@ -69,7 +80,7 @@ export function Results() {
   // reporting on somebody else's exercise.
   const { selections, totals, reset, mode, decisions, dataset } = useChallenge()
   const [confirmingReset, setConfirmingReset] = useState(false)
-  const status = budgetStatus(totals.remainingBalance)
+  const outcome = outcomeCopy(totals)
   const { baseline } = DATASET
 
   const changed = decisions.filter((d) => totals.changedDecisionIds.includes(d.id))
@@ -136,32 +147,43 @@ export function Results() {
         aria-labelledby="outcome"
         className="mt-6 rounded-lg bg-white p-6 shadow-sm ring-1 ring-line print-break-inside-avoid"
       >
+        {/* Leads with what the visitor changed, not with a verdict on them. */}
         <h2 id="outcome" className="font-serif text-2xl font-semibold">
-          {HEADLINE[status]}
+          {outcome.sentence}
         </h2>
-        <p className="mt-2 leading-relaxed text-ink">{SUMMARY[status]}</p>
+        <p className="mt-2 leading-relaxed text-ink">{SUMMARY[budgetOutcome(totals)]}</p>
 
         <dl className="mt-6 grid gap-4 sm:grid-cols-2">
           <StatTile
-            label="Remaining General Fund balance"
-            value={formatDollars(totals.remainingBalance)}
-            note={`Started from ${formatDollars(totals.startingBalance)} unappropriated.`}
+            label="Change from enacted budget"
+            value={formatChangeFromEnacted(totals.changeFromEnacted)}
+            srValue={describeChangeFromEnacted(totals.changeFromEnacted)}
+            note="What your decisions change, measured against the enacted budget. Zero means your budget matches it."
           />
+          <StatTile
+            label="Unappropriated balance remaining"
+            value={formatDollars(totals.remainingBalance)}
+            srValue={describeRemaining(totals.remainingBalance)}
+            note={`The enacted budget started with ${formatDollars(
+              totals.startingBalance,
+            )} unappropriated. That amount plus your change from the enacted budget is what remains.`}
+          />
+        </dl>
+
+        <dl className="mt-4 grid gap-4 sm:grid-cols-2">
           <StatTile
             label="Change in recurring position"
             value={formatDelta(totals.structuralChange)}
             srValue={describeDelta(totals.structuralChange, 'change in the recurring position')}
             note="Recurring revenue less recurring spending and reserve commitments, measured against the enacted budget. One-time money is excluded."
           />
+          <StatTile
+            label="Change from one-time actions"
+            value={formatDelta(totals.onetimeChange)}
+            srValue={describeDelta(totals.onetimeChange, 'change from one-time actions')}
+            note="The same arithmetic on the one-time amounts. Recurring and one-time changes carry different implications for later years."
+          />
         </dl>
-
-        {totals.structuralChange < 0 && totals.remainingBalance >= 0 ? (
-          <p className="mt-4 rounded-md bg-gold-100 p-4 text-sm leading-relaxed text-gold-700 ring-1 ring-gold-500">
-            This budget balances for FY 2026-27, but its recurring commitments have grown by more
-            than its recurring revenue. A budget in this position starts the following year already
-            behind, before any new decision is made.
-          </p>
-        ) : null}
       </section>
 
       <OneTimeFunding totals={totals} decisions={decisions} selections={selections} />

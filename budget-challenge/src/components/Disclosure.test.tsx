@@ -119,8 +119,9 @@ describe('what stays on the card whatever the reader opens', () => {
 
   it('shows the fiscal impact of every scored option with nothing opened', () => {
     renderCard(illustrative)
-    expect(visible('No change from the enacted budget').length).toBeGreaterThan(0)
-    expect(visible(/to the balance/).length).toBeGreaterThan(0)
+    expect(visible('No change from enacted budget').length).toBeGreaterThan(0)
+    // Stated against the enacted policy, in words, not as a bare signed number.
+    expect(visible(/compared with enacted policy|more available than enacted policy/).length).toBeGreaterThan(0)
   })
 
   it('names the recurring or one-time shape of every scored option', () => {

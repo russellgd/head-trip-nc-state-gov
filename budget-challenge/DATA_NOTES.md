@@ -460,6 +460,43 @@ panel says so on its face, and a test asserts the words never appear.
 
 ---
 
+## 5d. The two running measures
+
+The challenge keeps score with two figures, and they are the same arithmetic seen twice:
+
+```
+change from enacted budget       = remaining balance - enacted unappropriated balance
+unappropriated balance remaining = enacted unappropriated balance + change from enacted budget
+```
+
+The **change from the enacted budget** is primary and starts at `$0`, because the enacted budget is
+the reference point and changing nothing changes nothing. The **unappropriated balance remaining**
+is secondary and starts at the amount the act actually leaves unappropriated. There is one scoring
+engine: the change is *derived* from the balance rather than computed separately, so the two cannot
+disagree. A test walks every option of every decision, in both challenges, and asserts the identity
+holds each time.
+
+**A negative change is not a deficit.** The enacted budget leaves money unappropriated, and spending
+part of it is ordinary budgeting. A visitor who uses $80 million of a $1 billion balance has not
+overspent; the state still has $920 million unappropriated. Four outcomes, and only the last is a
+deficit:
+
+| Condition | What the application says |
+| --- | --- |
+| Change is zero | Your choices match the enacted budget. |
+| Change is negative, balance still at or above zero | Your choices use $X of the balance left by the enacted budget. |
+| Change is positive | Your choices leave $X more available than the enacted budget. |
+| Balance below zero | Your choices exceed available General Fund resources by $X. |
+
+Options are described the same way, against enacted policy rather than in the abstract: "No change
+from enacted budget", "Uses $X compared with enacted policy", "Leaves $X more available than enacted
+policy". Nothing about the scored amounts changed; only the words around them.
+
+Direction never rests on colour. Every figure carries a sign and a mark, and the screen-reader text
+names the measure, then the direction in words, then the amount.
+
+---
+
 ## 6. Editorial rules applied to the content
 
 - Each decision offers the enacted policy plus alternatives, and the enacted option is always

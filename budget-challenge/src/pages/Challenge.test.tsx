@@ -6,6 +6,7 @@ import { renderWithProviders } from '../test/render'
 import { DATASET } from '../data'
 import { STORAGE_KEY } from '../lib/storage'
 import { CLASSROOM_DECISION_IDS } from '../data/modes'
+import { formatDollars } from '../lib/format'
 
 /** Switch to the Full Challenge, for behaviour that needs a decision the classroom set leaves out. */
 async function goToFullChallenge(user: ReturnType<typeof userEvent.setup>) {
@@ -23,12 +24,17 @@ beforeEach(() => {
 })
 
 describe('the challenge page', () => {
-  it('starts from the enacted budget, with the published unappropriated balance', () => {
+  it('starts at zero change from enacted, with the enacted balance beside it', () => {
     renderWithProviders(<Challenge />)
 
-    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$1,000,000,000')
+    // The primary measure. A fresh challenge has changed nothing.
+    expect(screen.getByTestId('change-from-enacted')).toHaveTextContent('$0')
+    // The secondary measure, still the amount the act leaves unappropriated.
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent(
+      formatDollars(DATASET.baseline.unappropriatedBalance),
+    )
     const panel = screen.getByRole('region', { name: /running balance/i })
-    expect(within(panel).getByText('Balanced, with a surplus')).toBeInTheDocument()
+    expect(within(panel).getByText('Matches the enacted budget')).toBeInTheDocument()
   })
 
   it('shows one decision at a time', () => {
@@ -55,9 +61,14 @@ describe('the challenge page', () => {
 
     await user.click(screen.getByRole('radio', { name: /deposit the full balance/i }))
 
+    // Both measures move together: the whole balance committed reads as a
+    // change of the whole balance, and nothing remaining.
+    expect(screen.getByTestId('change-from-enacted')).toHaveTextContent(
+      `-${formatDollars(DATASET.baseline.unappropriatedBalance)}`,
+    )
     expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$0')
     const panel = screen.getByRole('region', { name: /running balance/i })
-    expect(within(panel).getByText('Balanced')).toBeInTheDocument()
+    expect(within(panel).getByText('Uses part of the balance')).toBeInTheDocument()
   })
 
   it('announces the new balance to screen readers when it changes', async () => {
@@ -70,8 +81,9 @@ describe('the challenge page', () => {
 
     await user.click(screen.getByRole('radio', { name: /deposit half into the savings reserve/i }))
 
-    expect(live.textContent).toContain('$500,000,000')
-    expect(live.textContent).toMatch(/surplus/i)
+    expect(live.textContent).toMatch(/Change from the enacted budget: \$500,000,000 used/i)
+    expect(live.textContent).toMatch(/Unappropriated balance remaining: \$500,000,000/i)
+    expect(live.textContent).not.toMatch(/deficit|out of balance/i)
   })
 
   it('lets a choice be changed back to the enacted policy', async () => {
@@ -335,5 +347,69 @@ describe('the two challenges', () => {
     renderWithProviders(<Challenge />)
     const picker = screen.getByRole('group', { name: /which challenge/i })
     expect(within(picker).getByRole('radio', { name: /Full Challenge/i })).toBeChecked()
+  })
+})
+
+describe('the two running measures survive the session', () => {
+  it('keeps both through a mode switch', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Challenge />)
+    await goToReserves(user)
+    await user.click(screen.getByRole('radio', { name: /deposit half into the savings reserve/i }))
+
+    const change = screen.getByTestId('change-from-enacted').textContent
+    const remaining = screen.getByTestId('remaining-balance').textContent
+
+    await goToFullChallenge(user)
+
+    // The unappropriated balance decision is in both challenges, so both
+    // measures should read the same on either side of the switch.
+    expect(screen.getByTestId('change-from-enacted')).toHaveTextContent(change!)
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent(remaining!)
+  })
+
+  it('restores both from a saved session', async () => {
+    const user = userEvent.setup()
+    const first = renderWithProviders(<Challenge />)
+    await goToReserves(user)
+    await user.click(screen.getByRole('radio', { name: /deposit half into the savings reserve/i }))
+    const change = screen.getByTestId('change-from-enacted').textContent
+    const remaining = screen.getByTestId('remaining-balance').textContent
+    first.unmount()
+
+    renderWithProviders(<Challenge />)
+
+    expect(screen.getByTestId('change-from-enacted')).toHaveTextContent(change!)
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent(remaining!)
+  })
+
+  it('always reconciles on screen: enacted balance plus change equals remaining', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Challenge />)
+    await goToReserves(user)
+    await user.click(screen.getByRole('radio', { name: /deposit half into the savings reserve/i }))
+
+    // Read the visible span only. Each figure also carries a screen-reader
+    // sentence, and concatenating the two would parse as one long number.
+    const visualAmount = (testId: string) => {
+      const text = screen.getByTestId(testId).querySelector('[aria-hidden="true"]')!.textContent!
+      const digits = Number(text.replace(/[^0-9]/g, ''))
+      return text.trimStart().startsWith('-') ? -digits : digits
+    }
+    const change = visualAmount('change-from-enacted')
+    const remaining = visualAmount('remaining-balance')
+
+    expect(DATASET.baseline.unappropriatedBalance + change).toBe(remaining)
+  })
+
+  it('explains the reference point without needing a disclosure opened', () => {
+    renderWithProviders(<Challenge />)
+
+    expect(
+      screen.getByText(/The enacted budget is the reference point/i),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(/the first figure shows what your decisions change/i),
+    ).toBeInTheDocument()
   })
 })

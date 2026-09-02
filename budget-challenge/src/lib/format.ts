@@ -68,3 +68,46 @@ export function describeBalance(remaining: number): string {
     Math.abs(remaining),
   )}.`
 }
+
+/**
+ * The primary running measure: "$0", "+$40,000,000", "-$25,000,000".
+ *
+ * Distinct from `formatDelta`, which prints "no change" at zero. That reads
+ * well for a supporting figure, but the whole point of this one is that a fresh
+ * challenge opens at a number, so zero is shown as an amount like every other
+ * value it takes.
+ */
+export function formatChangeFromEnacted(amount: number): string {
+  if (amount === 0) return FULL.format(0)
+  return formatDelta(amount)
+}
+
+/**
+ * The change from the enacted budget, spelled out for assistive technology.
+ *
+ * A sighted reader gets the sign and the label together. A screen reader user
+ * gets the measure named, then the direction in words, then the amount, in that
+ * order, because "minus" alone at the start of a number is easy to miss and a
+ * hyphen is often read as nothing at all.
+ */
+export function describeChangeFromEnacted(change: number): string {
+  if (change === 0) return 'Change from the enacted budget: no change.'
+  if (change > 0) {
+    return `Change from the enacted budget: ${FULL.format(
+      change,
+    )} more available than the enacted budget.`
+  }
+  return `Change from the enacted budget: ${FULL.format(
+    Math.abs(change),
+  )} used from the balance the enacted budget left.`
+}
+
+/** The secondary measure, read aloud with its name attached. */
+export function describeRemaining(remaining: number): string {
+  if (remaining < 0) {
+    return `Unappropriated balance remaining: ${FULL.format(
+      Math.abs(remaining),
+    )} beyond available General Fund resources.`
+  }
+  return `Unappropriated balance remaining: ${FULL.format(remaining)}.`
+}

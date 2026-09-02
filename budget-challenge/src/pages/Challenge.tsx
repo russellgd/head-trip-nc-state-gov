@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { CATEGORIES, DATASET } from '../data'
 import { CLASSROOM_DECISION_IDS, MODES } from '../data/modes'
 import { resolveChoice } from '../engine/budget'
+import { formatDollars } from '../lib/format'
 import { useChallenge } from '../lib/challengeContext'
 import { BalancePanel } from '../components/BalancePanel'
 import { DecisionCard } from '../components/DecisionCard'
@@ -72,6 +73,13 @@ export function Challenge() {
       <p className="mt-2 max-w-3xl leading-relaxed text-muted">
         Each card offers the enacted policy and one or more alternatives. Your balance updates as
         soon as you choose. You can move back and forth freely, and change any answer at any time.
+      </p>
+
+      <p className="mt-2 max-w-3xl leading-relaxed text-ink">
+        The enacted budget is the reference point. It leaves{' '}
+        {formatDollars(DATASET.baseline.unappropriatedBalance)} unappropriated. As you make choices,
+        the first figure shows what your decisions change; the second shows how much remains
+        available.
       </p>
 
       <p className="mt-2 max-w-3xl text-sm text-muted">
