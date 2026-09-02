@@ -44,6 +44,30 @@ or page reference.
 
 ---
 
+## Task 0: adding a decision to the Classroom Challenge
+
+Adding a decision to the dataset does **not** put it in front of a class. The classroom set is a
+frozen list in `src/data/modes.ts`, and `src/data/modes.test.ts` holds it to the rules it was
+chosen under. That is deliberate: a class period is a fixed budget, and something has to come out
+for something to go in.
+
+To change it, edit `CLASSROOM_DECISION_IDS` and run `npm test`. The tests will tell you if you have
+broken a rule:
+
+| Rule | What it means |
+| --- | --- |
+| Exactly twenty decisions | The set is sized for a class period, not for coverage |
+| At most three from any one budget area | No area dominates |
+| At most three reserve or unappropriated-balance decisions | Reserves are large and easy; they must not be the whole exercise |
+| No decision whose only alternatives are illustrative | Every card must offer something somebody actually published |
+| Every barred decision stays out, and stays in the Full Challenge | Vague residuals and unsupported percentages are excluded, not deleted |
+| Eleven of twelve areas represented | Breadth, without forcing an area that has nothing usable |
+| A smaller illustrative share than the Full Challenge | Curating should raise the quality of the material, not just cut its length |
+| Surplus, balance and deficit all reachable | The exercise still has to be winnable and losable |
+
+If a rule genuinely should change, change the test and say why in the commit message. Do not
+weaken a test to make a selection pass.
+
 ## Task 1: update the baseline anchors
 
 Open `src/data/baseline.ts`.

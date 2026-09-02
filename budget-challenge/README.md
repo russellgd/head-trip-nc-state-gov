@@ -13,8 +13,20 @@ Management, or any state agency, and it is not affiliated with or endorsed by an
 ## Read this first: the state of the data
 
 The application is populated from the text of **S.L. 2026-41**, the Current Operations
-Appropriations Act of 2026, read in full (634 pages). Thirty-five decisions span all twelve budget areas,
-and a surplus, a balanced budget, and a deficit are all reachable.
+Appropriations Act of 2026, read in full (634 pages). Thirty-five decisions span all twelve budget
+areas, and a surplus, a balanced budget, and a deficit are all reachable.
+
+There are **two ways through the same dataset**, chosen on the challenge page:
+
+| | Decisions | Time | For |
+| --- | ---: | --- | --- |
+| **Classroom Challenge** (the default) | 20 | about 30 to 35 minutes | a single class period |
+| **Full Challenge** | 35 | about an hour | workshops, assignments, independent study |
+
+They are not two datasets. Every decision in the classroom set is the same decision with the same
+amounts, the same recurring split and the same citations, and answers carry over when you switch.
+The classroom selection is frozen and enforced by tests; the reasoning behind every inclusion and
+exclusion is in `CLASSROOM_MODE_PROPOSAL.md`.
 
 Every enacted figure was checked by re-deriving a total the act itself prints — the 78 agency lines
 sum to the stated total net appropriation, the availability statement reconciles line by line, and
