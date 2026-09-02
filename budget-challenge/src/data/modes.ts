@@ -69,7 +69,7 @@ export const MODES: Record<ModeId, Mode> = {
     id: 'classroom',
     name: 'Classroom Challenge',
     summary:
-      'Twenty decisions spanning eleven budget areas, chosen so a class can finish in one period. Every figure is the same as in the full version.',
+      'Twenty decisions spanning all twelve budget areas, chosen so a class can finish in one period. Every figure is the same as in the full version.',
     duration: 'about 30 to 35 minutes',
   },
   full: {

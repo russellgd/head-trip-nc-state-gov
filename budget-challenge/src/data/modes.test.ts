@@ -91,11 +91,15 @@ describe('the frozen classroom selection', () => {
     }
   })
 
-  it('reaches at least eleven of the twelve budget areas', () => {
+  it('reaches all twelve budget areas', () => {
+    // Asserted exactly, not as a floor: the mode picker and the methodology
+    // page both tell a reader the classroom set spans all twelve, and a claim
+    // made to a reader has to be the claim the test enforces.
     const areas = new Set(classroom.map((d) => d.category))
-    expect(areas.size).toBeGreaterThanOrEqual(11)
-    for (const area of areas) {
-      expect(CATEGORIES.some((c) => c.id === area), area).toBe(true)
+    expect(areas.size).toBe(CATEGORIES.length)
+    expect(areas.size).toBe(12)
+    for (const category of CATEGORIES) {
+      expect(areas.has(category.id), `no classroom decision in "${category.id}"`).toBe(true)
     }
   })
 

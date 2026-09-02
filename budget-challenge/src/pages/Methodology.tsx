@@ -27,7 +27,7 @@ const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = 
     date: '2026-09-02',
     note:
       'Two ways through the same dataset. The Classroom Challenge presents twenty decisions ' +
-      'across eleven budget areas, chosen to fit a class period; the Full Challenge presents ' +
+      'across all twelve budget areas, chosen to fit a class period; the Full Challenge presents ' +
       'every decision, and is a superset rather than a different exercise. No figure, citation or ' +
       'amount differs between them, and answers are shared, so switching costs a visitor nothing. ' +
       'The classroom selection is frozen and enforced by tests: at most three decisions from any ' +
