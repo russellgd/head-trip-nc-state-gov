@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CATEGORIES, DATASET } from '../data'
+import { MODES } from '../data/modes'
 import { budgetStatus, resolveChoice } from '../engine/budget'
 import { useChallenge } from '../lib/challengeContext'
 import { buildCsv, buildJson, downloadFile } from '../lib/export'
@@ -62,14 +63,17 @@ function StatTile({
 }
 
 export function Results() {
-  const { selections, totals, reset } = useChallenge()
+  // Everything on this page is scoped to the challenge the visitor is on. A
+  // results page that counted decisions the visitor was never shown would be
+  // reporting on somebody else's exercise.
+  const { selections, totals, reset, mode, decisions, dataset } = useChallenge()
   const [confirmingReset, setConfirmingReset] = useState(false)
   const status = budgetStatus(totals.remainingBalance)
   const { baseline } = DATASET
 
-  const changed = DATASET.decisions.filter((d) => totals.changedDecisionIds.includes(d.id))
+  const changed = decisions.filter((d) => totals.changedDecisionIds.includes(d.id))
 
-  const byProvenance = DATASET.decisions.reduce<Record<string, number>>((counts, decision) => {
+  const byProvenance = decisions.reduce<Record<string, number>>((counts, decision) => {
     const { provenance } = resolveChoice(decision, selections)
     counts[provenance] = (counts[provenance] ?? 0) + 1
     return counts
@@ -103,7 +107,7 @@ export function Results() {
         <p className="mt-2 leading-relaxed text-ink">
           {illustrativeCount === 0
             ? 'None of the options you selected is an illustrative scenario.'
-            : `${illustrativeCount} of the ${DATASET.decisions.length} options you selected ${
+            : `${illustrativeCount} of the ${decisions.length} options you selected ${
                 illustrativeCount === 1 ? 'is an illustrative scenario' : 'are illustrative scenarios'
               }. Each is marked below.`}
         </p>
@@ -343,12 +347,13 @@ export function Results() {
           Every choice you made
         </h2>
         <p className="mt-2 text-sm text-muted">
-          All {DATASET.decisions.length} decisions, in order. Decisions you left at the enacted
+          All {decisions.length} decisions in the {MODES[mode].name}, in order. Decisions you
+          left at the enacted
           policy are included so the record is complete.
         </p>
 
         <ol className="mt-4 space-y-3">
-          {DATASET.decisions.map((decision) => {
+          {decisions.map((decision) => {
             const choice = resolveChoice(decision, selections)
             const category = CATEGORIES.find((c) => c.id === decision.category)
             const isEnacted = choice.isEnactedBaseline === true
@@ -456,7 +461,7 @@ export function Results() {
             onClick={() =>
               downloadFile(
                 'nc-budget-challenge.json',
-                buildJson(DATASET, selections, totals),
+                buildJson(dataset, selections, totals),
                 'application/json',
               )
             }
@@ -467,7 +472,7 @@ export function Results() {
           <button
             type="button"
             onClick={() =>
-              downloadFile('nc-budget-challenge.csv', buildCsv(DATASET, selections, totals), 'text/csv')
+              downloadFile('nc-budget-challenge.csv', buildCsv(dataset, selections, totals), 'text/csv')
             }
             className="rounded-md bg-white px-5 py-2.5 font-medium text-navy-900 ring-1 ring-line transition-colors hover:bg-navy-100"
           >

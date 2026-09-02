@@ -5,6 +5,7 @@ import { Results } from './Results'
 import { Challenge } from './Challenge'
 import { renderWithProviders } from '../test/render'
 import { DATASET } from '../data'
+import { CLASSROOM_DECISION_IDS } from '../data/modes'
 
 beforeEach(() => {
   window.localStorage.clear()
@@ -24,7 +25,7 @@ describe('the results page', () => {
     renderWithProviders(<Results />)
 
     const section = screen.getByRole('region', { name: 'Every choice you made' })
-    expect(within(section).getAllByRole('listitem')).toHaveLength(DATASET.decisions.length)
+    expect(within(section).getAllByRole('listitem')).toHaveLength(CLASSROOM_DECISION_IDS.length)
   })
 
   it('describes the budget without characterising the person who made it', () => {
@@ -85,6 +86,10 @@ describe('a changed result', () => {
     const user = userEvent.setup()
 
     const challenge = renderWithProviders(<Challenge />)
+    // Public Schools sits in the Full Challenge only, so the results page has
+    // to be on that mode too for the choice to appear in its record. The mode
+    // is persisted alongside the answers, which is what makes that work.
+    await user.click(screen.getByRole('radio', { name: /Full Challenge/i }))
     await user.click(screen.getByRole('radio', { name: /reduce by 3%/i }))
     challenge.unmount()
 

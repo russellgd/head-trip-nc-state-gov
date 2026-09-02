@@ -400,6 +400,39 @@ The rule behind all of it: **"Sources and calculation" may be collapsed. Provena
 
 ---
 
+## 5b. Two challenges, one dataset
+
+The **Full Challenge** presents every decision. The **Classroom Challenge** presents twenty of them,
+chosen so a class can finish in one period. It is a curated path, not a simplified dataset: every
+decision in it is the same decision, with the same amounts, the same recurring split and the same
+citations, and both challenges compute the balance with the same engine from the same enacted
+anchors.
+
+Answers are shared between them. A visitor who works through the classroom set and then opens the
+full one finds their twenty answers still in place; the balance is totalled over whichever set is
+open, so a decision left out of the classroom challenge stops counting there without being
+forgotten. Which challenge was open is stored alongside the answers, and it is the only thing in
+storage besides the choice ids, the dataset version and a timestamp. It says nothing about the
+person.
+
+The classroom selection is **frozen** in `src/data/modes.ts` and enforced by `modes.test.ts`
+against the rules it was chosen under: exactly twenty decisions; at most three from any one budget
+area; at most three reserve or unappropriated-balance decisions; no decision whose only alternatives
+are unsupported percentages; every barred decision absent from the classroom set and present in the
+full one; at least eleven of the twelve areas represented; a smaller illustrative share than the
+full challenge; and surplus, balance and deficit all reachable. A decision added to the dataset
+later cannot appear in a class period unless somebody puts it there.
+
+The two billion-dollar reserve levers, the State Capital and Infrastructure Fund and the
+Stabilization and Inflation Reserve, are excluded from the classroom set **because** of their size.
+One click of either balances almost any budget without touching a programme. They remain in the
+Full Challenge, where there is time to notice what that means.
+
+The selection and the reasoning behind every inclusion and exclusion are in
+`CLASSROOM_MODE_PROPOSAL.md`.
+
+---
+
 ## 6. Editorial rules applied to the content
 
 - Each decision offers the enacted policy plus alternatives, and the enacted option is always

@@ -126,6 +126,9 @@ export function buildJson(
         'institution. Each row below carries a "provenance" field saying which it is.',
       exportedAt: new Date().toISOString(),
       datasetVersion: dataset.version,
+      // Which challenge these answers were given to. Two exports with different
+      // decision counts are not in conflict; they are different exercises.
+      decisionsPresented: dataset.decisions.length,
       fiscalYear: dataset.baseline.fiscalYear,
       dataVerifiedThrough: dataset.baseline.verifiedThrough,
       baselineIsProvisional: dataset.baseline.provisional,
@@ -217,6 +220,7 @@ export function buildCsv(
   lines.push(csvCell(`Fiscal year,${dataset.baseline.fiscalYear}`))
   lines.push(`Data verified through,${csvCell(dataset.baseline.verifiedThrough)}`)
   lines.push(`Dataset version,${csvCell(dataset.version)}`)
+  lines.push(`Decisions presented,${dataset.decisions.length}`)
   lines.push(`Starting unappropriated balance,${totals.startingBalance}`)
   lines.push(`Remaining balance,${totals.remainingBalance}`)
   lines.push(`Change in recurring position,${totals.structuralChange}`)

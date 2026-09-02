@@ -4,8 +4,9 @@
  */
 import { useCallback, useMemo, useState, type ReactNode } from 'react'
 import { DATASET } from '../data'
+import { datasetForMode, decisionsForMode, type ModeId } from '../data/modes'
 import { computeTotals, enactedSelections, type Selections } from '../engine/budget'
-import { clearSelections, loadSelections, saveSelections } from './storage'
+import { clearSelections, loadMode, loadSelections, saveSelections } from './storage'
 import { ChallengeContext, type ChallengeContextValue } from './challengeContext'
 
 export function ChallengeProvider({ children }: { children: ReactNode }) {
@@ -18,17 +19,29 @@ export function ChallengeProvider({ children }: { children: ReactNode }) {
     const saved = loadSelections(DATASET.version)
     return saved ? { ...defaults, ...saved } : defaults
   })
+  const [mode, setModeState] = useState<ModeId>(() => loadMode())
 
   // Persist from the event that caused the change, so a render never has a
   // write hanging off it.
-  const persist = useCallback((next: Selections) => {
-    saveSelections(DATASET.version, next)
+  const persist = useCallback((next: Selections, nextMode: ModeId) => {
+    saveSelections(DATASET.version, next, nextMode)
     return next
   }, [])
 
   const choose = useCallback(
     (decisionId: string, choiceId: string) => {
-      setSelections((prev) => persist({ ...prev, [decisionId]: choiceId }))
+      setSelections((prev) => persist({ ...prev, [decisionId]: choiceId }, mode))
+    },
+    [persist, mode],
+  )
+
+  // Answers survive a mode change. Someone who works through the classroom set
+  // and then opens the full one should find their twenty answers still there,
+  // not be sent back to the enacted budget for having looked.
+  const setMode = useCallback(
+    (next: ModeId) => {
+      setModeState(next)
+      setSelections((prev) => persist(prev, next))
     },
     [persist],
   )
@@ -38,17 +51,23 @@ export function ChallengeProvider({ children }: { children: ReactNode }) {
     setSelections(defaults)
   }, [defaults])
 
-  const totals = useMemo(() => computeTotals(DATASET, selections), [selections])
+  const dataset = useMemo(() => datasetForMode(DATASET, mode), [mode])
+  const decisions = useMemo(() => decisionsForMode(DATASET, mode), [mode])
+  const totals = useMemo(() => computeTotals(dataset, selections), [dataset, selections])
 
   const value = useMemo<ChallengeContextValue>(
     () => ({
       selections,
+      mode,
+      setMode,
+      decisions,
+      dataset,
       totals,
       choose,
       reset,
       changedCount: totals.changedDecisionIds.length,
     }),
-    [selections, totals, choose, reset],
+    [selections, mode, setMode, decisions, dataset, totals, choose, reset],
   )
 
   return <ChallengeContext.Provider value={value}>{children}</ChallengeContext.Provider>

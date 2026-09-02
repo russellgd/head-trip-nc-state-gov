@@ -7,6 +7,7 @@
  * Clearing the key returns the visitor to the enacted budget.
  */
 import type { Selections } from '../engine/budget'
+import { DEFAULT_MODE, isModeId, type ModeId } from '../data/modes'
 
 export const STORAGE_KEY = 'nc-budget-challenge/v1'
 
@@ -15,6 +16,8 @@ interface StoredState {
   /** Dataset version the answers were made against, so stale answers are noticed. */
   datasetVersion: string
   selections: Selections
+  /** Which of the two paths the visitor was on. Absent in sessions saved before modes existed. */
+  mode?: ModeId
   savedAt: string
 }
 
@@ -43,12 +46,28 @@ export function loadSelections(datasetVersion: string): Selections | null {
   }
 }
 
-export function saveSelections(datasetVersion: string, selections: Selections): void {
+export function loadMode(): ModeId {
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY)
+    if (!raw) return DEFAULT_MODE
+    const parsed = JSON.parse(raw) as Partial<StoredState>
+    return isModeId(parsed.mode) ? parsed.mode : DEFAULT_MODE
+  } catch {
+    return DEFAULT_MODE
+  }
+}
+
+export function saveSelections(
+  datasetVersion: string,
+  selections: Selections,
+  mode: ModeId,
+): void {
   try {
     const state: StoredState = {
       version: 1,
       datasetVersion,
       selections,
+      mode,
       savedAt: new Date().toISOString(),
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state))

@@ -5,6 +5,12 @@ import { Challenge } from './Challenge'
 import { renderWithProviders } from '../test/render'
 import { DATASET } from '../data'
 import { STORAGE_KEY } from '../lib/storage'
+import { CLASSROOM_DECISION_IDS } from '../data/modes'
+
+/** Switch to the Full Challenge, for behaviour that needs a decision the classroom set leaves out. */
+async function goToFullChallenge(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(screen.getByRole('radio', { name: /Full Challenge/i }))
+}
 
 /** Jump to the budget area that holds the scored reserve decisions. */
 async function goToReserves(user: ReturnType<typeof userEvent.setup>) {
@@ -30,13 +36,15 @@ describe('the challenge page', () => {
 
     expect(screen.getAllByRole('article')).toHaveLength(1)
     const card = screen.getByRole('article')
-    expect(within(card).getByText(`Decision 1 of ${DATASET.decisions.length}`)).toBeInTheDocument()
+    expect(within(card).getByText(`Decision 1 of ${CLASSROOM_DECISION_IDS.length}`)).toBeInTheDocument()
   })
 
   it('opens every decision on the enacted policy', () => {
     renderWithProviders(<Challenge />)
 
-    const enacted = screen.getByRole('radio', { name: /fund as enacted/i })
+    // The classroom set opens on teacher pay, whose enacted option names the
+    // schedule rather than an agency total.
+    const enacted = screen.getByRole('radio', { name: /keep the enacted schedule and bonus/i })
     expect(enacted).toBeChecked()
   })
 
@@ -80,6 +88,9 @@ describe('the challenge page', () => {
   it('shows the working behind a calculated amount', async () => {
     const user = userEvent.setup()
     renderWithProviders(<Challenge />)
+    // Public Schools is a Full Challenge decision; it is left out of the
+    // classroom set because its residual is too vague to teach from.
+    await goToFullChallenge(user)
 
     await user.click(screen.getByRole('radio', { name: /reduce by 3%/i }))
 
@@ -93,6 +104,7 @@ describe('the challenge page', () => {
   it('offers the Governor’s recommendation as a published proposal', async () => {
     const user = userEvent.setup()
     renderWithProviders(<Challenge />)
+    await goToFullChallenge(user)
 
     // Teacher pay is now its own decision, so the Public Schools card carries
     // the residual of the Governor's recommendation for the department.
@@ -132,12 +144,12 @@ describe('moving between decisions', () => {
 
     await user.click(screen.getByRole('button', { name: /next/i }))
     expect(
-      within(screen.getByRole('article')).getByText(`Decision 2 of ${DATASET.decisions.length}`),
+      within(screen.getByRole('article')).getByText(`Decision 2 of ${CLASSROOM_DECISION_IDS.length}`),
     ).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: /previous/i }))
     expect(
-      within(screen.getByRole('article')).getByText(`Decision 1 of ${DATASET.decisions.length}`),
+      within(screen.getByRole('article')).getByText(`Decision 1 of ${CLASSROOM_DECISION_IDS.length}`),
     ).toBeInTheDocument()
   })
 
@@ -145,7 +157,7 @@ describe('moving between decisions', () => {
     const user = userEvent.setup()
     renderWithProviders(<Challenge />)
 
-    for (let i = 0; i < DATASET.decisions.length - 1; i += 1) {
+    for (let i = 0; i < CLASSROOM_DECISION_IDS.length - 1; i += 1) {
       await user.click(screen.getByRole('button', { name: /next/i }))
     }
 
@@ -158,7 +170,7 @@ describe('moving between decisions', () => {
     const progress = screen.getByRole('progressbar')
 
     expect(progress).toHaveAttribute('aria-valuenow', '1')
-    expect(progress).toHaveAttribute('aria-valuemax', String(DATASET.decisions.length))
+    expect(progress).toHaveAttribute('aria-valuemax', String(CLASSROOM_DECISION_IDS.length))
   })
 })
 
@@ -167,14 +179,14 @@ describe('keyboard use', () => {
     const user = userEvent.setup()
     renderWithProviders(<Challenge />)
 
-    const enacted = screen.getByRole('radio', { name: /fund as enacted/i })
+    const enacted = screen.getByRole('radio', { name: /keep the enacted schedule and bonus/i })
     enacted.focus()
     expect(enacted).toHaveFocus()
 
     // Arrow keys move within a radio group and select as they go.
     await user.keyboard('{ArrowDown}')
 
-    const governor = screen.getByRole('radio', { name: /adopt the governor.s other recommendations/i })
+    const governor = screen.getByRole('radio', { name: /adopt the governor.s salary schedule/i })
     expect(governor).toHaveFocus()
     expect(governor).toBeChecked()
   })
@@ -245,6 +257,83 @@ describe('saved progress', () => {
     await user.click(screen.getByRole('radio', { name: /deposit half into the savings reserve/i }))
 
     const stored = JSON.parse(window.localStorage.getItem(STORAGE_KEY)!)
-    expect(Object.keys(stored).sort()).toEqual(['datasetVersion', 'savedAt', 'selections', 'version'])
+    // "mode" is which of the two challenges is open, not anything about the
+    // person. Nothing here identifies or describes a visitor.
+    expect(Object.keys(stored).sort()).toEqual([
+      'datasetVersion',
+      'mode',
+      'savedAt',
+      'selections',
+      'version',
+    ])
+  })
+})
+
+describe('the two challenges', () => {
+  it('opens on the classroom set', () => {
+    renderWithProviders(<Challenge />)
+
+    const picker = screen.getByRole('group', { name: /which challenge/i })
+    expect(within(picker).getByRole('radio', { name: /Classroom Challenge/i })).toBeChecked()
+    expect(
+      within(screen.getByRole('article')).getByText(
+        `Decision 1 of ${CLASSROOM_DECISION_IDS.length}`,
+      ),
+    ).toBeInTheDocument()
+  })
+
+  it('presents every decision on the full challenge', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Challenge />)
+    await goToFullChallenge(user)
+
+    expect(
+      within(screen.getByRole('article')).getByText(
+        `Decision 1 of ${DATASET.decisions.length}`,
+      ),
+    ).toBeInTheDocument()
+    expect(DATASET.decisions.length).toBeGreaterThan(CLASSROOM_DECISION_IDS.length)
+  })
+
+  it('keeps the answers already given when the challenge is switched', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Challenge />)
+    await goToReserves(user)
+    await user.click(screen.getByRole('radio', { name: /deposit half into the savings reserve/i }))
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$500,000,000')
+
+    await goToFullChallenge(user)
+
+    // The answer is still recorded, and still counted: the unappropriated
+    // balance is in both challenges. Switching must not cost a visitor work.
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$500,000,000')
+  })
+
+  it('counts only the decisions the current challenge presents', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<Challenge />)
+    await goToFullChallenge(user)
+    await user.click(screen.getByRole('radio', { name: /reduce by 3%/i }))
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$1,375,010,837')
+
+    // Public Schools is not in the classroom set, so its effect leaves the
+    // balance when the classroom challenge is the one being totalled. The
+    // answer is remembered, not discarded.
+    await user.click(screen.getByRole('radio', { name: /Classroom Challenge/i }))
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$1,000,000,000')
+
+    await goToFullChallenge(user)
+    expect(screen.getByTestId('remaining-balance')).toHaveTextContent('$1,375,010,837')
+  })
+
+  it('remembers which challenge was open', async () => {
+    const user = userEvent.setup()
+    const first = renderWithProviders(<Challenge />)
+    await goToFullChallenge(user)
+    first.unmount()
+
+    renderWithProviders(<Challenge />)
+    const picker = screen.getByRole('group', { name: /which challenge/i })
+    expect(within(picker).getByRole('radio', { name: /Full Challenge/i })).toBeChecked()
   })
 })

@@ -1,8 +1,18 @@
 import { createContext, useContext } from 'react'
 import type { BudgetTotals, Selections } from '../engine/budget'
+import type { Dataset, Decision } from '../data/types'
+import type { ModeId } from '../data/modes'
 
 export interface ChallengeContextValue {
   selections: Selections
+  /** Which path the visitor is on. Answers are shared between the two. */
+  mode: ModeId
+  /** Switch paths. Answers are kept; only what is presented and totalled changes. */
+  setMode: (mode: ModeId) => void
+  /** The decisions this mode presents, in its own order. */
+  decisions: Decision[]
+  /** The dataset narrowed to this mode, for the engine and the exports. */
+  dataset: Dataset
   totals: BudgetTotals
   /** Record an answer for one decision. */
   choose: (decisionId: string, choiceId: string) => void

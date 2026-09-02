@@ -67,6 +67,11 @@ const after = await page.textContent('[data-testid="remaining-balance"]')
 if (before === after) problems.push(`balance did not change via keyboard (${before} -> ${after})`)
 
 // 4. Focus must move to the new card when navigating between decisions.
+// The reserve decision above can be the last card in the classroom set, where
+// the forward control offers results rather than a next decision, so step back
+// to the start of the run before testing forward navigation.
+await page.getByRole('button', { name: /K-12 Public Education/ }).click()
+await page.waitForTimeout(200)
 await page.getByRole('button', { name: /^Next/ }).focus()
 await page.keyboard.press('Enter')
 await page.waitForTimeout(250)
@@ -108,7 +113,23 @@ if (opened.expanded !== 'true') problems.push('Enter did not set aria-expanded="
 if (opened.hidden || !opened.visible) problems.push('a disclosure reported expanded but its panel stayed hidden')
 if (!opened.keptFocus) problems.push('focus was lost when a disclosure was opened by keyboard')
 
-// 6. Reduced motion must actually remove transitions.
+// 6. Both challenges must be reachable and usable by keyboard.
+await page.goto('http://localhost:4173/#/challenge', { waitUntil: 'networkidle' })
+await page.waitForTimeout(200)
+const classroomCount = await page.textContent('[data-testid="decision-position"]')
+const fullRadio = page.getByRole('radio', { name: /Full Challenge/ })
+await fullRadio.focus()
+if (!(await fullRadio.evaluate((el) => document.activeElement === el))) {
+  problems.push('the challenge picker cannot take keyboard focus')
+}
+await page.keyboard.press('Space')
+await page.waitForTimeout(250)
+const fullCount = await page.textContent('[data-testid="decision-position"]')
+if (classroomCount === fullCount) {
+  problems.push(`switching challenge by keyboard did not change the decision count (${classroomCount})`)
+}
+
+// 7. Reduced motion must actually remove transitions.
 const reduced = await browser.newContext({ reducedMotion: 'reduce', viewport: { width: 1280, height: 900 } })
 const rp = await reduced.newPage()
 await rp.goto('http://localhost:4173/#/challenge', { waitUntil: 'networkidle' })

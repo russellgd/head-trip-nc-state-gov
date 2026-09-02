@@ -1,23 +1,34 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { CATEGORIES, DATASET } from '../data'
+import { CLASSROOM_DECISION_IDS, MODES } from '../data/modes'
 import { resolveChoice } from '../engine/budget'
 import { useChallenge } from '../lib/challengeContext'
 import { BalancePanel } from '../components/BalancePanel'
 import { DecisionCard } from '../components/DecisionCard'
 import { StickyBalanceBar } from '../components/StickyBalanceBar'
 import { ProvenanceLegend } from '../components/ProvenanceLegend'
+import { ModePicker } from '../components/ModePicker'
 
-const DECISIONS = DATASET.decisions
+const DECISION_COUNTS = {
+  classroom: CLASSROOM_DECISION_IDS.length,
+  full: DATASET.decisions.length,
+}
 
 export function Challenge() {
-  const { selections, totals, choose, reset, changedCount } = useChallenge()
+  const { selections, totals, choose, reset, changedCount, mode, setMode, decisions } =
+    useChallenge()
+  const DECISIONS = decisions
   const [index, setIndex] = useState(0)
   const [confirmingReset, setConfirmingReset] = useState(false)
   const headingRef = useRef<HTMLDivElement>(null)
   const firstRender = useRef(true)
 
-  const decision = DECISIONS[index]!
+  // The classroom set is shorter than the full one, so an index that was valid
+  // a moment ago may not be after a switch. Clamping rather than resetting
+  // keeps a visitor roughly where they were.
+  const safeIndex = Math.min(index, DECISIONS.length - 1)
+  const decision = DECISIONS[safeIndex]!
   const category = CATEGORIES.find((c) => c.id === decision.category)
 
   // Moving between decisions replaces the whole card, so focus is sent to the
@@ -29,7 +40,7 @@ export function Challenge() {
       return
     }
     headingRef.current?.focus()
-  }, [index])
+  }, [safeIndex])
 
   /** Where each category's first decision sits, for the category navigation. */
   const categoryStarts = useMemo(() => {
@@ -38,10 +49,10 @@ export function Challenge() {
       if (!starts.has(d.category)) starts.set(d.category, i)
     })
     return starts
-  }, [])
+  }, [DECISIONS])
 
   const answeredCount = changedCount
-  const progressPercent = Math.round(((index + 1) / DECISIONS.length) * 100)
+  const progressPercent = Math.round(((safeIndex + 1) / DECISIONS.length) * 100)
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
@@ -63,6 +74,12 @@ export function Challenge() {
         soon as you choose. You can move back and forth freely, and change any answer at any time.
       </p>
 
+      <p className="mt-2 max-w-3xl text-sm text-muted">
+        You are on the <strong className="font-semibold text-navy-900">{MODES[mode].name}</strong>:{' '}
+        {DECISIONS.length} decisions, {MODES[mode].duration}. Both challenges use the same figures
+        and the same sources; you can switch at any point without losing your answers.
+      </p>
+
       <div className="mt-6">
         <ProvenanceLegend />
       </div>
@@ -70,8 +87,8 @@ export function Challenge() {
       {/* Progress. The bar is decorative; the text beside it carries the meaning. */}
       <div className="mt-6">
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <p className="text-sm font-medium text-navy-900">
-            Decision {index + 1} of {DECISIONS.length}
+          <p className="text-sm font-medium text-navy-900" data-testid="decision-position">
+            Decision {safeIndex + 1} of {DECISIONS.length}
             <span className="font-normal text-muted">
               {' '}
               &middot; {category?.name} &middot; {answeredCount}{' '}
@@ -83,10 +100,10 @@ export function Challenge() {
         <div
           className="mt-2 h-2 w-full overflow-hidden rounded-full bg-navy-100"
           role="progressbar"
-          aria-valuenow={index + 1}
+          aria-valuenow={safeIndex + 1}
           aria-valuemin={1}
           aria-valuemax={DECISIONS.length}
-          aria-label={`Decision ${index + 1} of ${DECISIONS.length}`}
+          aria-label={`Decision ${safeIndex + 1} of ${DECISIONS.length}`}
         >
           <div
             className="h-full rounded-full bg-carolina-500 transition-[width]"
@@ -103,7 +120,7 @@ export function Challenge() {
               decision={decision}
               selectedChoiceId={resolveChoice(decision, selections).id}
               onChoose={(choiceId) => choose(decision.id, choiceId)}
-              index={index + 1}
+              index={safeIndex + 1}
               total={DECISIONS.length}
             />
           </div>
@@ -114,14 +131,14 @@ export function Challenge() {
           >
             <button
               type="button"
-              onClick={() => setIndex((i) => Math.max(0, i - 1))}
-              disabled={index === 0}
+              onClick={() => setIndex(Math.max(0, safeIndex - 1))}
+              disabled={safeIndex === 0}
               className="rounded-md bg-white px-5 py-2.5 font-medium text-navy-900 ring-1 ring-line transition-colors hover:bg-navy-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
               &larr; Previous
             </button>
 
-            {index === DECISIONS.length - 1 ? (
+            {safeIndex === DECISIONS.length - 1 ? (
               <Link
                 to="/results"
                 className="rounded-md bg-gold-500 px-6 py-2.5 font-semibold text-navy-900 transition-colors hover:bg-gold-200"
@@ -131,7 +148,7 @@ export function Challenge() {
             ) : (
               <button
                 type="button"
-                onClick={() => setIndex((i) => Math.min(DECISIONS.length - 1, i + 1))}
+                onClick={() => setIndex(Math.min(DECISIONS.length - 1, safeIndex + 1))}
                 className="rounded-md bg-navy-900 px-6 py-2.5 font-semibold text-white transition-colors hover:bg-navy-800"
               >
                 Next &rarr;
@@ -142,6 +159,8 @@ export function Challenge() {
 
         <aside className="space-y-6 lg:sticky lg:top-6 lg:h-fit lg:self-start">
           <BalancePanel totals={totals} />
+
+          <ModePicker mode={mode} onChange={setMode} decisionCounts={DECISION_COUNTS} />
 
           <nav aria-label="Budget areas" className="rounded-lg bg-white p-4 shadow-sm ring-1 ring-line">
             <h2 className="font-serif text-base font-semibold">Budget areas</h2>

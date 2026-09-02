@@ -9,6 +9,19 @@ import { formatDollars } from '../lib/format'
 /** Version history. Add a row whenever any figure in the dataset changes. */
 const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = [
   {
+    version: '0.10.0',
+    date: '2026-09-02',
+    note:
+      'Two ways through the same dataset. The Classroom Challenge presents twenty decisions ' +
+      'across eleven budget areas, chosen to fit a class period; the Full Challenge presents ' +
+      'every decision, and is a superset rather than a different exercise. No figure, citation or ' +
+      'amount differs between them, and answers are shared, so switching costs a visitor nothing. ' +
+      'The classroom selection is frozen and enforced by tests: at most three decisions from any ' +
+      'area, at most three reserve decisions, no decision whose only alternatives are unsupported ' +
+      'percentages, and no vague aggregate residual. A later addition to the dataset cannot drift ' +
+      'into a class period without somebody deciding it should.',
+  },
+  {
     version: '0.9.0',
     date: '2026-09-02',
     note:
