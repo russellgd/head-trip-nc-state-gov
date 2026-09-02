@@ -433,6 +433,33 @@ The selection and the reasoning behind every inclusion and exclusion are in
 
 ---
 
+## 5c. One-time money, and the claim this project will not make
+
+A visitor can close a deficit by not making a reserve and, in the same session, adopt several
+recurring spending increases. The balance reads as solved. The next year, the reserve money is gone
+and every recurring commitment remains. The results page shows that as one fact.
+
+**What is calculated**, from figures each option already carries with a citation:
+
+| Measure | How |
+| --- | --- |
+| Net recurring policy change | recurring revenue − recurring spending − recurring reserve, over the selected options |
+| Net one-time policy change | the same arithmetic on the nonrecurring amounts |
+| Which choices carried the one-time money | the selected options whose nonrecurring effect is positive |
+
+Both are **changes against the enacted budget**, not absolute positions. The panel appears only
+where the two point in opposite directions, which is the case that is actually worth flagging.
+
+**What is not calculated, and will not be.** The panel never says "structural deficit". A structural
+deficit compares *recurring revenue* against *recurring obligations* for the whole budget, and this
+project holds neither. The act publishes an appropriation level and an availability statement that
+mixes recurring tax collections with reversions, transfers and prior-year cash balances, and no
+source here separates them. Stating a structural deficit would require inventing a recurring revenue
+baseline — precisely the sort of manufactured figure refused everywhere else in this project. The
+panel says so on its face, and a test asserts the words never appear.
+
+---
+
 ## 6. Editorial rules applied to the content
 
 - Each decision offers the enacted policy plus alternatives, and the enacted option is always

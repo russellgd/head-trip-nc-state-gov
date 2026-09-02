@@ -9,6 +9,7 @@ import { describeDelta, formatDelta, formatDollars } from '../lib/format'
 import { Callout } from '../components/Callout'
 import { TableScroll } from '../components/TableScroll'
 import { Disclosure } from '../components/Disclosure'
+import { OneTimeFunding } from '../components/OneTimeFunding'
 import { SourceList } from '../components/SourceList'
 import {
   PROVENANCE,
@@ -162,6 +163,8 @@ export function Results() {
           </p>
         ) : null}
       </section>
+
+      <OneTimeFunding totals={totals} decisions={decisions} selections={selections} />
 
       <section aria-labelledby="changes" className="mt-10">
         <h2 id="changes" className="font-serif text-2xl font-semibold">

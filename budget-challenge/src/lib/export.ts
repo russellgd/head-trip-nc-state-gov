@@ -140,6 +140,12 @@ export function buildJson(
       results: {
         remainingBalance: totals.remainingBalance,
         structuralChange: totals.structuralChange,
+        onetimeChange: totals.onetimeChange,
+        // Stated as arithmetic, not as a verdict. Neither figure supports a
+        // claim about the state's longer-run position: that would need
+        // recurring revenue measured against recurring obligations across the
+        // whole budget, and no source in this project separates them.
+        balanceRestsOnOneTimeActions: totals.structuralChange < 0 && totals.onetimeChange > 0,
         spendingIncreases: totals.spendingIncreases,
         spendingReductions: totals.spendingReductions,
         revenueIncreases: totals.revenueIncreases,
@@ -224,6 +230,12 @@ export function buildCsv(
   lines.push(`Starting unappropriated balance,${totals.startingBalance}`)
   lines.push(`Remaining balance,${totals.remainingBalance}`)
   lines.push(`Change in recurring position,${totals.structuralChange}`)
+  lines.push(`Change from one-time actions,${totals.onetimeChange}`)
+  lines.push(
+    `Balance rests partly on one-time actions,${
+      totals.structuralChange < 0 && totals.onetimeChange > 0
+    }`,
+  )
   lines.push('')
 
   const byProvenance = countByProvenance(dataset, selections)

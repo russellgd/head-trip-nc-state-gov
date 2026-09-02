@@ -9,6 +9,20 @@ import { formatDollars } from '../lib/format'
 /** Version history. Add a row whenever any figure in the dataset changes. */
 const VERSION_HISTORY: Array<{ version: string; date: string; note: string }> = [
   {
+    version: '0.11.0',
+    date: '2026-09-02',
+    note:
+      'A results panel showing when a balanced year rests on money that does not repeat. It ' +
+      'appears only where recurring commitments have grown while one-time actions provide money ' +
+      'this year, compares the two halves separately, and names the choices that carried the ' +
+      'one-time money. It deliberately does not call anything a structural deficit: that would ' +
+      'mean comparing recurring revenue with recurring obligations across the whole budget, and ' +
+      'the availability statement mixes recurring collections with reversions, transfers and ' +
+      'prior-year cash that no source here separates. Both figures are changes against the enacted ' +
+      'budget, computed from recurring and one-time amounts each option already carries with its ' +
+      'own citation, and no recurring revenue baseline is assumed anywhere.',
+  },
+  {
     version: '0.10.0',
     date: '2026-09-02',
     note:

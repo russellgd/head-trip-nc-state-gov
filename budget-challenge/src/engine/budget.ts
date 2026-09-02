@@ -83,6 +83,16 @@ export interface BudgetTotals {
    */
   structuralChange: number
 
+  /**
+   * The mirror of structuralChange: the one-time half of the same arithmetic,
+   * nonrecurring revenue - nonrecurring spending - nonrecurring reserve.
+   *
+   * Positive means the visitor's choices bring in more this year through
+   * actions that do not repeat. It is a CHANGE against the enacted budget, not
+   * a statement about the state's position, for the same reason as above.
+   */
+  onetimeChange: number
+
   spending: MoneyTotals
   revenue: MoneyTotals
   reserve: MoneyTotals
@@ -241,6 +251,8 @@ export function computeTotals(dataset: Dataset, selections: Selections): BudgetT
 
   const structuralChange =
     revenue.recurring - spending.recurring - reserve.recurring
+  const onetimeChange =
+    revenue.nonrecurring - spending.nonrecurring - reserve.nonrecurring
 
   return {
     startingBalance,
@@ -255,6 +267,7 @@ export function computeTotals(dataset: Dataset, selections: Selections): BudgetT
     netReserve,
     remainingBalance,
     structuralChange,
+    onetimeChange,
     spending,
     revenue,
     reserve,
